@@ -15,7 +15,43 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 
 **Context:** This should be run in a dedicated worktree (created by brainstorming skill).
 
-**Save plans to:** `docs/plans/YYYY-MM-DD-<feature-name>.md`
+## Multi-Phase Features
+
+When the input (analysis document) defines multiple implementation phases, create **one plan file per phase** plus an **index file**:
+
+```
+docs/plans/YYYY-MM-DD-<feature-name>-plan-index.md    ← orchestration dashboard
+docs/plans/YYYY-MM-DD-<feature-name>-plan-1-<phase>.md ← phase 1 tasks
+docs/plans/YYYY-MM-DD-<feature-name>-plan-2-<phase>.md ← phase 2 tasks
+docs/plans/YYYY-MM-DD-<feature-name>-plan-3-<phase>.md ← phase 3 tasks
+```
+
+For simple features with only one phase, skip the index and create a single plan: `docs/plans/YYYY-MM-DD-<feature-name>-plan.md`
+
+### Index File Structure
+
+```markdown
+# [Feature Name] — Plan Index
+
+**Source:** `docs/plans/YYYY-MM-DD-<feature-name>.md` (design + analysis)
+
+**Created:** YYYY-MM-DD
+
+## Phases
+
+| # | Phase | Plan File | Status | Dependencies |
+|---|-------|-----------|--------|--------------|
+| 1 | <phase name> | [plan-1-<phase>.md](./YYYY-MM-DD-<feature-name>-plan-1-<phase>.md) | ⬚ Not started | — |
+| 2 | <phase name> | [plan-2-<phase>.md](./YYYY-MM-DD-<feature-name>-plan-2-<phase>.md) | ⬚ Not started | Phase 1 |
+| 3 | <phase name> | [plan-3-<phase>.md](./YYYY-MM-DD-<feature-name>-plan-3-<phase>.md) | ⬚ Not started | Phase 1 |
+
+**Status legend:** ⬚ Not started · 🔨 In progress · ✅ Complete · ⏸ Blocked
+
+## Notes
+
+- Phases with no dependency between them can be executed in parallel
+- Each phase plan is self-contained and can be executed independently via executing-plans or subagent-driven-development
+```
 
 ## Bite-Sized Task Granularity
 
@@ -31,18 +67,22 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 **Every plan MUST start with this header:**
 
 ```markdown
-# [Feature Name] Implementation Plan
+# [Feature Name] — Phase N: [Phase Name]
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
-**Goal:** [One sentence describing what this builds]
+**Goal:** [One sentence describing what this phase builds]
 
 **Architecture:** [2-3 sentences about approach]
 
 **Tech Stack:** [Key technologies/libraries]
 
+**Index:** [`plan-index.md`](./YYYY-MM-DD-<feature-name>-plan-index.md)
+
 ---
 ```
+
+For single-phase plans (no index), omit the **Index:** line and the "Phase N:" from the title.
 
 ## Task Structure
 
@@ -96,9 +136,15 @@ git commit -m "feat: add specific feature"
 
 ## Execution Handoff
 
-After saving the plan, offer execution choice:
+After saving all plan files, offer execution choice:
 
-**"Plan complete and saved to `docs/plans/<filename>.md`. Two execution options:**
+**For multi-phase plans:**
+
+**"Plans complete. Index: `docs/plans/<filename>-plan-index.md`. Which phase to start with?"**
+
+Then for the chosen phase:
+
+**"Two execution options:**
 
 **1. Subagent-Driven (this session)** - I dispatch fresh subagent per task, review between tasks, fast iteration
 

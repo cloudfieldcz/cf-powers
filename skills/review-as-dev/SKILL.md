@@ -13,7 +13,7 @@ Review a technical analysis or specification document from a senior developer pe
 
 ## Input
 
-- Technical analysis document (typically `docs/analysis/YYYY-MM-DD-<topic>.md`)
+- Design + analysis document (typically `docs/plans/YYYY-MM-DD-<topic>.md`)
 - The actual codebase (read relevant files to verify claims in the analysis)
 
 ## Review Checklist

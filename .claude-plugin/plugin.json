@@ -1,13 +1,13 @@
 {
-  "name": "superpowers",
-  "description": "Core skills library for Claude Code: TDD, debugging, collaboration patterns, and proven techniques",
-  "version": "4.1.1",
+  "name": "cf-powers",
+  "description": "Skills plugin for Claude Code: brainstorming, technical analysis, TDD, debugging, and structured workflows",
+  "version": "1.0.0",
   "author": {
-    "name": "Jesse Vincent",
-    "email": "jesse@fsck.com"
+    "name": "Cloudfield",
+    "email": "valda@cloudfield.cz"
   },
-  "homepage": "https://github.com/obra/superpowers",
-  "repository": "https://github.com/obra/superpowers",
+  "homepage": "https://github.com/cloudfieldcz/cf-powers",
+  "repository": "https://github.com/cloudfieldcz/cf-powers",
   "license": "MIT",
-  "keywords": ["skills", "tdd", "debugging", "collaboration", "best-practices", "workflows"]
+  "keywords": ["skills", "tdd", "debugging", "analysis", "brainstorming", "workflows"]
 }

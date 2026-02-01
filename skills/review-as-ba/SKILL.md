@@ -13,8 +13,7 @@ Review a technical analysis or specification document from a business analyst pe
 
 ## Input
 
-- Technical analysis document (typically `docs/analysis/YYYY-MM-DD-<topic>.md`)
-- Original design document (if available, `docs/plans/YYYY-MM-DD-<topic>-design.md`)
+- Design + analysis document (typically `docs/plans/YYYY-MM-DD-<topic>.md`)
 
 ## Review Checklist
 

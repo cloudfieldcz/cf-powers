@@ -21,6 +21,8 @@ That's it. The plugin activates automatically on every session.
 
 ## Workflow
 
+Every feature starts the same way:
+
 ```
 /brainstorm  →  /write-analysis  →  /write-plan  →  execute
                      ↓
@@ -31,6 +33,31 @@ That's it. The plugin activates automatically on every session.
 2. **`/write-analysis`** — Turn the design into a full technical analysis (Czech output): architecture, DB changes, affected files, phases, risks, testing. Automatically dispatches BA and Developer reviewers for cross-check.
 3. **`/write-plan`** — Break the analysis into bite-sized TDD implementation tasks.
 4. **Execute** — Run the plan via subagent-driven development or batch execution.
+
+What happens at step 3 depends on the size of the feature:
+
+### Simple Feature (single phase)
+
+When the analysis contains one logical phase, `/write-plan` produces a single plan file:
+
+```
+docs/plans/YYYY-MM-DD-feature-plan.md
+```
+
+You execute it in one go — either with **subagent-driven development** (in the current session) or by opening a new session with **executing-plans** (batch execution with checkpoints).
+
+### Multi-Phase Feature
+
+When the analysis defines multiple implementation phases, `/write-plan` produces one plan file per phase plus an index:
+
+```
+docs/plans/YYYY-MM-DD-feature-plan-index.md      ← orchestration dashboard
+docs/plans/YYYY-MM-DD-feature-plan-1-models.md    ← phase 1
+docs/plans/YYYY-MM-DD-feature-plan-2-services.md  ← phase 2
+docs/plans/YYYY-MM-DD-feature-plan-3-ui.md        ← phase 3
+```
+
+You then execute phases one at a time (or in parallel if they have no dependencies). The index file tracks overall progress. After each phase completes, Claude updates the index and asks which phase to tackle next.
 
 ## Skills
 

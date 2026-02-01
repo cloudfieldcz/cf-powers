@@ -42,9 +42,22 @@ Based on feedback:
 - Execute next batch
 - Repeat until complete
 
-### Step 5: Complete Development
+### Step 5: Phase / Feature Completion
 
-After all tasks complete and verified:
+**If multi-phase** (plan file links to a `plan-index.md`):
+1. Read the index file
+2. Update the completed phase status to ✅ Complete
+3. Save the index file
+4. Check if remaining phases exist:
+   - **Remaining phases:** Present them: **"Phase N complete. Remaining phases: [list]. Continue with phase M?"**
+     - If user continues: Load next phase plan, go to Step 1
+   - **All phases complete:** Proceed to Step 6
+
+**If single-phase (no index):** Proceed directly to Step 6.
+
+### Step 6: Complete Development
+
+After all phases/tasks complete and verified:
 - Announce: "I'm using the finishing-a-development-branch skill to complete this work."
 - **REQUIRED SUB-SKILL:** Use superpowers:finishing-a-development-branch
 - Follow that skill to verify tests, present options, execute choice

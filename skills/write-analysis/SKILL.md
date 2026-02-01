@@ -11,17 +11,17 @@ Transform brainstorming output (design doc) into a comprehensive technical analy
 
 **Announce at start:** "I'm using the write-analysis skill to create a technical analysis."
 
-**Input:** Design document from brainstorming (typically `docs/plans/YYYY-MM-DD-<topic>-design.md`) or a feature description from the user.
+**Input:** Design document from brainstorming (typically `docs/plans/YYYY-MM-DD-<topic>.md`) or a feature description from the user.
 
 **Output language:** Czech (the analysis document). Code examples remain in English.
 
-**Save to:** `docs/analysis/YYYY-MM-DD-<topic>.md`
+**Modifies:** The existing `docs/plans/YYYY-MM-DD-<topic>.md` — extends the brainstorming design with analysis sections. If no brainstorming doc exists, creates a new one.
 
 ## The Process
 
 ### Step 1: Understand the Input
 
-- Read the brainstorming design doc (if available)
+- Read the brainstorming design doc at `docs/plans/YYYY-MM-DD-<topic>.md` (if available)
 - Ask the user clarifying questions if anything is ambiguous
 - Identify which parts need deeper technical investigation
 
@@ -106,6 +106,7 @@ Nové config hodnoty, feature flagy.
 
 Logické celky, NE micro-tasky (ty patří do writing-plans).
 Každá fáze je koherentní kus práce.
+**Každá fáze se stane separátním plan souborem** při writing-plans.
 
 ### Fáze 1: <Název>
 - Co je zahrnuto
@@ -162,9 +163,7 @@ If any section is not applicable, explicitly note "N/A" with a brief reason rath
 
 ### Step 5: Save the Document
 
-Save to `docs/analysis/YYYY-MM-DD-<topic>.md`
-
-Create the `docs/analysis/` directory if it does not exist.
+Update the existing `docs/plans/YYYY-MM-DD-<topic>.md` — append the analysis sections after the brainstorming design content. If no brainstorming doc exists, create `docs/plans/YYYY-MM-DD-<topic>.md` from scratch.
 
 ### Step 6: Dispatch Cross-Check Reviews
 
@@ -181,8 +180,7 @@ Task tool:
     You are a Business Analyst reviewer.
     Read and follow the superpowers:review-as-ba skill exactly.
 
-    Analysis document to review: docs/analysis/YYYY-MM-DD-<topic>.md
-    Design document (if exists): docs/plans/YYYY-MM-DD-<topic>-design.md
+    Document to review: docs/plans/YYYY-MM-DD-<topic>.md
 
     Provide your structured review following the skill's output format.
 ```
@@ -196,8 +194,7 @@ Task tool:
     You are a Developer reviewer.
     Read and follow the superpowers:review-as-dev skill exactly.
 
-    Analysis document to review: docs/analysis/YYYY-MM-DD-<topic>.md
-    Design document (if exists): docs/plans/YYYY-MM-DD-<topic>-design.md
+    Document to review: docs/plans/YYYY-MM-DD-<topic>.md
 
     Read the actual codebase to verify all claims. Provide your structured review
     following the skill's output format.

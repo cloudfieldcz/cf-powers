@@ -77,7 +77,12 @@ digraph process {
     "Code quality reviewer subagent approves?" -> "Mark task complete in TodoWrite" [label="yes"];
     "Mark task complete in TodoWrite" -> "More tasks remain?";
     "More tasks remain?" -> "Dispatch implementer subagent (./implementer-prompt.md)" [label="yes"];
-    "More tasks remain?" -> "Dispatch final code reviewer subagent for entire implementation" [label="no"];
+    "More tasks remain?" -> "Update plan-index.md status (if multi-phase)" [label="no"];
+    "Update plan-index.md status (if multi-phase)" -> "More phases remain?" [label="multi-phase"];
+    "Update plan-index.md status (if multi-phase)" -> "Dispatch final code reviewer subagent for entire implementation" [label="single-phase"];
+    "More phases remain?" -> "Present remaining phases, ask user" [label="yes"];
+    "Present remaining phases, ask user" -> "Load next phase plan, restart" [label="continue"];
+    "More phases remain?" -> "Dispatch final code reviewer subagent for entire implementation" [label="no - all done"];
     "Dispatch final code reviewer subagent for entire implementation" -> "Use superpowers:finishing-a-development-branch";
 }
 ```
@@ -93,7 +98,7 @@ digraph process {
 ```
 You: I'm using Subagent-Driven Development to execute this plan.
 
-[Read plan file once: docs/plans/feature-plan.md]
+[Read plan file once: docs/plans/feature-plan-1-hooks.md]
 [Extract all 5 tasks with full text and context]
 [Create TodoWrite with all tasks]
 

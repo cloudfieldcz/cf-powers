@@ -1,19 +1,19 @@
 {
-  "name": "superpowers-dev",
-  "description": "Development marketplace for Superpowers core skills library",
+  "name": "cf-powers",
+  "description": "Skills plugin for Claude Code — structured development workflow from idea to implementation",
   "owner": {
-    "name": "Jesse Vincent",
-    "email": "jesse@fsck.com"
+    "name": "Cloudfield",
+    "email": "valda@cloudfield.cz"
   },
   "plugins": [
     {
-      "name": "superpowers",
-      "description": "Core skills library for Claude Code: TDD, debugging, collaboration patterns, and proven techniques",
-      "version": "4.0.3",
+      "name": "cf-powers",
+      "description": "Skills plugin for Claude Code: brainstorming, technical analysis, TDD, debugging, and structured workflows",
+      "version": "1.0.0",
       "source": "./",
       "author": {
-        "name": "Jesse Vincent",
-        "email": "jesse@fsck.com"
+        "name": "Cloudfield",
+        "email": "valda@cloudfield.cz"
       }
     }
   ]
