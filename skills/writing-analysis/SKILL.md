@@ -1,5 +1,5 @@
 ---
-name: write-analysis
+name: writing-analysis
 description: Use when you have a brainstorming design doc or feature idea and need a comprehensive technical analysis before writing implementation plans - creates Czech-language analysis documents with architecture, phases, risk analysis, and cross-check reviews
 ---
 
@@ -9,7 +9,7 @@ description: Use when you have a brainstorming design doc or feature idea and ne
 
 Transform brainstorming output (design doc) into a comprehensive technical analysis document. The analysis is the bridge between "what we want to build" (brainstorming) and "how to build it step by step" (writing-plans).
 
-**Announce at start:** "I'm using the write-analysis skill to create a technical analysis."
+**Announce at start:** "I'm using the writing-analysis skill to create a technical analysis."
 
 **Input:** Design document from brainstorming (typically `docs/plans/YYYY-MM-DD-<topic>.md`) or a feature description from the user.
 
@@ -178,7 +178,7 @@ Task tool:
   description: "BA review of analysis"
   prompt: >
     You are a Business Analyst reviewer.
-    Read and follow the superpowers:review-as-ba skill exactly.
+    Read and follow the cf-powers:review-as-ba skill exactly.
 
     Document to review: docs/plans/YYYY-MM-DD-<topic>.md
 
@@ -192,7 +192,7 @@ Task tool:
   description: "Dev review of analysis"
   prompt: >
     You are a Developer reviewer.
-    Read and follow the superpowers:review-as-dev skill exactly.
+    Read and follow the cf-powers:review-as-dev skill exactly.
 
     Document to review: docs/plans/YYYY-MM-DD-<topic>.md
 
@@ -215,7 +215,7 @@ After feedback is incorporated:
 
 **"Analýza je hotová a prošla cross-checkem. Chcete pokračovat vytvořením implementačního plánu?"**
 
-- **If yes:** Invoke `superpowers:writing-plans` to create the detailed implementation plan from this analysis. The analysis document becomes the input spec for writing-plans.
+- **If yes:** Invoke `cf-powers:writing-plans` to create the detailed implementation plan from this analysis. The analysis document becomes the input spec for writing-plans.
 - **If not yet:** The user may want to share with the team, get additional review, or iterate further.
 
 ## Key Principles

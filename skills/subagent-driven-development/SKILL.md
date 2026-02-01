@@ -59,7 +59,7 @@ digraph process {
     "Read plan, extract all tasks with full text, note context, create TodoWrite" [shape=box];
     "More tasks remain?" [shape=diamond];
     "Dispatch final code reviewer subagent for entire implementation" [shape=box];
-    "Use superpowers:finishing-a-development-branch" [shape=box style=filled fillcolor=lightgreen];
+    "Use cf-powers:finishing-a-development-branch" [shape=box style=filled fillcolor=lightgreen];
 
     "Read plan, extract all tasks with full text, note context, create TodoWrite" -> "Dispatch implementer subagent (./implementer-prompt.md)";
     "Dispatch implementer subagent (./implementer-prompt.md)" -> "Implementer subagent asks questions?";
@@ -83,7 +83,7 @@ digraph process {
     "More phases remain?" -> "Present remaining phases, ask user" [label="yes"];
     "Present remaining phases, ask user" -> "Load next phase plan, restart" [label="continue"];
     "More phases remain?" -> "Dispatch final code reviewer subagent for entire implementation" [label="no - all done"];
-    "Dispatch final code reviewer subagent for entire implementation" -> "Use superpowers:finishing-a-development-branch";
+    "Dispatch final code reviewer subagent for entire implementation" -> "Use cf-powers:finishing-a-development-branch";
 }
 ```
 
@@ -109,7 +109,7 @@ Task 1: Hook installation script
 
 Implementer: "Before I begin - should the hook be installed at user or system level?"
 
-You: "User level (~/.config/superpowers/hooks/)"
+You: "User level (~/.config/cf-powers/hooks/)"
 
 Implementer: "Got it. Implementing now..."
 [Later] Implementer:
@@ -235,13 +235,13 @@ Done!
 ## Integration
 
 **Required workflow skills:**
-- **superpowers:using-git-worktrees** - REQUIRED: Set up isolated workspace before starting
-- **superpowers:writing-plans** - Creates the plan this skill executes
-- **superpowers:requesting-code-review** - Code review template for reviewer subagents
-- **superpowers:finishing-a-development-branch** - Complete development after all tasks
+- **cf-powers:using-git-worktrees** - REQUIRED: Set up isolated workspace before starting
+- **cf-powers:writing-plans** - Creates the plan this skill executes
+- **cf-powers:requesting-code-review** - Code review template for reviewer subagents
+- **cf-powers:finishing-a-development-branch** - Complete development after all tasks
 
 **Subagents should use:**
-- **superpowers:test-driven-development** - Subagents follow TDD for each task
+- **cf-powers:test-driven-development** - Subagents follow TDD for each task
 
 **Alternative workflow:**
-- **superpowers:executing-plans** - Use for parallel session instead of same-session execution
+- **cf-powers:executing-plans** - Use for parallel session instead of same-session execution

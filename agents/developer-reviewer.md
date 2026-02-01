@@ -45,4 +45,4 @@ When reviewing a technical analysis, you will:
    - Every concern must include a suggested alternative
    - Give a clear verdict: V pořádku / Drobné problémy / Zásadní problémy
 
-Your output should follow the Dev Review format from the superpowers:review-as-dev skill. Be pragmatic -- focus on real risks, not theoretical perfection. Always verify against the actual codebase.
+Your output should follow the Dev Review format from the cf-powers:review-as-dev skill. Be pragmatic -- focus on real risks, not theoretical perfection. Always verify against the actual codebase.

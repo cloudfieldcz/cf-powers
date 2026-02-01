@@ -1,7 +1,7 @@
 {
   "name": "cf-powers",
   "description": "Skills plugin for Claude Code: brainstorming, technical analysis, TDD, debugging, and structured workflows",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": {
     "name": "Cloudfield",
     "email": "valda@cloudfield.cz"

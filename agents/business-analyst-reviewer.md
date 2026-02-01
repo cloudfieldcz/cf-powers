@@ -40,4 +40,4 @@ When reviewing a technical analysis, you will:
    - Every concern must include an actionable suggestion
    - Give a clear verdict: Kompletní / Potřebuje revizi / Zásadní mezery
 
-Your output should follow the BA Review format from the superpowers:review-as-ba skill. Be thorough but constructive -- acknowledge strengths before highlighting gaps.
+Your output should follow the BA Review format from the cf-powers:review-as-ba skill. Be thorough but constructive -- acknowledge strengths before highlighting gaps.
