@@ -21,8 +21,8 @@ echo ""
 
 cd "$PROJECT_DIR"
 
-# Turn 1: Start brainstorming
-echo ">>> Turn 1: Brainstorming request..."
+# Turn 1: Start analysis
+echo ">>> Turn 1: Analysis request..."
 claude -p "I want to add user authentication to my app. Help me think through this." \
     --plugin-dir "$PLUGIN_DIR" \
     --dangerously-skip-permissions \
@@ -31,7 +31,7 @@ claude -p "I want to add user authentication to my app. Help me think through th
     > "$OUTPUT_DIR/turn1.json" 2>&1 || true
 echo "Done."
 
-# Turn 2: Answer a brainstorming question
+# Turn 2: Answer an analysis question
 echo ">>> Turn 2: Answering questions..."
 claude -p "Let's use JWT tokens with 24-hour expiry. Email/password registration." \
     --continue \

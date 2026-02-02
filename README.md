@@ -24,15 +24,16 @@ That's it. The plugin activates automatically on every session.
 Every feature starts the same way:
 
 ```
-/brainstorm  →  /write-analysis  →  /write-plan  →  execute
-                     ↓
-              BA + Dev cross-check
+/analyse  →  /write-plan  →  execute
+    ↓
+ idea → dialogue → analysis
+    ↓
+ BA + Dev cross-check
 ```
 
-1. **`/brainstorm`** — Refine your idea through questions. Produces a design document.
-2. **`/write-analysis`** — Turn the design into a full technical analysis (Czech output): architecture, DB changes, affected files, phases, risks, testing. Automatically dispatches BA and Developer reviewers for cross-check.
-3. **`/write-plan`** — Break the analysis into bite-sized TDD implementation tasks.
-4. **Execute** — Run the plan via subagent-driven development or batch execution.
+1. **`/analyse`** — From idea to technical analysis in one step. Explores the idea through dialogue, then produces a full technical analysis (Czech output): architecture, DB changes, affected files, phases, risks, testing. Automatically dispatches BA and Developer reviewers for cross-check.
+2. **`/write-plan`** — Break the analysis into bite-sized TDD implementation tasks.
+3. **Execute** — Run the plan via subagent-driven development or batch execution.
 
 What happens at step 3 depends on the size of the feature:
 
@@ -63,8 +64,7 @@ You then execute phases one at a time (or in parallel if they have no dependenci
 
 | Skill | When it activates |
 |-------|-------------------|
-| **brainstorming** | Before any creative work |
-| **write-analysis** | After brainstorming, before implementation planning |
+| **analysis** | MANDATORY before implementation — from idea to technical analysis |
 | **review-as-ba** | Cross-check analysis from business analyst perspective |
 | **review-as-dev** | Cross-check analysis from developer perspective |
 | **writing-plans** | When you need a step-by-step implementation plan |
@@ -89,7 +89,7 @@ You then execute phases one at a time (or in parallel if they have no dependenci
 
 ## Credits
 
-This project is a fork of [Superpowers](https://github.com/obra/superpowers) by [Jesse Vincent](https://github.com/obra). The original project provides the core skills library (TDD, debugging, collaboration patterns) and the plugin architecture. We added the `write-analysis` workflow with BA/Developer cross-check agents.
+This project is a fork of [Superpowers](https://github.com/obra/superpowers) by [Jesse Vincent](https://github.com/obra). The original project provides the core skills library (TDD, debugging, collaboration patterns) and the plugin architecture. We added the `analysis` workflow with BA/Developer cross-check agents.
 
 ## License
 

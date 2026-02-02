@@ -1,40 +1,63 @@
 ---
-name: writing-analysis
-description: Use when you have a brainstorming design doc or feature idea and need a comprehensive technical analysis before writing implementation plans - creates Czech-language analysis documents with architecture, phases, risk analysis, and cross-check reviews
+name: analysis
+description: MANDATORY before any implementation. Explores ideas through dialogue, then produces comprehensive technical analysis (Czech) with architecture, phases, risk analysis, and cross-check reviews.
 ---
 
-# Writing Technical Analysis Documents
+# From Idea to Technical Analysis
 
 ## Overview
 
-Transform brainstorming output (design doc) into a comprehensive technical analysis document. The analysis is the bridge between "what we want to build" (brainstorming) and "how to build it step by step" (writing-plans).
+A single skill that takes you from a vague idea to a reviewed technical analysis document, ready for implementation planning. Combines collaborative dialogue (understanding what to build) with rigorous technical analysis (how to build it).
 
-**Announce at start:** "I'm using the writing-analysis skill to create a technical analysis."
+**Announce at start:** "I'm using the analysis skill to turn this idea into a technical analysis."
 
-**Input:** Design document from brainstorming (typically `docs/plans/YYYY-MM-DD-<topic>.md`) or a feature description from the user.
+**Output:** `docs/plans/YYYY-MM-DD-<topic>.md` — a single document containing both the design rationale and the full technical analysis.
 
-**Output language:** Czech (the analysis document). Code examples remain in English.
-
-**Modifies:** The existing `docs/plans/YYYY-MM-DD-<topic>.md` — extends the brainstorming design with analysis sections. If no brainstorming doc exists, creates a new one.
+**Output language:** Czech (the document). Code examples and CLI commands remain in English.
 
 ## The Process
 
-### Step 1: Understand the Input
+### Phase 1: Understanding the Idea
 
-- Read the brainstorming design doc at `docs/plans/YYYY-MM-DD-<topic>.md` (if available)
-- Ask the user clarifying questions if anything is ambiguous
-- Identify which parts need deeper technical investigation
+**Goal:** Understand what we're building and why before writing anything.
 
-### Step 2: Explore the Codebase
+**If the user already has a clear spec or design doc** — skip to Phase 2. Not every idea needs 20 questions.
+
+**If the idea is vague or open-ended:**
+
+1. Check out the current project state first (files, docs, recent commits)
+2. Ask questions **one at a time** to refine the idea
+3. Prefer **multiple choice questions** when possible, open-ended is fine too
+4. Focus on: purpose, constraints, success criteria, who benefits
+
+**Exploring approaches:**
+
+- Propose **2-3 different approaches** with trade-offs
+- Lead with your recommended option and explain why
+- Let the user pick before moving on
+
+**Validating the design direction:**
+
+- Once you believe you understand what to build, summarize it in **200-300 words**
+- Ask: "Does this capture what you have in mind?"
+- Iterate until the user confirms
+
+**Key principles for Phase 1:**
+- **One question at a time** — don't overwhelm
+- **YAGNI ruthlessly** — remove unnecessary features
+- **Explore alternatives** — always propose 2-3 approaches before settling
+
+### Phase 2: Codebase Exploration
 
 Before writing anything, thoroughly explore the project:
+
 - Find all files relevant to the proposed changes
 - Note specific line numbers for code that will be modified
 - Understand existing patterns, data models, and service layers
 - Map integration points and dependencies
 - Identify what will NOT change (equally important)
 
-### Step 3: Write the Analysis Document
+### Phase 3: Write the Analysis Document
 
 Write in Czech. Follow this document structure:
 
@@ -43,7 +66,7 @@ Write in Czech. Follow this document structure:
 
 ## Popis
 
-Co se buduje a proč. Odkaz na design dokument pokud existuje.
+Co se buduje a proč.
 
 ### Proč
 
@@ -141,12 +164,11 @@ Idempotence, edge cases, výkonnostní úvahy, zpětná kompatibilita.
 
 ## Reference
 
-- Odkaz na design dokument
 - Odkazy na relevantní dokumentaci
 - Odkazy na podobné implementace v codebase
 ```
 
-### Step 4: Validate Completeness
+### Phase 4: Validate Completeness
 
 Before saving, verify the analysis covers all of the following:
 - [ ] Problem description with rationale (Popis + Proč)
@@ -161,15 +183,13 @@ Before saving, verify the analysis covers all of the following:
 
 If any section is not applicable, explicitly note "N/A" with a brief reason rather than omitting it.
 
-### Step 5: Save the Document
+### Phase 5: Save and Commit
 
-Update the existing `docs/plans/YYYY-MM-DD-<topic>.md` — append the analysis sections after the brainstorming design content. If no brainstorming doc exists, create `docs/plans/YYYY-MM-DD-<topic>.md` from scratch.
+Save the document to `docs/plans/YYYY-MM-DD-<topic>.md`. Commit to git.
 
-### Step 6: Dispatch Cross-Check Reviews
+### Phase 6: Dispatch Cross-Check Reviews
 
 **REQUIRED:** After saving, dispatch two review subagents in parallel using the Task tool.
-
-Both agents run simultaneously (they are independent — BA reviews business aspects, Dev reviews technical aspects):
 
 **Business Analyst Review:**
 ```
@@ -200,7 +220,7 @@ Task tool:
     following the skill's output format.
 ```
 
-### Step 7: Incorporate Feedback
+### Phase 7: Incorporate Feedback
 
 After both reviewers return:
 
@@ -209,20 +229,22 @@ After both reviewers return:
 3. Update the analysis document with agreed changes
 4. Save the updated version
 
-### Step 8: Handoff to Writing Plans
+### Phase 8: Handoff
 
-After feedback is incorporated:
+**"Analýza je hotová a prošla cross-checkem. Jak chcete pokračovat?"**
 
-**"Analýza je hotová a prošla cross-checkem. Chcete pokračovat vytvořením implementačního plánu?"**
-
-- **If yes:** Invoke `cf-powers:writing-plans` to create the detailed implementation plan from this analysis. The analysis document becomes the input spec for writing-plans.
-- **If not yet:** The user may want to share with the team, get additional review, or iterate further.
+Options:
+- **Create implementation plan** → Invoke `cf-powers:writing-plans`
+- **Create isolated worktree first** → Invoke `cf-powers:using-git-worktrees`, then `cf-powers:writing-plans`
+- **Not yet** — share with team, get additional review, iterate further
 
 ## Key Principles
 
-- **Phases, not micro-tasks** — Analysis groups work into logical phases. Micro-task breakdown (TDD steps, commits) belongs in writing-plans.
+- **Skip what's not needed** — If the user arrives with a clear spec, skip Phase 1 dialogue and go straight to codebase exploration + analysis.
+- **One question at a time** — During Phase 1, never overwhelm with multiple questions.
+- **Phases, not micro-tasks** — Analysis groups work into logical phases. Micro-task breakdown belongs in writing-plans.
 - **File:line references** — Every affected file must have specific line references. Vague references are not acceptable.
 - **Czech output** — The analysis document is in Czech. Code examples and CLI commands stay in English.
 - **Cross-check is mandatory** — Never skip the BA + Dev review dispatch.
 - **Verify before writing** — Read the actual code before claiming anything about it. Do not guess file paths or line numbers.
-- **Incremental validation** — For large analyses, present sections to the user as you write them and get confirmation before proceeding.
+- **YAGNI ruthlessly** — Remove unnecessary features from all designs.

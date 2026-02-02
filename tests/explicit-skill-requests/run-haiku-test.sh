@@ -49,8 +49,8 @@ EOF
 
 echo ""
 
-# Turn 1: Start brainstorming
-echo ">>> Turn 1: Brainstorming request..."
+# Turn 1: Start analysis
+echo ">>> Turn 1: Analysis request..."
 claude -p "I want to add user authentication to my app. Help me think through this." \
     --model haiku \
     --plugin-dir "$PLUGIN_DIR" \

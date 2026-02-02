@@ -181,7 +181,7 @@ use skill tool to list skills
 Use OpenCode's native `skill` tool to load a specific skill:
 
 ```
-use skill tool to load superpowers/brainstorming
+use skill tool to load superpowers/analysis
 ```
 
 ### Personal Skills
