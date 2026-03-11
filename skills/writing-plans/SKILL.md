@@ -13,7 +13,9 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 
 **Announce at start:** "I'm using the writing-plans skill to create the implementation plan."
 
-**Context:** This should be run in a dedicated worktree (created by analysis skill).
+**Context:** The user manages their own branches. Verify they are on a feature branch before starting.
+
+**IMPORTANT:** The index file is the central orchestration point. Each phase plan must be self-contained — an executor should be able to pick up any single phase file and implement it without reading other phases.
 
 ## Multi-Phase Features
 
@@ -134,9 +136,35 @@ git commit -m "feat: add specific feature"
 - Reference relevant skills with @ syntax
 - DRY, YAGNI, TDD, frequent commits
 
+## DEV Review Before Execution
+
+**REQUIRED:** After saving all plan files (index + all phases), dispatch a Developer Review:
+
+```
+Agent tool:
+  subagent_type: cf-powers:developer-reviewer
+  description: "Dev review of implementation plan"
+  prompt: >
+    Review the implementation plan for completeness and technical correctness.
+
+    Index file: docs/plans/YYYY-MM-DD-<feature-name>-plan-index.md
+    Phase files: [list all phase files]
+
+    Verify:
+    - All file paths exist or are clearly marked as new
+    - Code snippets are syntactically correct
+    - Test cases cover the right scenarios
+    - Task ordering and dependencies make sense
+    - No gaps between analysis and plan
+
+    Provide structured feedback.
+```
+
+Incorporate feedback before offering execution options.
+
 ## Execution Handoff
 
-After saving all plan files, offer execution choice:
+After saving all plan files and completing DEV review, offer execution choice:
 
 **For multi-phase plans:**
 
@@ -158,5 +186,5 @@ Then for the chosen phase:
 - Fresh subagent per task + code review
 
 **If Parallel Session chosen:**
-- Guide them to open new session in worktree
+- Guide them to open new session
 - **REQUIRED SUB-SKILL:** New session uses cf-powers:executing-plans

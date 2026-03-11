@@ -136,12 +136,12 @@ fi
 
 echo ""
 
-# Test 8: Verify worktree requirement
-echo "Test 8: Worktree requirement..."
+# Test 8: Verify branch check requirement
+echo "Test 8: Branch check requirement..."
 
 output=$(run_claude "What workflow skills are required before using subagent-driven-development? List any prerequisites or required skills." 30)
 
-if assert_contains "$output" "using-git-worktrees\|worktree" "Mentions worktree requirement"; then
+if assert_contains "$output" "branch\|feature.branch\|main" "Mentions branch verification"; then
     : # pass
 else
     exit 1

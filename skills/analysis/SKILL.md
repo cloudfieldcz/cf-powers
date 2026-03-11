@@ -103,7 +103,7 @@ Migrační skripty, seed data.
 
 ### Změny v servisní vrstvě
 
-Nové služby, upravené služby. Signatury metod.
+Nové služby, upravené služby. Pouze signatury metod a interfaces — NE implementační kód.
 DI registrace.
 
 ### Změny v UI (pokud jsou)
@@ -235,7 +235,6 @@ After both reviewers return:
 
 Options:
 - **Create implementation plan** → Invoke `cf-powers:writing-plans`
-- **Create isolated worktree first** → Invoke `cf-powers:using-git-worktrees`, then `cf-powers:writing-plans`
 - **Not yet** — share with team, get additional review, iterate further
 
 ## Key Principles
@@ -243,6 +242,7 @@ Options:
 - **Skip what's not needed** — If the user arrives with a clear spec, skip Phase 1 dialogue and go straight to codebase exploration + analysis.
 - **One question at a time** — During Phase 1, never overwhelm with multiple questions.
 - **Phases, not micro-tasks** — Analysis groups work into logical phases. Micro-task breakdown belongs in writing-plans.
+- **NO implementation code** — Analysis describes WHAT and WHY, not HOW in code. Do not write implementation code, function bodies, or full code blocks. Use only: method signatures, interface definitions, pseudo-code, and short illustrative snippets. Detailed code belongs in the plan phase (writing-plans skill).
 - **File:line references** — Every affected file must have specific line references. Vague references are not acceptable.
 - **Czech output** — The analysis document is in Czech. Code examples and CLI commands stay in English.
 - **Cross-check is mandatory** — Never skip the BA + Dev review dispatch.

@@ -15,11 +15,28 @@ Load plan, review critically, execute tasks in batches, report for review betwee
 
 ## The Process
 
+### Step 0: Branch Check
+1. Check current git branch: `git branch --show-current`
+2. If on `main` or `master`: **STOP** — ask user to create/switch to a feature branch first
+3. If on a feature branch: proceed
+
 ### Step 1: Load and Review Plan
-1. Read plan file
+
+**For multi-phase plans (index exists):**
+1. Read the **index file only** — understand phases, status, and dependencies
+2. Identify the next phase to execute (first ⬚ Not started, respecting dependencies)
+3. Read **only that phase's plan file** — do NOT load all phases at once
+4. Review critically - identify any questions or concerns
+5. If concerns: Raise them with your human partner before starting
+6. If no concerns: Create TodoWrite and proceed
+
+**For single-phase plans:**
+1. Read the plan file
 2. Review critically - identify any questions or concerns about the plan
 3. If concerns: Raise them with your human partner before starting
 4. If no concerns: Create TodoWrite and proceed
+
+**Context loading principle:** Only load what you need for the current phase. If you need context from a previous phase's plan, read it on-demand, not upfront.
 
 ### Step 2: Execute Batch
 **Default: First 3 tasks**
@@ -92,6 +109,7 @@ After all phases/tasks complete and verified:
 ## Integration
 
 **Required workflow skills:**
-- **cf-powers:using-git-worktrees** - REQUIRED: Set up isolated workspace before starting
 - **cf-powers:writing-plans** - Creates the plan this skill executes
 - **cf-powers:finishing-a-development-branch** - Complete development after all tasks
+
+**Note:** User manages their own branches. Step 0 verifies a feature branch exists — do NOT create worktrees automatically.
