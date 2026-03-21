@@ -26,9 +26,11 @@ A single skill that takes you from a vague idea to a reviewed technical analysis
 **If the idea is vague or open-ended:**
 
 1. Check out the current project state first (files, docs, recent commits)
-2. Ask questions **one at a time** to refine the idea
-3. Prefer **multiple choice questions** when possible, open-ended is fine too
-4. Focus on: purpose, constraints, success criteria, who benefits
+2. Before asking detailed questions, assess scope: if the request describes multiple independent subsystems (e.g., "build a platform with chat, file storage, billing, and analytics"), flag this immediately. Don't spend questions refining details of a project that needs to be decomposed first.
+3. If the project is too large for a single analysis, help the user decompose into sub-projects: what are the independent pieces, how do they relate, what order should they be built? Then analyze the first sub-project through the normal flow. Each sub-project gets its own analysis → plan → implementation cycle.
+4. For appropriately-scoped projects, ask questions **one at a time** to refine the idea
+5. Prefer **multiple choice questions** when possible, open-ended is fine too
+6. Focus on: purpose, constraints, success criteria, who benefits
 
 **Exploring approaches:**
 
@@ -46,6 +48,19 @@ A single skill that takes you from a vague idea to a reviewed technical analysis
 - **One question at a time** — don't overwhelm
 - **YAGNI ruthlessly** — remove unnecessary features
 - **Explore alternatives** — always propose 2-3 approaches before settling
+
+**Design for isolation and clarity:**
+
+- Break the system into smaller units that each have one clear purpose, communicate through well-defined interfaces, and can be understood and tested independently
+- For each unit, you should be able to answer: what does it do, how do you use it, and what does it depend on?
+- Can someone understand what a unit does without reading its internals? Can you change the internals without breaking consumers? If not, the boundaries need work.
+- Smaller, well-bounded units are also easier for you to work with — you reason better about code you can hold in context at once, and your edits are more reliable when files are focused.
+
+**Working in existing codebases:**
+
+- Explore the current structure before proposing changes. Follow existing patterns.
+- Where existing code has problems that affect the work (e.g., a file that's grown too large, unclear boundaries, tangled responsibilities), include targeted improvements as part of the design — the way a good developer improves code they're working in.
+- Don't propose unrelated refactoring. Stay focused on what serves the current goal.
 
 ### Phase 2: Codebase Exploration
 

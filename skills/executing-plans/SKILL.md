@@ -7,11 +7,11 @@ description: Use when you have a written implementation plan to execute in a sep
 
 ## Overview
 
-Load plan, review critically, execute tasks in batches, report for review between batches.
-
-**Core principle:** Batch execution with checkpoints for architect review.
+Load plan, review critically, execute all tasks, report when complete.
 
 **Announce at start:** "I'm using the executing-plans skill to implement this plan."
+
+**Note:** Subagent-driven development (cf-powers:subagent-driven-development) produces significantly higher quality results. If subagents are available, prefer that skill over this one.
 
 ## The Process
 
@@ -38,8 +38,7 @@ Load plan, review critically, execute tasks in batches, report for review betwee
 
 **Context loading principle:** Only load what you need for the current phase. If you need context from a previous phase's plan, read it on-demand, not upfront.
 
-### Step 2: Execute Batch
-**Default: First 3 tasks**
+### Step 2: Execute Tasks
 
 For each task:
 1. Mark as in_progress
@@ -47,34 +46,9 @@ For each task:
 3. Run verifications as specified
 4. Mark as completed
 
-### Step 3: Report
-When batch complete:
-- Show what was implemented
-- Show verification output
-- Say: "Ready for feedback."
+### Step 3: Complete Development
 
-### Step 4: Continue
-Based on feedback:
-- Apply changes if needed
-- Execute next batch
-- Repeat until complete
-
-### Step 5: Phase / Feature Completion
-
-**If multi-phase** (plan file links to a `plan-index.md`):
-1. Read the index file
-2. Update the completed phase status to ✅ Complete
-3. Save the index file
-4. Check if remaining phases exist:
-   - **Remaining phases:** Present them: **"Phase N complete. Remaining phases: [list]. Continue with phase M?"**
-     - If user continues: Load next phase plan, go to Step 1
-   - **All phases complete:** Proceed to Step 6
-
-**If single-phase (no index):** Proceed directly to Step 6.
-
-### Step 6: Complete Development
-
-After all phases/tasks complete and verified:
+After all tasks complete and verified:
 - Announce: "I'm using the finishing-a-development-branch skill to complete this work."
 - **REQUIRED SUB-SKILL:** Use cf-powers:finishing-a-development-branch
 - Follow that skill to verify tests, present options, execute choice
@@ -82,7 +56,7 @@ After all phases/tasks complete and verified:
 ## When to Stop and Ask for Help
 
 **STOP executing immediately when:**
-- Hit a blocker mid-batch (missing dependency, test fails, instruction unclear)
+- Hit a blocker (missing dependency, test fails, instruction unclear)
 - Plan has critical gaps preventing starting
 - You don't understand an instruction
 - Verification fails repeatedly
@@ -102,7 +76,6 @@ After all phases/tasks complete and verified:
 - Follow plan steps exactly
 - Don't skip verifications
 - Reference skills when plan says to
-- Between batches: just report and wait
 - Stop when blocked, don't guess
 - Never start implementation on main/master branch without explicit user consent
 

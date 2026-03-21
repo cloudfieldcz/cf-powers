@@ -55,6 +55,17 @@ For simple features with only one phase, skip the index and create a single plan
 - Each phase plan is self-contained and can be executed independently via executing-plans or subagent-driven-development
 ```
 
+## File Structure
+
+Before defining tasks, map out which files will be created or modified and what each one is responsible for. This is where decomposition decisions get locked in.
+
+- Design units with clear boundaries and well-defined interfaces. Each file should have one clear responsibility.
+- You reason best about code you can hold in context at once, and your edits are more reliable when files are focused. Prefer smaller, focused files over large ones that do too much.
+- Files that change together should live together. Split by responsibility, not by technical layer.
+- In existing codebases, follow established patterns. If the codebase uses large files, don't unilaterally restructure - but if a file you're modifying has grown unwieldy, including a split in the plan is reasonable.
+
+This structure informs the task decomposition. Each task should produce self-contained changes that make sense independently.
+
 ## Bite-Sized Task Granularity
 
 **Each step is one action (2-5 minutes):**
@@ -71,7 +82,7 @@ For simple features with only one phase, skip the index and create a single plan
 ```markdown
 # [Feature Name] — Phase N: [Phase Name]
 
-> **For Claude:** REQUIRED SUB-SKILL: Use cf-powers:executing-plans to implement this plan task-by-task.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use cf-powers:subagent-driven-development (recommended) or cf-powers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** [One sentence describing what this phase builds]
 
@@ -88,7 +99,7 @@ For single-phase plans (no index), omit the **Index:** line and the "Phase N:" f
 
 ## Task Structure
 
-```markdown
+````markdown
 ### Task N: [Component Name]
 
 **Files:**
@@ -96,7 +107,7 @@ For single-phase plans (no index), omit the **Index:** line and the "Phase N:" f
 - Modify: `exact/path/to/existing.py:123-145`
 - Test: `tests/exact/path/to/test.py`
 
-**Step 1: Write the failing test**
+- [ ] **Step 1: Write the failing test**
 
 ```python
 def test_specific_behavior():
@@ -104,30 +115,30 @@ def test_specific_behavior():
     assert result == expected
 ```
 
-**Step 2: Run test to verify it fails**
+- [ ] **Step 2: Run test to verify it fails**
 
 Run: `pytest tests/path/test.py::test_name -v`
 Expected: FAIL with "function not defined"
 
-**Step 3: Write minimal implementation**
+- [ ] **Step 3: Write minimal implementation**
 
 ```python
 def function(input):
     return expected
 ```
 
-**Step 4: Run test to verify it passes**
+- [ ] **Step 4: Run test to verify it passes**
 
 Run: `pytest tests/path/test.py::test_name -v`
 Expected: PASS
 
-**Step 5: Commit**
+- [ ] **Step 5: Commit**
 
 ```bash
 git add tests/path/test.py src/path/file.py
 git commit -m "feat: add specific feature"
 ```
-```
+````
 
 ## Remember
 - Exact file paths always
@@ -136,35 +147,24 @@ git commit -m "feat: add specific feature"
 - Reference relevant skills with @ syntax
 - DRY, YAGNI, TDD, frequent commits
 
-## DEV Review Before Execution
+## Plan Review Loop
 
-**REQUIRED:** After saving all plan files (index + all phases), dispatch a Developer Review:
+After writing the complete plan:
 
-```
-Agent tool:
-  subagent_type: cf-powers:developer-reviewer
-  description: "Dev review of implementation plan"
-  prompt: >
-    Review the implementation plan for completeness and technical correctness.
+1. Dispatch a plan review subagent (cf-powers:developer-reviewer or general-purpose) with precisely crafted review context — never your session history. This keeps the reviewer focused on the plan, not your thought process.
+   - Provide: path to the plan document, path to analysis/spec document
+   - Reviewer verifies: file paths exist or marked as new, code snippets are correct, test cases cover the right scenarios, task ordering makes sense, no gaps between analysis and plan
+2. If Issues Found: fix the issues, re-dispatch reviewer for the whole plan
+3. If Approved: proceed to execution handoff
 
-    Index file: docs/plans/YYYY-MM-DD-<feature-name>-plan-index.md
-    Phase files: [list all phase files]
-
-    Verify:
-    - All file paths exist or are clearly marked as new
-    - Code snippets are syntactically correct
-    - Test cases cover the right scenarios
-    - Task ordering and dependencies make sense
-    - No gaps between analysis and plan
-
-    Provide structured feedback.
-```
-
-Incorporate feedback before offering execution options.
+**Review loop guidance:**
+- Same agent that wrote the plan fixes it (preserves context)
+- If loop exceeds 3 iterations, surface to human for guidance
+- Reviewers are advisory — explain disagreements if you believe feedback is incorrect
 
 ## Execution Handoff
 
-After saving all plan files and completing DEV review, offer execution choice:
+After saving all plan files and completing plan review, offer execution choice:
 
 **For multi-phase plans:**
 
@@ -174,17 +174,16 @@ Then for the chosen phase:
 
 **"Two execution options:**
 
-**1. Subagent-Driven (this session)** - I dispatch fresh subagent per task, review between tasks, fast iteration
+**1. Subagent-Driven (recommended)** - I dispatch a fresh subagent per task, review between tasks, fast iteration
 
-**2. Parallel Session (separate)** - Open new session with executing-plans, batch execution with checkpoints
+**2. Inline Execution** - Execute tasks in this session using executing-plans, batch execution with checkpoints
 
 **Which approach?"**
 
 **If Subagent-Driven chosen:**
 - **REQUIRED SUB-SKILL:** Use cf-powers:subagent-driven-development
-- Stay in this session
-- Fresh subagent per task + code review
+- Fresh subagent per task + two-stage review
 
-**If Parallel Session chosen:**
-- Guide them to open new session
-- **REQUIRED SUB-SKILL:** New session uses cf-powers:executing-plans
+**If Inline Execution chosen:**
+- **REQUIRED SUB-SKILL:** Use cf-powers:executing-plans
+- Batch execution with checkpoints for review
