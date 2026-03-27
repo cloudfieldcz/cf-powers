@@ -204,7 +204,7 @@ Save the document to `docs/plans/YYYY-MM-DD-<topic>.md`. Commit to git.
 
 ### Phase 6: Dispatch Cross-Check Reviews
 
-**REQUIRED:** After saving, dispatch two review subagents in parallel using the Task tool.
+**REQUIRED:** After saving, dispatch four review subagents in parallel using the Task tool.
 
 **Business Analyst Review:**
 ```
@@ -235,9 +235,40 @@ Task tool:
     following the skill's output format.
 ```
 
+**Security Review:**
+```
+Task tool:
+  subagent_type: general-purpose
+  description: "Security review of analysis"
+  prompt: >
+    You are a Security Engineer reviewer.
+    Read and follow the cf-powers:review-as-security skill exactly.
+
+    Document to review: docs/plans/YYYY-MM-DD-<topic>.md
+
+    Read the actual codebase to verify security claims. Check CLAUDE.md for
+    project-specific security invariants. Provide your structured review
+    following the skill's output format.
+```
+
+**Performance Review:**
+```
+Task tool:
+  subagent_type: general-purpose
+  description: "Performance review of analysis"
+  prompt: >
+    You are a Performance Engineer reviewer.
+    Read and follow the cf-powers:review-as-perf skill exactly.
+
+    Document to review: docs/plans/YYYY-MM-DD-<topic>.md
+
+    Read the actual schema, queries, and code to verify performance claims.
+    Provide your structured review following the skill's output format.
+```
+
 ### Phase 7: Incorporate Feedback
 
-After both reviewers return:
+After all reviewers return:
 
 1. Present combined feedback to the user
 2. Discuss which feedback to incorporate vs. dismiss (with reasoning)
@@ -260,6 +291,6 @@ Options:
 - **NO implementation code** — Analysis describes WHAT and WHY, not HOW in code. Do not write implementation code, function bodies, or full code blocks. Use only: method signatures, interface definitions, pseudo-code, and short illustrative snippets. Detailed code belongs in the plan phase (writing-plans skill).
 - **File:line references** — Every affected file must have specific line references. Vague references are not acceptable.
 - **Czech output** — The analysis document is in Czech. Code examples and CLI commands stay in English.
-- **Cross-check is mandatory** — Never skip the BA + Dev review dispatch.
+- **Cross-check is mandatory** — Never skip the BA + Dev + Security + Performance review dispatch.
 - **Verify before writing** — Read the actual code before claiming anything about it. Do not guess file paths or line numbers.
 - **YAGNI ruthlessly** — Remove unnecessary features from all designs.

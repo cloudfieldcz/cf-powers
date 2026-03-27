@@ -151,9 +151,11 @@ git commit -m "feat: add specific feature"
 
 After writing the complete plan:
 
-1. Dispatch a plan review subagent (cf-powers:developer-reviewer or general-purpose) with precisely crafted review context — never your session history. This keeps the reviewer focused on the plan, not your thought process.
-   - Provide: path to the plan document, path to analysis/spec document
-   - Reviewer verifies: file paths exist or marked as new, code snippets are correct, test cases cover the right scenarios, task ordering makes sense, no gaps between analysis and plan
+1. Dispatch plan review subagents with precisely crafted review context — never your session history. This keeps reviewers focused on the plan, not your thought process.
+   - **Developer review** (always): general-purpose subagent following cf-powers:review-as-dev — verifies file paths exist or marked as new, code snippets are correct, test cases cover the right scenarios, task ordering makes sense, no gaps between analysis and plan
+   - **Security review** (if plan touches auth, data handling, external APIs, trust boundaries): general-purpose subagent following cf-powers:review-as-security — verifies plan doesn't introduce security regressions, trust boundaries are maintained, input validation is included in tasks
+   - **Performance review** (if plan touches DB queries, data processing, caching, search): general-purpose subagent following cf-powers:review-as-perf — verifies indexes are planned, no N+1 patterns in tasks, caching strategy is sound, algorithm choices are appropriate
+   - Provide each reviewer: path to the plan document, path to analysis/spec document
 2. If Issues Found: fix the issues, re-dispatch reviewer for the whole plan
 3. If Approved: proceed to execution handoff
 
