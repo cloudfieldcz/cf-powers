@@ -76,6 +76,7 @@ You then execute phases one at a time (or in parallel if they have no dependenci
 | **requesting-code-review** | After completing tasks |
 | **receiving-code-review** | When processing review feedback |
 | **dispatching-parallel-agents** | When facing independent parallel tasks |
+| **documenting-changes** | After implementation, before merge/PR — keep docs in sync with code |
 | **finishing-a-development-branch** | When ready to merge or create a PR |
 | **writing-skills** | When creating new skills |
 | **using-superpowers** | Injected automatically at session start |

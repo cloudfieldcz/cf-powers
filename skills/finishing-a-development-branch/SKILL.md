@@ -35,7 +35,20 @@ Cannot proceed with merge/PR until tests pass.
 
 Stop. Don't proceed to Step 2.
 
-**If tests pass:** Continue to Step 2.
+**If tests pass:** Continue to Step 1.5.
+
+### Step 1.5: Verify Docs in Sync
+
+**Soft gate** — keep documentation aligned with the implementation before merging.
+
+Invoke the `documenting-changes` skill. It walks all five doc layers (`docs/`, `README.md`, `CHANGELOG.md`, inline docstrings/JSDoc, plugin/skill metadata), maps each change to UPDATE / CREATE / SKIP, and presents the result to the user.
+
+The user chooses **now / defer / skip**:
+- **Now** → apply doc updates, then re-run tests (Step 1) before continuing.
+- **Defer** → record the gap (issue, `TODO(docs)`, or note in PR body) and continue.
+- **Skip** → only valid when every affected change has a one-line justification confirming no public surface or behavior changed.
+
+Continue to Step 2 once the user has decided.
 
 ### Step 2: Determine Base Branch
 
@@ -138,6 +151,10 @@ git branch -D <feature-branch>
 **Skipping test verification**
 - **Problem:** Merge broken code, create failing PR
 - **Fix:** Always verify tests before offering options
+
+**Skipping docs verification**
+- **Problem:** Code merges, docs drift, future readers hit "what does this do?"
+- **Fix:** Always run Step 1.5 (`documenting-changes`) before offering merge/PR options
 
 **Open-ended questions**
 - **Problem:** "What should I do next?" → ambiguous
