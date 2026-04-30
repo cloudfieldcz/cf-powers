@@ -1,5 +1,5 @@
 ---
-description: "MANDATORY before implementation. From idea to technical analysis — explores ideas through dialogue, then produces comprehensive Czech-language analysis with cross-check reviews."
+description: "MANDATORY before implementation. From idea to technical analysis — explores ideas through dialogue, then produces comprehensive analysis with cross-check reviews."
 disable-model-invocation: true
 ---
 

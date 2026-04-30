@@ -1,6 +1,6 @@
 ---
 name: analysis
-description: MANDATORY before any implementation. Explores ideas through dialogue, then produces comprehensive technical analysis (Czech) with architecture, phases, risk analysis, and cross-check reviews.
+description: MANDATORY before any implementation. Explores ideas through dialogue, then produces comprehensive technical analysis with architecture, phases, risk analysis, and cross-check reviews.
 ---
 
 # From Idea to Technical Analysis
@@ -13,7 +13,7 @@ A single skill that takes you from a vague idea to a reviewed technical analysis
 
 **Output:** `docs/plans/YYYY-MM-DD-<topic>.md` — a single document containing both the design rationale and the full technical analysis.
 
-**Output language:** Czech (the document). Code examples and CLI commands remain in English.
+**Output language:** English (document, dialogue, and all skill artifacts).
 
 ## The Process
 
@@ -74,127 +74,127 @@ Before writing anything, thoroughly explore the project:
 
 ### Phase 3: Write the Analysis Document
 
-Write in Czech. Follow this document structure:
+Write in English. Follow this document structure:
 
 ```markdown
-# <Topic> — <Stručný popis>
+# <Topic> — <Short description>
 
-## Popis
+## Overview
 
-Co se buduje a proč.
+What is being built and why.
 
-### Proč
+### Why
 
-- Motivace (bullet points)
-- Business hodnota
-- Technický dluh který se řeší
+- Motivation (bullet points)
+- Business value
+- Technical debt being addressed
 
-## Aktuální stav
+## Current state
 
-Jak věci fungují dnes. Zahrňte:
-- Relevantní code paths s file:line referencemi
-- Data flow diagramy (ASCII nebo popis)
-- Současná omezení
+How things work today. Include:
+- Relevant code paths with file:line references
+- Data flow diagrams (ASCII or description)
+- Current limitations
 
-| Aspekt | Současný stav | Navrhovaný stav |
-|--------|--------------|-----------------|
+| Aspect | Current state | Proposed state |
+|--------|---------------|----------------|
 | ... | ... | ... |
 
-## Návrh řešení
+## Proposed solution
 
-### Architektura
+### Architecture
 
-Celkový přístup. Diagramy kde to pomáhá.
+Overall approach. Diagrams where they help.
 
-### Databázové změny (pokud jsou)
+### Database changes (if any)
 
-Definice tabulek s kompletním DDL:
+Table definitions with complete DDL:
 
-| Sloupec | Typ | Popis |
-|---------|-----|-------|
+| Column | Type | Description |
+|--------|------|-------------|
 | ... | ... | ... |
 
-Migrační skripty, seed data.
+Migration scripts, seed data.
 
-### Změny v servisní vrstvě
+### Service layer changes
 
-Nové služby, upravené služby. Pouze signatury metod a interfaces — NE implementační kód.
-DI registrace.
+New services, modified services. Method signatures and interfaces only — NO implementation code.
+DI registration.
 
-### Změny v UI (pokud jsou)
+### UI changes (if any)
 
-Nové views/stránky, navigace.
+New views/pages, navigation.
 
-### Konfigurace
+### Configuration
 
-Nové config hodnoty, feature flagy.
+New config values, feature flags.
 
-## Dotčené soubory
+## Affected files
 
-### Nové soubory
-- `cesta/k/souboru.ext` — popis
+### New files
+- `path/to/file.ext` — description
 
-### Upravené soubory
-- `cesta/k/souboru.ext:123-145` — co se mění a proč
+### Modified files
+- `path/to/file.ext:123-145` — what changes and why
 
-### Soubory BEZ změn (důležité)
-- `cesta/k/souboru.ext` — proč není třeba měnit
+### Unchanged files (important)
+- `path/to/file.ext` — why no change is needed
 
-## Implementační fáze
+## Implementation phases
 
-Logické celky, NE micro-tasky (ty patří do writing-plans).
-Každá fáze je koherentní kus práce.
-**Každá fáze se stane separátním plan souborem** při writing-plans.
+Logical chunks, NOT micro-tasks (those belong in writing-plans).
+Each phase is a coherent unit of work.
+**Each phase becomes a separate plan file** in writing-plans.
 
-### Fáze 1: <Název>
-- Co je zahrnuto
-- Očekávaný výsledek
-- Závislosti na jiných fázích
-- [ ] Checklist hlavních kroků
+### Phase 1: <Name>
+- What is included
+- Expected outcome
+- Dependencies on other phases
+- [ ] Checklist of main steps
 
-### Fáze 2: <Název>
+### Phase 2: <Name>
 - ...
 
-## Rizika a mitigace
+## Risks and mitigations
 
-| Riziko | Dopad | Pravděpodobnost | Mitigace |
-|--------|-------|-----------------|----------|
+| Risk | Impact | Probability | Mitigation |
+|------|--------|-------------|------------|
 | ... | ... | ... | ... |
 
-## Testování
+## Testing
 
-### Unit testy
-- Seznam testovacích scénářů s očekávaným chováním
+### Unit tests
+- List of test scenarios with expected behavior
 
-### Integrační / manuální testy
-- End-to-end scénáře
+### Integration / manual tests
+- End-to-end scenarios
 
-### Verifikace
-- Příkazy ke spuštění (build, test suite)
-- Grep kontroly na zbylé hardcoded hodnoty apod.
+### Verification
+- Commands to run (build, test suite)
+- Grep checks for remaining hardcoded values, etc.
 
-## Poznámky
+## Notes
 
-Idempotence, edge cases, výkonnostní úvahy, zpětná kompatibilita.
+Idempotence, edge cases, performance considerations, backward compatibility.
 
-## Reference
+## References
 
-- Odkazy na relevantní dokumentaci
-- Odkazy na podobné implementace v codebase
+- Links to relevant documentation
+- Links to similar implementations in the codebase
 ```
 
 ### Phase 4: Validate Completeness
 
 Before saving, verify the analysis covers all of the following:
-- [ ] Problem description with rationale (Popis + Proč)
-- [ ] Current state analysis with file:line references (Aktuální stav)
-- [ ] Proposed solution with architecture (Návrh řešení)
+- [ ] Problem description with rationale (Overview + Why)
+- [ ] Current state analysis with file:line references (Current state)
+- [ ] Proposed solution with architecture (Proposed solution)
 - [ ] Database changes with full DDL (if applicable)
-- [ ] All affected files listed with line references (Dotčené soubory)
-- [ ] Implementation phases as logical chunks (Implementační fáze)
-- [ ] Risk analysis table (Rizika a mitigace)
-- [ ] Testing strategy with specific test cases (Testování)
-- [ ] Notes on edge cases and backward compatibility (Poznámky)
+- [ ] All affected files listed with line references (Affected files)
+- [ ] Implementation phases as logical chunks (Implementation phases)
+- [ ] Risk analysis table (Risks and mitigations)
+- [ ] Testing strategy with specific test cases (Testing)
+- [ ] Notes on edge cases and backward compatibility (Notes)
 
 If any section is not applicable, explicitly note "N/A" with a brief reason rather than omitting it.
 
@@ -277,7 +277,7 @@ After all reviewers return:
 
 ### Phase 8: Handoff
 
-**"Analýza je hotová a prošla cross-checkem. Jak chcete pokračovat?"**
+**"Analysis is complete and has passed cross-check review. How would you like to proceed?"**
 
 Options:
 - **Create implementation plan** → Invoke `cf-powers:writing-plans`
@@ -290,7 +290,7 @@ Options:
 - **Phases, not micro-tasks** — Analysis groups work into logical phases. Micro-task breakdown belongs in writing-plans.
 - **NO implementation code** — Analysis describes WHAT and WHY, not HOW in code. Do not write implementation code, function bodies, or full code blocks. Use only: method signatures, interface definitions, pseudo-code, and short illustrative snippets. Detailed code belongs in the plan phase (writing-plans skill).
 - **File:line references** — Every affected file must have specific line references. Vague references are not acceptable.
-- **Czech output** — The analysis document is in Czech. Code examples and CLI commands stay in English.
+- **English output** — All artifacts and dialogue produced by this skill are in English.
 - **Cross-check is mandatory** — Never skip the BA + Dev + Security + Performance review dispatch.
 - **Verify before writing** — Read the actual code before claiming anything about it. Do not guess file paths or line numbers.
 - **YAGNI ruthlessly** — Remove unnecessary features from all designs.

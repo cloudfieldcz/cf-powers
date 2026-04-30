@@ -90,49 +90,49 @@ Structure your review exactly like this:
 ```markdown
 # Performance Review: <topic>
 
-## Shrnutí
+## Summary
 [1-2 sentence performance assessment]
 
-## Databázové přístupy
+## Database access patterns
 - ✅ [Well-indexed query pattern]
 - CRITICAL: [Missing index — describe query, table size, expected impact]
 - HIGH: [N+1 query pattern — describe loop, suggest eager loading/batch query]
 
-## Algoritmická složitost
+## Algorithm complexity
 - ✅ [Appropriate algorithm choice]
 - HIGH: [Suboptimal algorithm — describe complexity, suggest alternative]
 - MEDIUM: [Unnecessary work — describe and suggest optimization]
 
-## Paměť a zdroje
+## Memory and resources
 - ✅ [Efficient resource usage]
 - HIGH: [Unbounded collection or memory leak risk — describe scenario]
 - MEDIUM: [Opportunity to use streaming instead of loading all]
 
-## Cachování
+## Caching
 - ✅ [Appropriate caching strategy]
 - MEDIUM: [Missing cache opportunity — describe access pattern]
 - MEDIUM: [Cache invalidation risk — describe staleness scenario]
 
-## Síť a I/O
+## Network and I/O
 - ✅ [Efficient I/O pattern]
 - HIGH: [Unbatched external calls — describe N+1 HTTP/API pattern]
 - MEDIUM: [Missing connection pooling or compression]
 
-## Škálovatelnost
+## Scalability
 - ✅ [Scales well with data growth]
 - HIGH: [Bottleneck at scale — describe what breaks at 10x/100x]
 
-## Výkonnostní otázky
+## Performance questions
 1. [Question about expected data volume or access pattern]
 2. [Clarification about load characteristics]
 
-## Doporučení
+## Recommendations
 1. [Actionable performance recommendation — priority order]
 2. [Actionable performance recommendation]
 
-## Verdikt
-**Výkonnostní posouzení:** [V pořádku / Potřebuje optimalizaci / Kritické problémy]
-**Doporučený postup:** [Pokračovat k plánování / Zapracovat feedback / Vyžaduje redesign výkonnostně kritických částí]
+## Verdict
+**Performance assessment:** [OK / Needs optimization / Critical issues]
+**Recommended next step:** [Proceed to planning / Incorporate feedback / Requires redesign of performance-critical parts]
 ```
 
 ## Severity Levels

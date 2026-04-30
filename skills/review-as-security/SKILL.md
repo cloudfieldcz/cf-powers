@@ -81,15 +81,15 @@ Structure your review exactly like this:
 ```markdown
 # Security Review: <topic>
 
-## Shrnutí
+## Summary
 [1-2 sentence security posture assessment]
 
-## Bezpečnostní invarianty
+## Security invariants
 - ✅ [Invariant maintained — cite evidence]
 - CRITICAL: [Invariant violated — cite code, describe attack]
-(If project has no defined invariants, note "Projekt nedefinuje explicitní bezpečnostní invarianty v CLAUDE.md")
+(If project has no defined invariants, note "Project defines no explicit security invariants in CLAUDE.md")
 
-## Plocha útoku
+## Attack surface
 - HIGH: [Attack vector — scenario, impact, remediation]
 - MEDIUM: [Defense-in-depth gap — describe and suggest improvement]
 
@@ -97,33 +97,33 @@ Structure your review exactly like this:
 - ✅ [Boundary with proper validation]
 - HIGH: [Boundary with insufficient validation — describe risk]
 
-## Autentizace a autorizace
+## Authentication and authorization
 - ✅ [Properly secured access point]
 - HIGH: [Missing or insufficient auth check]
 
-## Integrita dat a kryptografie
+## Data integrity and cryptography
 - ✅ [Correct integrity check]
 - MEDIUM: [Missing or weak check]
 
-## Tajné údaje a citlivá data
+## Secrets and sensitive data
 - ✅ [Properly handled secrets]
 - HIGH: [Exposed or mishandled secret — describe risk]
 
-## Chování při selhání
+## Failure behavior
 - ✅ [Correct fail-safe behavior]
 - MEDIUM: [Missing timeout or circuit breaker]
 
-## Bezpečnostní otázky
+## Security questions
 1. [Question about security design decision]
 2. [Clarification about threat model assumption]
 
-## Doporučení
+## Recommendations
 1. [Actionable security recommendation — priority order]
 2. [Actionable security recommendation]
 
-## Verdikt
-**Bezpečnostní posouzení:** [V pořádku / Potřebuje zlepšení / Kritické nedostatky]
-**Doporučený postup:** [Pokračovat k plánování / Zapracovat feedback / Vyžaduje bezpečnostní redesign]
+## Verdict
+**Security assessment:** [OK / Needs improvement / Critical gaps]
+**Recommended next step:** [Proceed to planning / Incorporate feedback / Requires security redesign]
 ```
 
 ## Severity Levels

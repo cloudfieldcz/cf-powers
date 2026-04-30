@@ -68,40 +68,40 @@ Structure your review exactly like this:
 ```markdown
 # Dev Review: <topic>
 
-## Shrnutí
+## Summary
 [1-2 sentence overall technical assessment]
 
-## Architektura
+## Architecture
 - ✅ [Sound architectural decision]
 - ❌ [Architecture concern -- explain why and suggest alternative]
 
-## Technické mezery
+## Technical gaps
 - ❌ [Missing technical detail -- what needs to be specified]
 - ❌ [Incorrect assumption -- what the code actually does at file:line]
 
-## Integrační rizika
+## Integration risks
 - ❌ [Integration point that may break]
 - ❌ [Missing API contract detail]
 
-## Výkon / Bezpečnost
+## Performance / Security
 - ❌ [Performance concern with suggested mitigation]
 - ❌ [Security concern with suggested fix]
 
-## Ověření proti kódu
+## Code verification
 - ✅ [Verified: file:line reference is accurate]
 - ❌ [Incorrect: file:line actually does X, not Y as claimed]
 
-## Technické otázky
+## Technical questions
 1. [Question about implementation approach]
 2. [Clarification about technical decision]
 
-## Doporučení
+## Recommendations
 1. [Actionable technical recommendation]
 2. [Actionable technical recommendation]
 
-## Verdikt
-**Technická kvalita:** [V pořádku / Drobné problémy / Zásadní problémy]
-**Doporučený postup:** [Pokračovat k plánování / Zapracovat feedback / Potřebuje přepracování architektury]
+## Verdict
+**Technical quality:** [OK / Minor issues / Major issues]
+**Recommended next step:** [Proceed to planning / Incorporate feedback / Needs architectural rework]
 ```
 
 ## Key Principles

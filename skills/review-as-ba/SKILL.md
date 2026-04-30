@@ -61,36 +61,36 @@ Structure your review exactly like this:
 ```markdown
 # BA Review: <topic>
 
-## Shrnutí
+## Summary
 [1-2 sentence overall assessment]
 
-## Pokrytí požadavků
+## Requirements coverage
 - ✅ [Requirement that is well covered]
 - ❌ [Missing or incomplete requirement -- explain what's missing]
 
-## Uživatelské workflow
+## User workflows
 - ✅ [Workflow that is complete and consistent]
 - ❌ [Workflow gap or inconsistency]
 
-## Nepokryté edge cases
+## Uncovered edge cases
 - ❌ [Edge case 1 -- what could go wrong]
 - ❌ [Edge case 2 -- boundary condition]
 
-## Otázky k business logice
+## Business logic questions
 1. [Question about business rule or assumption]
 2. [Clarification needed about behavior]
 
-## Hodnocení fází
-- Fáze 1: [Assessment -- is it a viable MVP?]
-- Fáze 2: [Assessment -- correct priority?]
+## Phase evaluation
+- Phase 1: [Assessment -- is it a viable MVP?]
+- Phase 2: [Assessment -- correct priority?]
 
-## Doporučení
+## Recommendations
 1. [Actionable recommendation]
 2. [Actionable recommendation]
 
-## Verdikt
-**Kvalita analýzy:** [Kompletní / Potřebuje revizi / Zásadní mezery]
-**Doporučený postup:** [Pokračovat k plánování / Zapracovat feedback / Potřebuje přepracování]
+## Verdict
+**Analysis quality:** [Complete / Needs revision / Major gaps]
+**Recommended next step:** [Proceed to planning / Incorporate feedback / Needs rework]
 ```
 
 ## Key Principles

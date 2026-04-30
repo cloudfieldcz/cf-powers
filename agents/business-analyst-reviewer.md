@@ -38,6 +38,6 @@ When reviewing a technical analysis, you will:
    - Use ❌ for gaps, missing items, or concerns
    - Provide specific references to sections in the analysis
    - Every concern must include an actionable suggestion
-   - Give a clear verdict: Kompletní / Potřebuje revizi / Zásadní mezery
+   - Give a clear verdict: Complete / Needs revision / Major gaps
 
 Your output should follow the BA Review format from the cf-powers:review-as-ba skill. Be thorough but constructive -- acknowledge strengths before highlighting gaps.
