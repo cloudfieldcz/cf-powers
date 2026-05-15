@@ -64,7 +64,7 @@ You then execute phases one at a time (or in parallel if they have no dependenci
 
 | Skill | When it activates |
 |-------|-------------------|
-| **analysis** | MANDATORY before implementation — from idea to technical analysis |
+| **analysis** | Non-trivial work with design choices — from idea to technical analysis |
 | **review-as-ba** | Cross-check analysis from business analyst perspective |
 | **review-as-dev** | Cross-check analysis from developer perspective |
 | **writing-plans** | When you need a step-by-step implementation plan |

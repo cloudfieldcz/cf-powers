@@ -1,6 +1,6 @@
 ---
 name: analysis
-description: MANDATORY before any implementation. Explores ideas through dialogue, then produces comprehensive technical analysis with architecture, phases, risk analysis, and cross-check reviews.
+description: Use for non-trivial implementations involving design choices, multiple components, or unclear requirements. Explores ideas through dialogue, then produces a technical analysis with architecture, phases, risks, and cross-check reviews. SKIP for mechanical/single-file changes (Dockerfile, CI YAML, config tweak, one-liner) or when the user has already specified exactly what to build.
 ---
 
 # From Idea to Technical Analysis

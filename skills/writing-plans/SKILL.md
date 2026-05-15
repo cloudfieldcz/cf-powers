@@ -1,6 +1,6 @@
 ---
 name: writing-plans
-description: Use when you have a spec or requirements for a multi-step task, before touching code
+description: Use when you have a spec for a non-trivial task with non-obvious sequencing, multiple coordinated files, or unclear ordering of steps. SKIP when the task is mechanical (add one file, edit a config, one-liner) or when the implementation order is obvious from the request.
 ---
 
 # Writing Plans

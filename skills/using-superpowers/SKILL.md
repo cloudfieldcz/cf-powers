@@ -61,22 +61,37 @@ digraph skill_flow {
 
 ## Red Flags
 
-These thoughts mean STOP—you're rationalizing:
+These thoughts mean STOP—you're rationalizing past a skill that applies:
 
 | Thought | Reality |
 |---------|---------|
-| "This is just a simple question" | Questions are tasks. Check for skills. |
+| "This is just a simple question" | Questions about non-trivial work are tasks. Check for skills. |
 | "I need more context first" | Skill check comes BEFORE clarifying questions. |
 | "Let me explore the codebase first" | Skills tell you HOW to explore. Check first. |
 | "I can check git/files quickly" | Files lack conversation context. Check for skills. |
 | "Let me gather information first" | Skills tell you HOW to gather information. |
-| "This doesn't need a formal skill" | If a skill exists, use it. |
+| "This doesn't need a formal skill" | If a skill clearly applies, use it. |
 | "I remember this skill" | Skills evolve. Read current version. |
-| "This doesn't count as a task" | Action = task. Check for skills. |
-| "The skill is overkill" | Simple things become complex. Use it. |
-| "I'll just do this one thing first" | Check BEFORE doing anything. |
+| "This doesn't count as a task" | Action on non-trivial work = task. Check for skills. |
+| "I'll just do this one thing first" | Check BEFORE doing anything non-trivial. |
 | "This feels productive" | Undisciplined action wastes time. Skills prevent this. |
 | "I know what that means" | Knowing the concept ≠ using the skill. Invoke it. |
+
+## Skip Flags
+
+These thoughts mean GO DIRECT—forcing a skill here is overhead, not discipline:
+
+| Thought | Reality |
+|---------|---------|
+| "This is one mechanical file write" | Add the file. No skill triage needed. |
+| "User specified exactly what to do" | Execute it. They don't need design dialogue. |
+| "No design choices involved" | No `analysis`. No `writing-plans`. Just do it. |
+| "It's a single config tweak / one-liner" | Edit it. A skill check costs more than the task. |
+| "It's a direct factual question" | Answer it. Skills are for *doing*, not chatting. |
+| "Read-only exploration of one file/path" | Read it and report. Skills don't gate looking. |
+| "Routine git/shell I've been authorized for" | Run it. The skill rules cover *judgment*, not muscle memory. |
+
+**How the two tables relate:** Red Flags catches rationalizing *away* from skills that apply. Skip Flags catches rationalizing *into* skills that don't. Both errors waste the user's time. If a task matches Skip Flags clearly, name it in one short sentence ("going direct — single config file, no design choices") and proceed. If the user disagrees, they'll redirect.
 
 ## Skill Priority
 
