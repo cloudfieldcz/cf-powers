@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+# update-integrity — regenerate .claude-plugin/integrity.sha256
+#
+# Usage: bin/update-integrity
+#
+# Run after any INTENTIONAL change to files listed in TARGETS below.
+# Verifies sha256sum or shasum is available; refuses to write if not.
+# Note: hashes byte-for-byte content — CRLF line endings on Windows will
+# produce different hashes than LF. Keep .gitattributes consistent or
+# normalize before hashing.
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PLUGIN_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+OUTPUT="${PLUGIN_ROOT}/.claude-plugin/integrity.sha256"
+
+TARGETS=(
+    "skills/using-superpowers/SKILL.md"
+)
+
+if command -v sha256sum >/dev/null 2>&1; then
+    hash_cmd=(sha256sum)
+elif command -v shasum >/dev/null 2>&1; then
+    hash_cmd=(shasum -a 256)
+else
+    echo "update-integrity: no sha256sum or shasum available on PATH" >&2
+    exit 1
+fi
+
+cd "${PLUGIN_ROOT}"
+
+tmp="$(mktemp)"
+trap 'rm -f "${tmp}"' EXIT
+
+for target in "${TARGETS[@]}"; do
+    if [ ! -f "${target}" ]; then
+        echo "update-integrity: target missing: ${target}" >&2
+        exit 1
+    fi
+    "${hash_cmd[@]}" "${target}" >> "${tmp}"
+done
+
+mv "${tmp}" "${OUTPUT}"
+echo "Updated ${OUTPUT}"
