@@ -7,6 +7,8 @@ Project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.8.0] — 2026-05-18
+
 ### Added
 - SHA-256 integrity baseline for every `skills/*/SKILL.md` file
   (`.claude-plugin/integrity.sha256`).
