@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+# update-integrity — regenerate .claude-plugin/integrity.sha256
+#
+# Usage: bin/update-integrity
+#
+# Run after any INTENTIONAL change to skills/*/SKILL.md, and before
+# tagging a release. Discovers all skills/<name>/SKILL.md files and
+# hashes them in lexical order so the baseline is reproducible.
+#
+# Verifies sha256sum or shasum is available; refuses to write if not.
+# Hashes byte-for-byte content; .gitattributes pins *.md to LF so the
+# baseline stays portable across Linux/macOS/Windows checkouts.
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PLUGIN_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+OUTPUT="${PLUGIN_ROOT}/.claude-plugin/integrity.sha256"
+
+if command -v sha256sum >/dev/null 2>&1; then
+    hash_cmd=(sha256sum)
+elif command -v shasum >/dev/null 2>&1; then
+    hash_cmd=(shasum -a 256)
+else
+    echo "update-integrity: no sha256sum or shasum available on PATH" >&2
+    exit 1
+fi
+
+cd "${PLUGIN_ROOT}"
+
+# Collect every skill's SKILL.md in lexical order so the baseline is
+# stable across runs and machines. Portable to bash 3.2 (macOS default).
+TARGETS=()
+while IFS= read -r path; do
+    TARGETS+=("${path}")
+done < <(find skills -mindepth 2 -maxdepth 2 -name SKILL.md | LC_ALL=C sort)
+
+if [ "${#TARGETS[@]}" -eq 0 ]; then
+    echo "update-integrity: no skills/*/SKILL.md files found" >&2
+    exit 1
+fi
+
+tmp="$(mktemp)"
+trap 'rm -f "${tmp}"' EXIT
+
+for target in "${TARGETS[@]}"; do
+    if [ ! -f "${target}" ]; then
+        echo "update-integrity: target missing: ${target}" >&2
+        exit 1
+    fi
+    "${hash_cmd[@]}" "${target}" >> "${tmp}"
+done
+
+mv "${tmp}" "${OUTPUT}"
+echo "Updated ${OUTPUT} (${#TARGETS[@]} entries)"

@@ -87,6 +87,32 @@ You then execute phases one at a time (or in parallel if they have no dependenci
 /plugin update cf-powers
 ```
 
+## Releasing
+
+The SessionStart hook fail-closes if `.claude-plugin/integrity.sha256`
+does not match the on-disk skill files. That means **any release that
+touches `skills/*/SKILL.md` must refresh the baseline before tagging**,
+otherwise installed clients will see a `<security-alert>` block instead
+of the `using-superpowers` skill content after `/plugin update`.
+
+Release checklist:
+
+1. Land all skill changes on `main`.
+2. Run `bin/update-integrity` and commit
+   `.claude-plugin/integrity.sha256` if it changed.
+3. Bump `version` in [.claude-plugin/marketplace.json](.claude-plugin/marketplace.json)
+   following [SemVer](https://semver.org/) (skill additions/removals
+   = minor; behavior fixes = patch).
+4. Update [CHANGELOG.md](CHANGELOG.md) — move the `[Unreleased]`
+   entries under the new version heading with today's date.
+5. Run `tests/integrity/run-test.sh` to confirm the hook still passes
+   on a clean tree.
+6. Commit, tag `vX.Y.Z`, push tag.
+
+If you forget step 2, end users get a fail-closed session on the next
+update. Recovery is to ship a follow-up release with the regenerated
+baseline.
+
 ## Credits
 
 This project is a fork of [Superpowers](https://github.com/obra/superpowers) by [Jesse Vincent](https://github.com/obra). The original project provides the core skills library (TDD, debugging, collaboration patterns) and the plugin architecture. We added the `analysis` workflow with BA/Developer cross-check agents.

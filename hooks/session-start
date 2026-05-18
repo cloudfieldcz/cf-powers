@@ -7,15 +7,22 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PLUGIN_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 
-# Check if legacy skills directory exists and build warning
-warning_message=""
-legacy_skills_dir="${HOME}/.config/superpowers/skills"
-if [ -d "$legacy_skills_dir" ]; then
-    warning_message="\n\n<important-reminder>IN YOUR FIRST REPLY AFTER SEEING THIS MESSAGE YOU MUST TELL THE USER:⚠️ **WARNING:** Superpowers now uses Claude Code's skills system. Custom skills in ~/.config/superpowers/skills will not be read. Move custom skills to ~/.claude/skills instead. To make this message go away, remove ~/.config/superpowers/skills</important-reminder>"
-fi
+# Verify SHA-256 baseline of in-scope files listed in
+# .claude-plugin/integrity.sha256. Returns 0 on match; non-zero on any
+# failure (missing baseline, no hash utility, missing file, mismatch).
+# Caller treats non-zero as fail-closed.
+verify_integrity() {
+    local baseline="${PLUGIN_ROOT}/.claude-plugin/integrity.sha256"
+    [ -f "${baseline}" ] || return 1
 
-# Read using-superpowers content
-using_superpowers_content=$(cat "${PLUGIN_ROOT}/skills/using-superpowers/SKILL.md" 2>&1 || echo "Error reading using-superpowers skill")
+    if command -v sha256sum >/dev/null 2>&1; then
+        (cd "${PLUGIN_ROOT}" && sha256sum -c --quiet "${baseline}") >/dev/null 2>&1
+    elif command -v shasum >/dev/null 2>&1; then
+        (cd "${PLUGIN_ROOT}" && shasum -a 256 -c -s "${baseline}") >/dev/null 2>&1
+    else
+        return 2
+    fi
+}
 
 # Escape string for JSON embedding using bash parameter substitution.
 # Each ${s//old/new} is a single C-level pass - orders of magnitude
@@ -30,9 +37,26 @@ escape_for_json() {
     printf '%s' "$s"
 }
 
-using_superpowers_escaped=$(escape_for_json "$using_superpowers_content")
+# Check if legacy skills directory exists and build warning
+warning_message=""
+legacy_skills_dir="${HOME}/.config/superpowers/skills"
+if [ -d "$legacy_skills_dir" ]; then
+    warning_message="\n\n<important-reminder>IN YOUR FIRST REPLY AFTER SEEING THIS MESSAGE YOU MUST TELL THE USER:⚠️ **WARNING:** Superpowers now uses Claude Code's skills system. Custom skills in ~/.config/superpowers/skills will not be read. Move custom skills to ~/.claude/skills instead. To make this message go away, remove ~/.config/superpowers/skills</important-reminder>"
+fi
 warning_escaped=$(escape_for_json "$warning_message")
-session_context="<EXTREMELY_IMPORTANT>\nYou have superpowers.\n\n**Below is the full content of your 'cf-powers:using-superpowers' skill - your introduction to using skills. For all other skills, use the 'Skill' tool:**\n\n${using_superpowers_escaped}\n\n${warning_escaped}\n</EXTREMELY_IMPORTANT>"
+
+# Read using-superpowers content only after integrity check passes.
+# Fail-closed: emit a declarative security alert instead of injecting
+# unverified skill content.
+if verify_integrity; then
+    using_superpowers_content=$(cat "${PLUGIN_ROOT}/skills/using-superpowers/SKILL.md")
+    using_superpowers_escaped=$(escape_for_json "$using_superpowers_content")
+    session_context="<EXTREMELY_IMPORTANT>\nYou have superpowers.\n\n**Below is the full content of your 'cf-powers:using-superpowers' skill - your introduction to using skills. For all other skills, use the 'Skill' tool:**\n\n${using_superpowers_escaped}\n\n${warning_escaped}\n</EXTREMELY_IMPORTANT>"
+else
+    alert_content="cf-powers: integrity verification of skills/using-superpowers/SKILL.md could not be confirmed. Skill content was not loaded into this session. If recent changes to the skill are intentional, run bin/update-integrity to refresh the baseline. Otherwise inspect the repository for unexpected modifications."
+    alert_escaped=$(escape_for_json "$alert_content")
+    session_context="<security-alert>${alert_escaped}${warning_escaped}</security-alert>"
+fi
 
 # Output context injection as JSON.
 # Cursor hooks expect additional_context (snake_case).
