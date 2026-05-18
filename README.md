@@ -100,9 +100,13 @@ Release checklist:
 1. Land all skill changes on `main`.
 2. Run `bin/update-integrity` and commit
    `.claude-plugin/integrity.sha256` if it changed.
-3. Bump `version` in [.claude-plugin/marketplace.json](.claude-plugin/marketplace.json)
+3. Bump `version` in **both**
+   [.claude-plugin/plugin.json](.claude-plugin/plugin.json) and
+   [.claude-plugin/marketplace.json](.claude-plugin/marketplace.json)
    following [SemVer](https://semver.org/) (skill additions/removals
-   = minor; behavior fixes = patch).
+   = minor; behavior fixes = patch). Claude Code reads `plugin.json`
+   when deciding whether `/plugin update` has new content — if only
+   `marketplace.json` is bumped, clients silently skip the update.
 4. Update [CHANGELOG.md](CHANGELOG.md) — move the `[Unreleased]`
    entries under the new version heading with today's date.
 5. Run `tests/integrity/run-test.sh` to confirm the hook still passes
