@@ -11,10 +11,42 @@ Project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 Selective sync from upstream [obra/superpowers](https://github.com/obra/superpowers)
 v5.1.0 → v6.0.3 (our last sync was v5.0.7). No new skills or agents appeared
-upstream in that range. Only the Claude-Code-relevant, low-risk changes were
-adopted; the multi-harness work and vendor-neutral vocabulary rewrite were
-deliberately skipped. See [docs/upstream-sync.md](docs/upstream-sync.md) for the
-full record and rationale.
+upstream in that range. Only the Claude-Code-relevant changes were adopted;
+the multi-harness work and vendor-neutral vocabulary rewrite were deliberately
+skipped. See [docs/upstream-sync.md](docs/upstream-sync.md) for the full record
+and rationale.
+
+The headline is the **subagent-driven-development rewrite** — a breaking change
+for anyone dispatching the old reviewer prompt files (hence the major bump).
+
+### Changed
+- **`subagent-driven-development` rewritten** (upstream v6.0.0 + the v6.0.3
+  Claude Code fix), adapted to this fork:
+  - One reviewer per task with two verdicts (spec compliance + code quality)
+    via a single new `task-reviewer-prompt.md`, replacing the separate
+    `spec-reviewer-prompt.md` and `code-quality-reviewer-prompt.md` (both
+    removed — **breaking** if you dispatched them directly).
+  - A single broad whole-branch review at the end (reuses
+    `requesting-code-review`'s `code-reviewer.md`) instead of re-reviewing
+    every task.
+  - File-based handoff: new `scripts/task-brief`, `scripts/review-package`,
+    and `scripts/sdd-workspace` write task text, review diffs, and a progress
+    ledger to a self-ignoring `.cf-powers/sdd/` directory in the working tree
+    — not under `.git/`, which Claude Code denies agent writes to. (We use
+    `.cf-powers/sdd/`, not upstream's `.superpowers/sdd/`.)
+  - Every dispatch must name its model explicitly (an omitted model silently
+    inherits the session's most expensive one); a pre-flight plan review; the
+    controller may no longer tell a reviewer what to ignore or pre-rate
+    severity; reviewers are read-only; a durable progress ledger lets a
+    compacted controller resume instead of re-running finished tasks.
+  - `implementer-prompt.md` now reads a task brief, writes a detailed report
+    to a file, returns a <15-line summary, and carries TDD red/green evidence.
+  - Kept the Claude Code dialect (`Task tool (general-purpose)`) and our
+    `docs/plans/` layout; dropped the upstream `using-git-worktrees`
+    integration line (we manage branches ourselves).
+- `tests/sdd-scripts/run-test.sh` added — covers `sdd-workspace`,
+  `task-brief` (incl. the code-fence guard), and `review-package`
+  (multi-commit range) in throwaway git repos.
 
 ### Fixed
 - `systematic-debugging`: the redirection bullet read `"Ultrathink this"`, the

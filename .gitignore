@@ -2,6 +2,7 @@
 .private-journal/
 .claude/
 .sample/
+.cf-powers/
 
 # macOS metadata
 .DS_Store

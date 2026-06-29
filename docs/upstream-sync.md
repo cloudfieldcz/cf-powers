@@ -50,8 +50,21 @@ are ours.
   two `@`-prefixed links with plain references (`@` force-loads and burns
   context), renumbered the duplicate `### 4.` heading to `### 5.`.
 - **`writing-plans` — Task Right-Sizing, Global Constraints block, per-task
-  Interfaces block.** Structural plan improvements that pair with the upstream
-  SDD rework; adapted to our multi-phase plan template.
+  Interfaces block.** Structural plan improvements that pair with the SDD
+  rework; adapted to our multi-phase plan template.
+- **`subagent-driven-development` rewrite** (upstream v6.0.0 headline + the
+  v6.0.3 Claude-Code-specific fix). One reviewer per task with two verdicts via
+  a unified `task-reviewer-prompt.md` (the old `spec-reviewer-prompt.md` and
+  `code-quality-reviewer-prompt.md` are removed); a single broad whole-branch
+  review at the end; file-based handoff through new `scripts/task-brief`,
+  `scripts/review-package`, `scripts/sdd-workspace` writing to a self-ignoring
+  scratch dir; a required model per dispatch; banned severity suppression;
+  read-only reviewers; a durable progress ledger; and an implementer that reads
+  a brief and writes a report file with TDD evidence. Adapted to this fork:
+  kept the Claude Code dialect (`Task tool`), our `docs/plans/` layout, and our
+  reviewer set; used **`.cf-powers/sdd/`** instead of upstream's
+  `.superpowers/sdd/`; dropped the `using-git-worktrees` integration line.
+  Covered by a new `tests/sdd-scripts/run-test.sh`.
 
 **Deliberately skipped:**
 
@@ -65,17 +78,6 @@ are ours.
 - The **brainstorming visual-companion** security/robustness work — we don't
   ship the `brainstorming` skill.
 - The **evals submodule migration** and Windows hook fixes.
-
-**Deferred — decide separately:**
-
-- The **`subagent-driven-development` rewrite** (the v6.0.0 headline): one
-  reviewer per task, file-based handoff via new `task-brief` / `review-package`
-  / `sdd-workspace` scripts, a required model per dispatch, banned severity
-  suppression, read-only skeptical reviewers, a progress ledger, and the unified
-  `task-reviewer-prompt.md`. Includes the v6.0.3 Claude-Code-specific fix moving
-  scratch artifacts out of the protected `.git/` path into `.superpowers/sdd/`.
-  High value but a large, divergent change against our customized SDD skill —
-  port (whole or in part) as its own piece of work.
 
 ## Reference points
 

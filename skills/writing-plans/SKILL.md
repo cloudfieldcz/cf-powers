@@ -216,7 +216,7 @@ Then for the chosen phase:
 
 **If Subagent-Driven chosen:**
 - **REQUIRED SUB-SKILL:** Use cf-powers:subagent-driven-development
-- Fresh subagent per task + two-stage review
+- Fresh subagent per task + per-task review (spec + quality) + broad whole-branch review at the end
 
 **If Inline Execution chosen:**
 - **REQUIRED SUB-SKILL:** Use cf-powers:executing-plans
