@@ -121,6 +121,8 @@ baseline.
 
 This project is a fork of [Superpowers](https://github.com/obra/superpowers) by [Jesse Vincent](https://github.com/obra). The original project provides the core skills library (TDD, debugging, collaboration patterns) and the plugin architecture. We added the `analysis` workflow with BA/Developer cross-check agents.
 
+What we pull down from upstream — when, what, and what we deliberately skip — is recorded in [docs/upstream-sync.md](docs/upstream-sync.md).
+
 ## License
 
 MIT — see [LICENSE](LICENSE) for details.
