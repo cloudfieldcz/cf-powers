@@ -119,7 +119,8 @@ Offline suites green: `tests/sdd-scripts/run-test.sh`,
 `tests/systematic-debugging/run-test.sh`, `tests/integrity/run-test.sh`.
 
 Real-session suites were run against this working tree for the first time:
-`tests/skill-triggering/` **6/6**, `tests/explicit-skill-requests/` **4/4**.
+`tests/skill-triggering/` **6/6**, `tests/explicit-skill-requests/` **4/4**,
+`tests/claude-code/` SDD skill suite **9/9** (454s).
 Running them required fixing the harnesses first — see the
 `fix(tests)` commit. Every one of these suites had been broken in a way that
 reported success: `--output-format stream-json` now requires `--verbose`, so

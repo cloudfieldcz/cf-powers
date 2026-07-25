@@ -101,7 +101,11 @@ skills (`re-review-prompt.md`, `writing-good-tests.md`, and a test suite).
 
 **Verification:** the offline suites are green, and the real-session suites
 were exercised against this tree for the first time — `skill-triggering` 6/6,
-`explicit-skill-requests` 4/4. Getting there meant repairing the harnesses:
+`explicit-skill-requests` 4/4, and the `claude-code` SDD skill suite 9/9. A
+fresh session asked to describe the restructured skill returned the new design
+accurately: plan-scoped workspace, the ledger as compaction insurance, the
+five-round breaker, and `SendMessage` resume for rounds 1-3.
+Getting there meant repairing the harnesses:
 they had never been run, and each failed in a way that read as a pass (a
 missing `--verbose` meant no Claude session started at all; a `| tee` pipeline
 masked every failure). Four assertions in the claude-code suite still
