@@ -14,11 +14,11 @@ improvements only**, in four tiers of increasing effort, plus a release phase.
 
 | # | Phase | Plan File | Status | Dependencies |
 |---|-------|-----------|--------|--------------|
-| 1 | Bug fixes (T1) | [plan-1-bugfixes.md](./2026-07-25-upstream-sync-v6.2.0-plan-1-bugfixes.md) | ⬚ Not started | — |
-| 2 | Test guidance + discard menu (T2) | [plan-2-content.md](./2026-07-25-upstream-sync-v6.2.0-plan-2-content.md) | ⬚ Not started | — |
-| 3 | Compression sweep (T3) | [plan-3-compression.md](./2026-07-25-upstream-sync-v6.2.0-plan-3-compression.md) | ⬚ Not started | — |
-| 4 | SDD restructure (T4) | [plan-4-sdd.md](./2026-07-25-upstream-sync-v6.2.0-plan-4-sdd.md) | ⬚ Not started | — |
-| 5 | Release | [plan-5-release.md](./2026-07-25-upstream-sync-v6.2.0-plan-5-release.md) | ⬚ Not started | Phases 1-4 |
+| 1 | Bug fixes (T1) | [plan-1-bugfixes.md](./2026-07-25-upstream-sync-v6.2.0-plan-1-bugfixes.md) | ✅ Complete | — |
+| 2 | Test guidance + discard menu (T2) | [plan-2-content.md](./2026-07-25-upstream-sync-v6.2.0-plan-2-content.md) | ✅ Complete | — |
+| 3 | Compression sweep (T3) | [plan-3-compression.md](./2026-07-25-upstream-sync-v6.2.0-plan-3-compression.md) | ✅ Complete | — |
+| 4 | SDD restructure (T4) | [plan-4-sdd.md](./2026-07-25-upstream-sync-v6.2.0-plan-4-sdd.md) | ✅ Complete | — |
+| 5 | Release | [plan-5-release.md](./2026-07-25-upstream-sync-v6.2.0-plan-5-release.md) | ✅ Complete | Phases 1-4 |
 
 **Status legend:** ⬚ Not started · 🔨 In progress · ✅ Complete · ⏸ Blocked
 

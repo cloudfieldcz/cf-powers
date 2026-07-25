@@ -27,6 +27,82 @@ whose value is independent of harness.
 
 ## Sync history
 
+### 2026-07-25 — v6.0.3 → v6.2.0 (released as cf-powers v3.0.0)
+
+Upstream shipped v6.1.0, v6.1.1 and v6.2.0 in this range — 70 commits.
+**No new skills or agents were added**: the `SKILL.md` set is byte-identical
+between v6.0.3 and v6.2.0, and upstream still has no `agents/` or `commands/`
+directories. The three genuinely new files are all internals of existing
+skills (`re-review-prompt.md`, `writing-good-tests.md`, and a test suite).
+
+**Adopted:**
+
+- **`find-polluter.sh` fix** (upstream #2008, #2011). `find .` emits
+  `./`-prefixed paths, so the pattern in the script's own usage line matched
+  nothing, and `wc -l` over empty input reported `Found 1`. Our copy was
+  byte-identical to the broken version, so this was our bug too. Taken with
+  upstream's test suite, adapted to our `tests/<area>/run-test.sh` layout.
+- **Windows SessionStart hook `shell: "bash"`** (upstream #1751, #1918). A
+  one-line fix for a silent total failure of the bootstrap on Windows; no-op
+  on macOS/Linux, and older Claude Code ignores the unknown key. We ship the
+  same polyglot `run-hook.cmd`, so we had the same exposure.
+- **`writing-good-tests.md`**, replacing `testing-anti-patterns.md`. Our copy
+  of the old file was byte-identical to upstream's, so a clean swap. The
+  string-presence trap is the reason this one matters here: a repo that tests
+  its own skills is exactly where grep-style assertions on prose look like
+  tests and aren't.
+- **The discard-menu removal** in `finishing-a-development-branch`. Adopted as
+  a decision, not a diff — our copy diverged long ago.
+- **The compression sweep.** Note that the TDD rebuttals were *folded into
+  rationalization rows, not deleted*: upstream micro-tested each cut and
+  found this one measurably degraded test-first behaviour (8/10 → 5/10 under
+  "just write it, tests after" pressure, on both Claude and Codex). Anyone
+  repeating this sweep should take the fold, never the bare deletion.
+- **The `using-superpowers` bootstrap compression** — the only change in the
+  repo with a recurring per-session token payoff. 116 → 73 lines.
+- **The SDD restructure** — plan-scoped workspace and resume-based fix loop
+  with a five-round breaker.
+
+**Fork-specific adaptations** (where we deliberately diverge from upstream's text):
+
+- **`.cf-powers/sdd/<plan>/`**, not `.superpowers/sdd/<plan>/`.
+- **SDD Setup states our branch policy** — the human manages their own
+  branches, no automatic worktrees — where upstream requires
+  `using-git-worktrees`, which we do not ship. The process diagram's Setup
+  node follows suit ("branch check", not "worktree").
+- **The fix loop names Claude Code's `SendMessage`** and the recorded agent ID
+  for resuming a live implementer, where upstream hedges with "if your harness
+  cannot send another message to a live subagent". Being Claude-Code-only lets
+  us be concrete.
+- **`finishing-a-development-branch` keeps `gh pr create`**; upstream went
+  forge-agnostic ("your forge's CLI, or the URL printed on push"). We are a
+  GitHub shop and a concrete command beats a description of one.
+- **`using-superpowers` keeps our Skip Flags table** (cf-powers v1.7.0), which
+  upstream has no equivalent for, and keeps an H1, which upstream dropped —
+  every other skill here has one and `writing-skills` mandates it.
+- **The compression sweep extended to three reference files** upstream left
+  alone (`condition-based-waiting.md`, `root-cause-tracing.md`,
+  `testing-skills-with-subagents.md`), which carried the same unreproducible
+  "2025-10-03 session" metrics as the skill bodies.
+
+**Deliberately skipped:**
+
+- The **vendor-neutral vocabulary rewrite**. Per standing policy.
+- All **Codex work**: the `.agents/plugins/marketplace.json` manifest, the
+  351-line `package-codex-plugin.sh` portal packaging script and its two test
+  suites, and the hook removal/re-registration fixes.
+- The **Gemini CLI removal and restoration** (removed in v6.1.0 on the news
+  Google had EOLed it, reverted in v6.2.0). Net zero for us either way.
+- **Pi, Antigravity and Cursor** references and their mapping tests.
+- Upstream's **`docs/superpowers/specs/` and `docs/superpowers/plans/` eval
+  records** for the SDD work (~3700 lines). We adopted the outcome, not the
+  research trail.
+- The **`brainstorming` and `using-git-worktrees` changes** — we ship neither.
+
+**Not verified:** the subagent-behaviour suites were not run for this release
+(they invoke real Claude sessions). The SDD skill body and the bootstrap both
+changed substantially, so that is the outstanding gap.
+
 ### 2026-06-29 — v5.0.7 → v6.0.3 (released as cf-powers v2.0.0)
 
 Upstream shipped v5.1.0 and a major v6.0.0 (+ v6.0.1–v6.0.3) in this range.
@@ -81,6 +157,7 @@ are ours.
 
 ## Reference points
 
+- Last fully-tracked upstream version: **v6.2.0** (synced in cf-powers v3.0.0).
 - Last fully-tracked upstream version before this log started: **v5.0.7**
   (synced in cf-powers v1.4.1, commit `c107d3b`).
 - Earlier syncs are recorded only in commit messages (`git log --grep upstream`).
