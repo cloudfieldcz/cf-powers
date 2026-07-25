@@ -79,10 +79,4 @@ After all tasks complete and verified:
 - Stop when blocked, don't guess
 - Never start implementation on main/master branch without explicit user consent
 
-## Integration
-
-**Required workflow skills:**
-- **cf-powers:writing-plans** - Creates the plan this skill executes
-- **cf-powers:finishing-a-development-branch** - Complete development after all tasks
-
 **Note:** User manages their own branches. Step 0 verifies a feature branch exists — do NOT create worktrees automatically.
