@@ -149,12 +149,17 @@ Begin now. Execute the plan."
 
 echo "Running Claude (output will be shown below and saved to $OUTPUT_FILE)..."
 echo "================================================================================"
-cd "$SCRIPT_DIR/../.." && timeout 1800 claude -p "$PROMPT" --allowed-tools=all --add-dir "$TEST_PROJECT" --permission-mode bypassPermissions 2>&1 | tee "$OUTPUT_FILE" || {
+cd "$SCRIPT_DIR/../.."
+# Capture claude's own status, not tee's — a pipeline reports its LAST command,
+# so this guard never fired and a failed run fell through to the assertions.
+timeout 1800 claude -p "$PROMPT" --allowed-tools=all --add-dir "$TEST_PROJECT" --permission-mode bypassPermissions 2>&1 | tee "$OUTPUT_FILE"
+CLAUDE_STATUS="${PIPESTATUS[0]}"
+if [ "$CLAUDE_STATUS" -ne 0 ]; then
     echo ""
     echo "================================================================================"
-    echo "EXECUTION FAILED (exit code: $?)"
+    echo "EXECUTION FAILED (exit code: $CLAUDE_STATUS)"
     exit 1
-}
+fi
 echo "================================================================================"
 
 echo ""

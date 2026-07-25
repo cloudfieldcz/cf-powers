@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 # Helper functions for Claude Code skill tests
 
+# Repo under test — so the suite exercises this working tree rather than
+# whatever version of the plugin happens to be installed in the environment.
+HELPERS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PLUGIN_UNDER_TEST="$(cd "$HELPERS_DIR/../.." && pwd)"
+export PLUGIN_UNDER_TEST
+
 # Run Claude Code with a prompt and capture output
 # Usage: run_claude "prompt text" [timeout_seconds] [allowed_tools]
 run_claude() {
@@ -9,8 +15,9 @@ run_claude() {
     local allowed_tools="${3:-}"
     local output_file=$(mktemp)
 
-    # Build command
-    local cmd="claude -p \"$prompt\""
+    # Build command. --plugin-dir points at the working tree: without it these
+    # assertions describe the installed plugin, not the code under test.
+    local cmd="claude -p \"$prompt\" --plugin-dir \"$PLUGIN_UNDER_TEST\""
     if [ -n "$allowed_tools" ]; then
         cmd="$cmd --allowed-tools=$allowed_tools"
     fi

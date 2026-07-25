@@ -33,7 +33,10 @@ for skill in "${SKILLS[@]}"; do
 
     echo "Testing: $skill"
 
-    if "$SCRIPT_DIR/run-test.sh" "$skill" "$prompt_file" 3 2>&1 | tee /tmp/skill-test-$skill.log; then
+    # Check the test's own exit status, not tee's — a pipeline reports the
+    # status of its LAST command, so `if ... | tee` always looked like a pass.
+    "$SCRIPT_DIR/run-test.sh" "$skill" "$prompt_file" 3 2>&1 | tee /tmp/skill-test-$skill.log
+    if [ "${PIPESTATUS[0]}" -eq 0 ]; then
         PASSED=$((PASSED + 1))
         RESULTS+=("✅ $skill")
     else
