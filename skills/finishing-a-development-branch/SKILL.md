@@ -52,16 +52,11 @@ Continue to Step 2 once the user has decided.
 
 ### Step 2: Determine Base Branch
 
-```bash
-# Try common base branches
-git merge-base HEAD main 2>/dev/null || git merge-base HEAD master 2>/dev/null
-```
-
-Or ask: "This branch split from main - is that correct?"
+The base branch is whatever this work forked from — usually named in the plan, the conversation, or the branch's upstream. If it is not already known, ask: "This branch split from <your best guess> - is that correct?" Confirm before merging: merging into the wrong base is expensive to undo.
 
 ### Step 3: Present Options
 
-Present exactly these 4 options:
+Present exactly these 3 options:
 
 ```
 Implementation complete. What would you like to do?
@@ -69,12 +64,11 @@ Implementation complete. What would you like to do?
 1. Merge back to <base-branch> locally
 2. Push and create a Pull Request
 3. Keep the branch as-is (I'll handle it later)
-4. Discard this work
 
 Which option?
 ```
 
-**Don't add explanation** - keep options concise.
+Present the menu exactly as written — concise, with every option coming from the list above. Discarding the work happens only in response to your human partner explicitly asking for it (see "If your human partner asks to discard the work" below). Wait for their answer; the integration decision is theirs.
 
 ### Step 4: Execute Choice
 
@@ -92,8 +86,13 @@ git merge <feature-branch>
 
 # Verify tests on merged result
 <test command>
+```
 
-# If tests pass
+If tests fail on the merged result: stop, leave the branch in place, and investigate — nothing has been pushed, so the merge is local and recoverable.
+
+Once the merged result is green, delete the branch:
+
+```bash
 git branch -d <feature-branch>
 ```
 
@@ -118,9 +117,10 @@ EOF
 
 Report: "Keeping branch <name>."
 
-#### Option 4: Discard
+#### If your human partner asks to discard the work
 
-**Confirm first:**
+This path exists only as a response to an explicit request to throw the work away. Confirm first:
+
 ```
 This will permanently delete:
 - Branch <name>
@@ -144,42 +144,18 @@ git branch -D <feature-branch>
 | 1. Merge locally | ✓ | - | ✓ |
 | 2. Create PR | - | ✓ | - |
 | 3. Keep as-is | - | - | - |
-| 4. Discard | - | - | ✓ (force) |
+| Discard (explicit request only) | - | - | ✓ (force) |
 
-## Common Mistakes
+## Common Rationalizations
 
-**Skipping test verification**
-- **Problem:** Merge broken code, create failing PR
-- **Fix:** Always verify tests before offering options
-
-**Skipping docs verification**
-- **Problem:** Code merges, docs drift, future readers hit "what does this do?"
-- **Fix:** Always run Step 1.5 (`documenting-changes`) before offering merge/PR options
-
-**Open-ended questions**
-- **Problem:** "What should I do next?" → ambiguous
-- **Fix:** Present exactly 4 structured options
-
-**No confirmation for discard**
-- **Problem:** Accidentally delete work
-- **Fix:** Require typed "discard" confirmation
-
-## Red Flags
-
-**Never:**
-- Proceed with failing tests
-- Merge without verifying tests on result
-- Delete work without confirmation
-- Force-push without explicit request
-
-**Always:**
-- Verify tests before offering options
-- Present exactly 4 options
-- Get typed confirmation for Option 4
-
-## Integration
-
-**Called by:**
-- **subagent-driven-development** (Step 7) - After all tasks complete
-- **executing-plans** (Step 5) - After all batches complete
+| Excuse | Reality |
+|--------|---------|
+| "Tests passed earlier this session" | Run the suite on the tree you are about to integrate. A green run only proves the tree it ran on. |
+| "They obviously want it merged" | Integration is your human partner's decision. Present the menu and wait. |
+| "They seem done with this feature — I'll offer to discard it" | The menu is complete as written. Discard happens only when your human partner asks for it in so many words. |
+| "'Yeah, get rid of it' counts as confirmation" | Only the typed word `discard` authorizes deletion. |
+| "Docs can follow in a separate pass" | Step 1.5 is the gate. A deferred doc gap needs a recorded owner — an issue, a `TODO(docs)`, or a line in the PR body — not a good intention. |
+| "The merged-result failure is probably flaky" | A failing merged result stops everything. The branch stays put while you investigate. |
+| "The base branch is obviously main" | Confirm the fork point or ask. Merging into the wrong base is expensive to undo. |
+| "The push was rejected — force-push will fix it" | A rejected push means the remote moved. Investigate; force-push only on your human partner's explicit request. |
 
