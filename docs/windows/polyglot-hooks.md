@@ -4,9 +4,18 @@ Claude Code plugins need hooks that work on Windows, macOS, and Linux. This docu
 
 ## The Problem
 
-Claude Code runs hook commands through the system's default shell:
-- **Windows**: CMD.exe
+Claude Code runs hook commands through a shell:
 - **macOS/Linux**: bash or sh
+- **Windows with Git Bash installed**: Git Bash
+- **Windows without Git Bash**: PowerShell (older versions used CMD.exe)
+
+Neither Windows fallback shell can parse our command string: PowerShell treats
+a leading quoted path as a string expression and errors on the next bareword,
+and CMD.exe's `/c` quoting rules strip the outer quotes when the path contains
+a metacharacter such as `(`. Our hooks therefore declare `"shell": "bash"`
+(supported since Claude Code 2.1.81; older versions ignore the key), which
+forces the Git Bash route and, when Git Bash is absent, produces an actionable
+"install Git for Windows" error instead of a shell parser failure.
 
 This creates several challenges:
 
@@ -65,11 +74,13 @@ hooks/
   "hooks": {
     "SessionStart": [
       {
-        "matcher": "startup|resume|clear|compact",
+        "matcher": "startup|clear|compact",
         "hooks": [
           {
             "type": "command",
-            "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/session-start.cmd\""
+            "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/run-hook.cmd\" session-start",
+            "shell": "bash",
+            "async": false
           }
         ]
       }
@@ -78,7 +89,10 @@ hooks/
 }
 ```
 
-Note: The path must be quoted because `${CLAUDE_PLUGIN_ROOT}` may contain spaces on Windows (e.g., `C:\Program Files\...`).
+This mirrors the shipped `hooks/hooks.json`. Two details matter:
+
+- The path must be quoted because `${CLAUDE_PLUGIN_ROOT}` may contain spaces on Windows (e.g., `C:\Program Files\...`).
+- `"shell": "bash"` is what keeps that quoted path parseable — see [The Problem](#the-problem) for the two Windows shells it steers around.
 
 ## Requirements
 
