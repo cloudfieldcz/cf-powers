@@ -27,7 +27,7 @@ whose value is independent of harness.
 
 ## Sync history
 
-### 2026-07-25 — v6.0.3 → v6.2.0 (released as cf-powers v3.0.0)
+### 2026-07-25 — v6.0.3 → v6.2.0 (released as cf-powers v2.1.0)
 
 Upstream shipped v6.1.0, v6.1.1 and v6.2.0 in this range — 70 commits.
 **No new skills or agents were added**: the `SKILL.md` set is byte-identical
@@ -99,9 +99,16 @@ skills (`re-review-prompt.md`, `writing-good-tests.md`, and a test suite).
   research trail.
 - The **`brainstorming` and `using-git-worktrees` changes** — we ship neither.
 
-**Not verified:** the subagent-behaviour suites were not run for this release
-(they invoke real Claude sessions). The SDD skill body and the bootstrap both
-changed substantially, so that is the outstanding gap.
+**Verification:** the offline suites are green, and the real-session suites
+were exercised against this tree for the first time — `skill-triggering` 6/6,
+`explicit-skill-requests` 4/4. Getting there meant repairing the harnesses:
+they had never been run, and each failed in a way that read as a pass (a
+missing `--verbose` meant no Claude session started at all; a `| tee` pipeline
+masked every failure). Four assertions in the claude-code suite still
+described the pre-v2.0.0 SDD design and were brought up to date.
+
+A lesson worth keeping: a test suite nobody runs is not a safety net, and
+these reported green while executing nothing. Run them on every sync.
 
 ### 2026-06-29 — v5.0.7 → v6.0.3 (released as cf-powers v2.0.0)
 
@@ -157,7 +164,7 @@ are ours.
 
 ## Reference points
 
-- Last fully-tracked upstream version: **v6.2.0** (synced in cf-powers v3.0.0).
+- Last fully-tracked upstream version: **v6.2.0** (synced in cf-powers v2.1.0).
 - Last fully-tracked upstream version before this log started: **v5.0.7**
   (synced in cf-powers v1.4.1, commit `c107d3b`).
 - Earlier syncs are recorded only in commit messages (`git log --grep upstream`).

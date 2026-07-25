@@ -7,7 +7,7 @@ Project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
-## [3.0.0] — 2026-07-25
+## [2.1.0] — 2026-07-25
 
 Selective sync from upstream [obra/superpowers](https://github.com/obra/superpowers)
 v6.0.3 → v6.2.0 (70 commits, upstream releases v6.1.0, v6.1.1 and v6.2.0).
@@ -18,9 +18,9 @@ all Codex/Gemini/Pi/Antigravity/Cursor work and the vendor-neutral vocabulary
 rewrite were deliberately skipped. See [docs/upstream-sync.md](docs/upstream-sync.md)
 for the full record and rationale.
 
-The major bump is for the SDD helper scripts: `review-package` gained a leading
-`PLAN_FILE` argument and `sdd-workspace` now requires one, so any direct caller
-breaks.
+Note for anyone scripting against the SDD helpers directly: `review-package`
+gained a leading `PLAN_FILE` argument and `sdd-workspace` now requires one.
+The skill that drives them was updated in lockstep, so normal use is unaffected.
 
 ### Added
 - **`skills/test-driven-development/writing-good-tests.md`** — replaces
@@ -45,7 +45,7 @@ breaks.
   `requesting-code-review` (2 rows).
 
 ### Changed
-- **SDD workspace is plan-scoped** (**breaking**). `sdd-workspace PLAN_FILE`
+- **SDD workspace is plan-scoped.** `sdd-workspace PLAN_FILE`
   resolves `.cf-powers/sdd/<plan-basename>/`; `review-package` takes
   `PLAN_FILE` as its first argument; the ledger names its plan on line 1; the
   workspace is deleted once the final review is clean. The flat directory had
@@ -118,12 +118,19 @@ breaks.
 Offline suites green: `tests/sdd-scripts/run-test.sh`,
 `tests/systematic-debugging/run-test.sh`, `tests/integrity/run-test.sh`.
 
-The subagent-behaviour suites (`tests/subagent-driven-dev/`,
-`tests/claude-code/`, `tests/skill-triggering/`,
-`tests/explicit-skill-requests/`) invoke real Claude sessions and **were not
-run** for this release. The SDD skill body and the `using-superpowers`
-bootstrap both changed substantially, so those suites are the outstanding
-verification gap.
+Real-session suites were run against this working tree for the first time:
+`tests/skill-triggering/` **6/6**, `tests/explicit-skill-requests/` **4/4**.
+Running them required fixing the harnesses first — see the
+`fix(tests)` commit. Every one of these suites had been broken in a way that
+reported success: `--output-format stream-json` now requires `--verbose`, so
+no session had been starting at all, and `if … | tee` returned tee's status,
+so a run where all six tests failed printed "Passed: 6". The `claude-code`
+suite was also querying the installed plugin rather than the working tree.
+
+Four assertions in `tests/claude-code/test-subagent-driven-development.sh`
+described the pre-v2.0.0 design (spec-review-before-quality ordering, pasted
+task text instead of the `task-brief` file handoff) and were updated to the
+current one.
 
 ## [2.0.0] — 2026-06-29
 
