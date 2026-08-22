@@ -33,7 +33,7 @@ Every feature starts the same way:
 
 1. **`/analyse`** — From idea to technical analysis in one step. Explores the idea through dialogue, then produces a full technical analysis (Czech output): architecture, DB changes, affected files, phases, risks, testing. Automatically dispatches BA and Developer reviewers for cross-check.
 2. **`/write-plan`** — Break the analysis into bite-sized TDD implementation tasks.
-3. **Execute** — Run the plan via subagent-driven development or batch execution.
+3. **Execute** — Run the plan via subagent-driven development, or `/orchestrate` for a multi-phase index.
 
 What happens at step 3 depends on the size of the feature:
 
@@ -58,7 +58,13 @@ docs/plans/YYYY-MM-DD-feature-plan-2-services.md  ← phase 2
 docs/plans/YYYY-MM-DD-feature-plan-3-ui.md        ← phase 3
 ```
 
-You then execute phases one at a time (or in parallel if they have no dependencies). The index file tracks overall progress. After each phase completes, Claude updates the index and asks which phase to tackle next.
+You then execute the whole index with **`/orchestrate`**: one session acts as the orchestrator, delegates each phase to a subagent, reviews every phase on Opus, updates the index and keeps a run ledger — so six phases do not exhaust one context window. The ledger makes a resume in a fresh session free.
+
+You can still execute phases one at a time by hand if you prefer; the index file tracks overall progress either way.
+
+### Orchestrating Work Without a Plan
+
+`/orchestrate` is not limited to plan indexes. Any job that splits into units a subagent can own end to end runs the same way — a migration across 23 handlers, a batch of failing suites, an audit over a codebase, a translation pass. When no work list exists, the orchestrator scouts one, writes it to its run workspace, and then delegates, reviews and ledgers unit by unit.
 
 ## Skills
 
@@ -70,6 +76,8 @@ You then execute phases one at a time (or in parallel if they have no dependenci
 | **writing-plans** | When you need a step-by-step implementation plan |
 | **executing-plans** | Batch execution with human checkpoints |
 | **subagent-driven-development** | Fast parallel execution with two-stage review |
+| **orchestrator** | Any job too big for one session — plan index, migration, bug batch, audit; delegates each unit to subagents |
+| **choosing-subagent-models** | Before any dispatch — picks the Haiku / Sonnet / Opus tier |
 | **test-driven-development** | During implementation (RED-GREEN-REFACTOR) |
 | **systematic-debugging** | When encountering bugs or test failures |
 | **verification-before-completion** | Before claiming work is done |

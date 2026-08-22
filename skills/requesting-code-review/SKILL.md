@@ -33,6 +33,10 @@ HEAD_SHA=$(git rev-parse HEAD)
 
 Use Task tool with cf-powers:code-reviewer type, fill template at `code-reviewer.md`
 
+Dispatch it on **Opus** — leave `model` unset so it inherits the session
+default. Review is the one role that is never downgraded to a cheaper tier,
+however small the diff; see cf-powers:choosing-subagent-models.
+
 **Placeholders:**
 - `{WHAT_WAS_IMPLEMENTED}` - What you just built
 - `{PLAN_OR_REQUIREMENTS}` - What it should do

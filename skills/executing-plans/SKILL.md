@@ -13,6 +13,10 @@ Load plan, review critically, execute all tasks, report when complete.
 
 **Note:** Subagent-driven development (cf-powers:subagent-driven-development) produces significantly higher quality results. If subagents are available, prefer that skill over this one.
 
+**For a multi-phase plan index (several phase plans under one index), prefer
+cf-powers:orchestrator** — it delegates each phase to a subagent and reviews it,
+so one session can drive the whole index without exhausting its context.
+
 ## The Process
 
 ### Step 0: Branch Check

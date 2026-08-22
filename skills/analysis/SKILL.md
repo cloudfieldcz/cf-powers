@@ -205,6 +205,8 @@ Save the document to `docs/plans/YYYY-MM-DD-<topic>.md`. Commit to git.
 ### Phase 6: Dispatch Cross-Check Reviews
 
 **REQUIRED:** After saving, dispatch four review subagents in parallel using the Task tool.
+Leave their model unset so they inherit the session's default (Opus) — review is
+the one tier that is never downgraded, per cf-powers:choosing-subagent-models.
 
 **Business Analyst Review:**
 ```

@@ -36,6 +36,11 @@ digraph when_to_use {
 }
 ```
 
+**Several plan files under one index?** Use cf-powers:orchestrator instead — it
+delegates each phase (to a whole-phase executor, or to this skill for the big
+ones) and keeps one session's context sufficient for the entire index. This
+skill is the right tool for a single plan file.
+
 **vs. Executing Plans (parallel session):**
 - Same session (no context switch)
 - Fresh subagent per task (no context pollution)
@@ -156,40 +161,30 @@ conflicts that only emerge from implementation.
 
 ## Model Selection
 
-Use the least powerful model that can handle each role to conserve cost and increase speed.
+**REQUIRED SUB-SKILL:** cf-powers:choosing-subagent-models. Read it before the
+first dispatch. Its rule in one line: pick the tier from how much the task has
+to decide, and name it on every dispatch where the answer is not Opus — an
+omitted model inherits your session's default (Opus), which is correct for a
+reviewer and wasted latency for a mechanical implementer.
 
-**Mechanical implementation tasks** (isolated functions, clear specs, 1-2 files): use a fast, cheap model. Most implementation tasks are mechanical when the plan is well-specified.
+How it lands on the roles in this loop:
 
-**Integration and judgment tasks** (multi-file coordination, pattern matching, debugging): use a standard model.
+| Role | Tier |
+|---|---|
+| Implementer, plan text contains the code to write (transcription + testing) | Haiku |
+| Implementer, single-file mechanical change | Haiku |
+| Implementer, 1-2 files with a complete spec, shape already decided | Sonnet |
+| Implementer, multi-file integration or an open design question | Opus |
+| **Task reviewer, scoped re-reviewer, final whole-branch reviewer** | **Opus, always** — leave `model` unset |
+| Fix-loop escalation (rounds 4-5) | at least one tier above the implementer that got stuck |
 
-**Architecture and design tasks**: use the most capable available model.
-The final whole-branch review is one of these — dispatch it on the most
-capable available model, not the session default.
+**Reviews are never downgraded, whatever the diff looks like.** A small diff does
+not change who is qualified to judge it, and in this repo review has repeatedly
+found blocking defects that a fully green test suite did not.
 
-**Review tasks**: choose the model with the same judgment, scaled to the
-diff's size, complexity, and risk. A small mechanical diff does not need the
-most capable model; a subtle concurrency change does. Scoped re-reviews of
-small fix diffs take a cheap-to-mid tier.
-
-**Fix-loop escalation (rounds 4-5)**: use a model at least one tier above
-the implementer that got stuck.
-
-**Always specify the model explicitly when dispatching a subagent.** An
-omitted model inherits your session's model — often the most capable and
-most expensive — which silently defeats this section.
-
-**Turn count beats token price.** Wall-clock and context cost scale with how
-many turns a subagent takes, and the cheapest models routinely take 2-3× the
-turns on multi-step work — costing more overall. Use a mid-tier model as the
-floor for reviewers and for implementers working from prose descriptions.
-When the task's plan text contains the complete code to write, the
-implementation is transcription plus testing: use the cheapest tier for
-that implementer. Single-file mechanical fixes also take the cheapest tier.
-
-**Task complexity signals (implementation tasks):**
-- Touches 1-2 files with a complete spec → cheap model
-- Touches multiple files with integration concerns → standard model
-- Requires design judgment or broad codebase understanding → most capable model
+**Turn count beats token price.** The cheapest tier routinely takes 2-3x the
+turns on multi-step work and costs more overall. Sonnet is the floor for an
+implementer working from prose rather than from spelled-out code.
 
 ## The Task Loop
 

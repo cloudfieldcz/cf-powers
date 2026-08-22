@@ -7,6 +7,46 @@ Project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [2.2.0] — 2026-08-22
+
+Two additions aimed at the same problem: one session doing everything itself
+until it runs out of context, on the most expensive model available.
+
+### Added
+- **`skills/orchestrator/`** — a session-level orchestrator for jobs too big for
+  one context window. It never does the work: it establishes a work list (a plan
+  index, or one it scouts and writes itself), then per unit chooses between
+  delegating the whole thing to an executor
+  (`unit-executor-prompt.md`) and running
+  `subagent-driven-development` on it, reviews every unit on Opus, runs a
+  three-round fix loop, and records progress in a run ledger that survives
+  compaction and makes a fresh-session resume free. Applies to plan indexes,
+  migrations, bug batches, audits and doc passes alike.
+- **`skills/orchestrator/scripts/orchestrator-workspace`** — run-scoped,
+  git-ignored workspace (`.cf-powers/orchestrator/<slug>/`). Accepts the file a
+  run is driven from or a bare slug for jobs with no file behind them; rejects
+  path traversal.
+- **`commands/orchestrate.md`** — `/orchestrate` invokes the skill.
+- **`skills/choosing-subagent-models/`** — the model-tier rule for every
+  dispatch: Haiku for completely mechanical work, Sonnet for work whose shape is
+  already decided, Opus (the session default) for review of any kind and for
+  anything with an open question. Deciding question: does the task require
+  deciding anything, or only executing decisions already made?
+- **`tests/orchestrator-scripts/run-test.sh`** — six scenarios over
+  `orchestrator-workspace` in a throwaway git repo.
+
+### Changed
+- **`subagent-driven-development`** — Model Selection now defers to
+  `choosing-subagent-models` and maps the tiers onto its roles in a table;
+  reviewers (task, scoped re-review, final) are explicitly never downgraded,
+  replacing the earlier "scale the reviewer to the diff" guidance. Routes
+  multi-plan work to `orchestrator`.
+- **Model guidance added to** `dispatching-parallel-agents`,
+  `requesting-code-review`, `analysis` (its four cross-check reviewers inherit
+  the session default rather than being scaled down) and the three SDD prompt
+  templates.
+- **`executing-plans`** — points multi-phase indexes at `orchestrator`.
+
 ## [2.1.0] — 2026-07-25
 
 Selective sync from upstream [obra/superpowers](https://github.com/obra/superpowers)

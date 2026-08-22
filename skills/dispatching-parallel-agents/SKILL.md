@@ -44,6 +44,16 @@ digraph when_to_use {
 - Need to understand full system state
 - Agents would interfere with each other
 
+## Model Selection
+
+**REQUIRED SUB-SKILL:** cf-powers:choosing-subagent-models. Set `model`
+explicitly on every dispatch — parallel dispatch multiplies the cost of
+defaulting to the session's model, since you pay it N times at once.
+
+The usual split here: mechanical sweeps across a file list on Haiku, focused
+single-domain fixes with a clear symptom on Sonnet, unknown root causes and
+every reviewer on Opus.
+
 ## The Pattern
 
 ### 1. Identify Independent Domains

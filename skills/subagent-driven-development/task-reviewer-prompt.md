@@ -10,8 +10,9 @@ more, nothing less) and is well-built (clean, tested, maintainable)
 ```
 Task tool (general-purpose):
   description: "Review Task N (spec + quality)"
-  model: [MODEL — REQUIRED: choose per SKILL.md Model Selection; an omitted
-         model silently inherits the session's most expensive one]
+  model: [Opus — leave unset to inherit the session default. Review is the one
+         tier that is never downgraded to save time; see
+         cf-powers:choosing-subagent-models]
   prompt: |
     You are reviewing one task's implementation: first whether it matches its
     requirements, then whether it is well-built. This is a task-scoped gate,
@@ -166,7 +167,8 @@ Task tool (general-purpose):
 ```
 
 **Placeholders:**
-- `[MODEL]` — REQUIRED: reviewer model per SKILL.md Model Selection
+- `[MODEL]` — Opus, per cf-powers:choosing-subagent-models (leave unset to
+  inherit the session default)
 - `[BRIEF_FILE]` — REQUIRED: the task brief file (`scripts/task-brief PLAN N`
   prints the path; same file the implementer worked from)
 - `[GLOBAL_CONSTRAINTS]` — the binding requirements copied verbatim from

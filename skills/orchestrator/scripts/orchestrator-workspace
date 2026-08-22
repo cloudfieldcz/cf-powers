@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+# Resolve and ensure the working-tree directory one orchestrator run uses for
+# its short-lived artifacts: the run ledger, unit briefs, executor reports and
+# review packages. Print the run directory's absolute path.
+#
+# One directory per run (.cf-powers/orchestrator/<slug>/) so a later run in the
+# same working tree can never read or overwrite an earlier run's artifacts. A
+# stale ledger misread as current progress makes orchestrators re-dispatch
+# completed units — run-scoping removes that failure structurally.
+#
+# NAME is either a file the run is driven from (a plan index, a work list) —
+# its basename minus .md becomes the slug — or a bare slug for work that has no
+# file behind it. Slugs are restricted to [A-Za-z0-9._-] so NAME can never walk
+# out of the base directory.
+#
+# The workspace lives in the working tree (not under .git/) because Claude Code
+# treats .git/ as a protected path and denies agent writes there — which blocks
+# an executor subagent from writing its report file. A self-ignoring .gitignore
+# at .cf-powers/orchestrator/ keeps every run's workspace out of `git status`
+# and out of accidental commits without modifying any tracked file.
+#
+# Usage: orchestrator-workspace NAME
+set -euo pipefail
+
+if [ $# -ne 1 ]; then
+  echo "usage: orchestrator-workspace NAME  (a file the run is driven from, or a bare slug)" >&2
+  exit 2
+fi
+
+name=$1
+if [ -f "$name" ]; then
+  slug=$(basename "$name" .md)
+else
+  slug=$name
+fi
+
+case "$slug" in
+  ""|"."|"..") echo "cannot derive a workspace name from: $name" >&2; exit 2 ;;
+esac
+case "$slug" in
+  *[!A-Za-z0-9._-]*) echo "workspace name may only contain A-Za-z0-9._- : $slug" >&2; exit 2 ;;
+esac
+
+root=$(git rev-parse --show-toplevel)
+base="$root/.cf-powers/orchestrator"
+dir="$base/$slug"
+mkdir -p "$dir"
+printf '*\n' > "$base/.gitignore"
+cd "$dir" && pwd
