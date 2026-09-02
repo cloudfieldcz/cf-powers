@@ -99,6 +99,8 @@ independently testable deliverable.
 
 **Tech Stack:** [Key technologies/libraries]
 
+**Analysis:** [`YYYY-MM-DD-<feature-name>.md`](./YYYY-MM-DD-<feature-name>.md) — the design this plan implements
+
 **Index:** [`plan-index.md`](./YYYY-MM-DD-<feature-name>-plan-index.md)
 
 ## Global Constraints
@@ -111,7 +113,7 @@ include this section.]
 ---
 ```
 
-For single-phase plans (no index), omit the **Index:** line and the "Phase N:" from the title.
+For single-phase plans (no index), omit the **Index:** line and the "Phase N:" from the title. Keep the **Analysis:** line either way — the plan argues from the analysis, so the analysis travels with it. Executors read both, and cf-powers:subagent-driven-development resolves plan conflicts against the analysis rather than guessing. A plan whose analysis is unreachable makes every conflict a coin flip.
 
 ## Task Structure
 

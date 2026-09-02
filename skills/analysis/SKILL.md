@@ -1,6 +1,6 @@
 ---
 name: analysis
-description: Use for non-trivial implementations involving design choices, multiple components, or unclear requirements. Explores ideas through dialogue, then produces a technical analysis with architecture, phases, risks, and cross-check reviews. SKIP for mechanical/single-file changes (Dockerfile, CI YAML, config tweak, one-liner) or when the user has already specified exactly what to build.
+description: Use for non-trivial implementations involving design choices, multiple components, or unclear requirements. Classifies the request as spike, bounded, or architectural, then scales the ceremony to match - a short design in chat, or full dialogue plus a technical analysis with architecture, phases, risks, and cross-check reviews. Every path stops for approval before implementation. SKIP for mechanical/single-file changes (Dockerfile, CI YAML, config tweak, one-liner) or when the user has already specified exactly what to build.
 ---
 
 # From Idea to Technical Analysis
@@ -15,7 +15,67 @@ A single skill that takes you from a vague idea to a reviewed technical analysis
 
 **Output language:** English (document, dialogue, and all skill artifacts).
 
+<HARD-GATE>
+Do NOT invoke an implementation skill, write code, scaffold a project, or take
+any implementation action until you have told your human partner what you
+intend and they have approved it. This holds on every path below. The ceremony
+scales with the task; the approval gate never does.
+</HARD-GATE>
+
+## Classify First
+
+The full analysis document is the right output for a subsystem, not for a flag.
+Before your first question, classify the request and **say the classification
+out loud** — "this looks bounded, so I'll present a short design in chat rather
+than write an analysis document" — so your human partner can override it.
+
+- **Spike** — a feasibility question ("can we…", "is it possible…", "quick and
+  dirty is fine") whose output is an answer, not code you keep. Present the
+  question and what you'll try in 2-3 sentences, get a nod, then find out as
+  cheaply as correctness allows. No analysis document, no plan. Report findings
+  as a recommendation; anything you built stays labelled throwaway.
+
+- **Bounded** — a well-scoped change to code that already exists in this repo: a
+  new flag, a small endpoint, a one-file fix. Understanding the kind of app is
+  not enough — bounded means the flow you are changing is already here to read.
+  If there is no existing flow to change, the task is not bounded. Ask the
+  clarifying questions that matter, present a short design IN CHAT (a few
+  sentences to a few short paragraphs: approach, files touched, testing), and
+  STOP. Implementation starts only after an explicit yes — a bounded task's
+  approval is as hard a gate as an architectural one. No analysis document, no
+  plan document; proceed through the normal development workflow (TDD applies).
+
+- **Architectural** — new projects, new subsystems, changes that restructure how
+  components fit together or alter interfaces others depend on. Run Phases 1-8
+  below in full: dialogue, analysis document, cross-check reviews, then
+  cf-powers:writing-plans.
+
+**When in doubt between two paths, take the heavier one.** The ratchet is
+one-way: hidden complexity discovered mid-task upgrades the path — stop, say so,
+and step up. Nothing downgrades mid-task.
+
+This router governs what happens once the skill is invoked. Whether to invoke it
+at all is the description's job: a Dockerfile line, a CI YAML tweak, or a
+one-liner the user already specified needs no skill.
+
+### Red Flags
+
+| Thought | Reality |
+|---------|---------|
+| "This is too simple to need a design" | Simple means a short design, not no design. Two sentences in chat, then approval. |
+| "I'll call it bounded and skip the analysis" | Reaching for a label to skip work IS the doubt — take the heavier path. |
+| "It's bounded and the design is obvious — I'll start while they read it" | The gate is the approval, not the design's length. Present, then stop until you hear yes. |
+| "I understand this kind of app, so it's bounded" | Bounded measures the repo, not your familiarity. A new project has no existing flow — it is architectural. |
+| "The spike works, so I'll keep the code" | A spike's output is an answer. Keeping the code is a new request — classify it. |
+| "It grew, but I'm almost done — no need to re-classify" | Hidden complexity upgrades the path mid-task. Stop and say so. |
+| "They approved the spike, so the follow-up change is approved too" | Each task gets its own classification and its own approval. |
+
 ## The Process
+
+Phases 1-8 below are the **architectural** path. A spike stops at "present the
+probe, get a nod, report". A bounded task uses Phase 1's dialogue and Phase 2's
+codebase exploration, presents its short design in chat, and stops there —
+Phase 3 onward is architectural-path depth.
 
 ### Phase 1: Understanding the Idea
 
@@ -287,12 +347,13 @@ Options:
 
 ## Key Principles
 
+- **Classify before you question** — Announce spike / bounded / architectural first, so your human partner can override the amount of process you're about to spend. What scales with simplicity is the artifact, never the approval.
 - **Skip what's not needed** — If the user arrives with a clear spec, skip Phase 1 dialogue and go straight to codebase exploration + analysis.
 - **One question at a time** — During Phase 1, never overwhelm with multiple questions.
 - **Phases, not micro-tasks** — Analysis groups work into logical phases. Micro-task breakdown belongs in writing-plans.
 - **NO implementation code** — Analysis describes WHAT and WHY, not HOW in code. Do not write implementation code, function bodies, or full code blocks. Use only: method signatures, interface definitions, pseudo-code, and short illustrative snippets. Detailed code belongs in the plan phase (writing-plans skill).
 - **File:line references** — Every affected file must have specific line references. Vague references are not acceptable.
 - **English output** — All artifacts and dialogue produced by this skill are in English.
-- **Cross-check is mandatory** — Never skip the BA + Dev + Security + Performance review dispatch.
+- **Cross-check is mandatory on the architectural path** — Once you are writing an analysis document, never skip the BA + Dev + Security + Performance review dispatch. Downgrading to "bounded" to escape the cross-check is the rationalization the Red Flags table names.
 - **Verify before writing** — Read the actual code before claiming anything about it. Do not guess file paths or line numbers.
 - **YAGNI ruthlessly** — Remove unnecessary features from all designs.

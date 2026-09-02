@@ -7,6 +7,114 @@ Project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [2.3.0] — 2026-09-02
+
+Selective upstream sync (obra/superpowers v6.2.0 → v6.3.0), Claude Code scope
+only. Upstream added no new skills and no new agents in this range; the bulk of
+its release was other harnesses (Devin CLI, Hermes Agent, Grok Build CLI, Codex,
+Copilot), all skipped. Two upstream changes were deliberately not taken: the
+`git worktree remove --force` guard in `finishing-a-development-branch` (we
+removed worktree handling from that skill entirely, and SDD forbids creating
+worktrees), and the ESM conversion of `render-graphs.js` (upstream can do it
+because its `package.json` declares `"type": "module"`; this repo has no
+`package.json`, so `import` would break the script under Node).
+
+### Changed
+- **`subagent-driven-development` — rulings replace stalls.** The controller no
+  longer parks the run on a plan conflict, an ambiguity, or a plan defect: it
+  decides, records `Ruling: <what> — <why> — <what it costs if wrong>` in the
+  ledger, and keeps going. Exactly four things still stop it — an irreversible
+  or destructive operation, a security-sensitive action, a side effect outside
+  this repository (merge, push to a shared branch, publish), and a plan so
+  broken every path forward is a guess. The breaker's load-bearing branch,
+  the BLOCKED handler, the plan-mandated-finding branch, the final-review
+  residuals and the process graph all follow. A donated upstream session had
+  sat blocked almost nine hours on a question the controller could have
+  decided itself.
+- **`subagent-driven-development` — `Finish` rolls up every ruling.** Before the
+  workspace is deleted, all `Ruling:` lines go into the final message under
+  "Rulings I made", in order, each with its cost if wrong. Otherwise decisions
+  taken on the human partner's behalf die with the workspace.
+- **`subagent-driven-development` — the pre-dispatch conflict scan produces a
+  table, not a verdict.** One row per task pair sharing a file or interface,
+  one row per task for internal self-agreement, written to the ledger.
+  "The scan is clean" without those rows is not a scan that was run.
+- **`subagent-driven-development` — same-shape micro-tasks batch.** Several
+  small independent edits of the same kind go out as ONE dispatch brief listing
+  every file and its change, reviewed as one diff. Reserves one-dispatch-per-task
+  for work needing its own judgement, tests, or review surface.
+- **`subagent-driven-development` — bounded waits.** No short-timeout polling and
+  no single open-ended wait: work locally while children run, and when genuinely
+  idle wait in five-to-ten-minute stretches, reconciling live children between
+  them so a stuck child is noticed in minutes.
+- **`subagent-driven-development` — reads the plan's analysis at setup.**
+  Conflicts inside a plan now resolve against the analysis document rather than
+  being guessed at; a plan with no reachable analysis gets a ledger note, and
+  rulings made without one are marked provisional.
+- **No-subagent contract for workers and reviewers.** `implementer-prompt.md`,
+  `task-reviewer-prompt.md`, `re-review-prompt.md`,
+  `requesting-code-review/code-reviewer.md` and all five agents in `agents/`
+  now state that they do the work themselves and never spawn subagents — above
+  all never a reviewer. Upstream observed every worker-spawned reviewer
+  duplicating the task review the controller dispatched anyway, a full extra
+  review seat per task.
+- **`task-reviewer-prompt.md` — illegible evidence is re-read, not re-run.** A
+  truncated or unlocatable test report is re-read at its stated path and, if
+  genuinely missing, reported as a gap; regenerating it by re-running the suite
+  is not verification.
+- **`task-reviewer-prompt.md` — batched dispatches are checked file by file.**
+  Every file listed in the brief must have its hunk; a listed file the diff
+  never touches is a Missing finding.
+- **`writing-plans` — plans carry an `Analysis:` pointer.** The plan argues from
+  the analysis, so the analysis travels with it, on single-phase plans too.
+  Executors read both.
+- **`analysis` — ceremony scales to the task.** A new classification gate at the
+  front of the skill routes the request to one of three paths, announced out
+  loud so the user can override: **spike** (feasibility question — present the
+  probe in 2-3 sentences, investigate, report a recommendation, keep no code),
+  **bounded** (a scoped change to a flow that already exists in this repo —
+  clarifying questions, a short design in chat, then straight to
+  implementation; no analysis document, no plan document), and
+  **architectural** (Phases 1-8 in full). Adds a `HARD-GATE`: every path stops
+  for explicit approval before implementation — what scales with simplicity is
+  the artifact, never the approval. The one-way ratchet upgrades the path when
+  hidden complexity appears and never downgrades. Adds a Red Flags table
+  covering the seven ways an agent talks itself into a lighter path, and scopes
+  "cross-check is mandatory" to the architectural path so it cannot be dodged by
+  relabelling.
+
+### Fixed
+- **`writing-skills/render-graphs.js` works on Windows.** `execFileSync('dot',
+  …)` replaces shelling out through `execSync`, and the availability probe runs
+  `dot -V` instead of `which dot`, which is not a command on Windows. The
+  CommonJS `require()` form is retained deliberately (see the note above).
+- **`subagent-driven-development` process graph** — the load-bearing-finding
+  branch now has an outgoing edge to the ledger-parking node. It was a dangling
+  terminal, which contradicted the new "rule and continue" semantics. (Fix is
+  ours; upstream left the node dangling.)
+
+### Removed
+- **The dead OpenCode/Codex surface.** `tests/opencode/` had failed since the
+  repository's first commit: `setup.sh` copies
+  `$REPO_ROOT/.opencode/plugins/superpowers.js`, and `.opencode/` has never
+  existed here — `git log main -- .opencode` is empty. The fork imported the
+  tests, `lib/skills-core.js` and the harness docs, but not the plugin they
+  exercise, so the suite tested a component this repository does not ship.
+  Nothing ship-side referenced any of it: `hooks/`, `bin/`, `commands/` and the
+  plugin manifest never mentioned `skills-core`, and `lib/skills-core.js` was
+  still on the pre-rename `superpowers:` namespace, having never been migrated
+  with the rest of the repository. Removed `tests/opencode/` (6 scripts),
+  `lib/skills-core.js` (emptying `lib/`), `docs/README.opencode.md` and
+  `docs/README.codex.md` — both install guides pointing at `obra/superpowers`
+  for harnesses this plugin does not target. The offline test sweep is now
+  honestly green rather than green-with-two-known-failures. Upstream's original
+  OpenCode design and implementation plans stay in `docs/plans/` as historical
+  record.
+
+### Security
+- Regenerated `.claude-plugin/integrity.sha256` for the changed `SKILL.md`
+  files.
+
 ## [2.2.0] — 2026-08-22
 
 Two additions aimed at the same problem: one session doing everything itself
