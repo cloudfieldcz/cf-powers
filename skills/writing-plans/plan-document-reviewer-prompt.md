@@ -1,37 +1,43 @@
 # Plan Document Reviewer Prompt Template
 
-Use this template when dispatching a plan document reviewer subagent.
+Use this template for the single plan reviewer dispatched by cf-powers:writing-plans.
 
-**Purpose:** Verify the plan is complete, matches the spec, and has proper task decomposition.
+**Purpose:** Catch only what is expensive or irreversible to discover after implementation starts.
 
-**Dispatch after:** The complete plan is written.
+**Dispatch after:** The complete plan is written. Once — there is no second round.
 
 ```
 Task tool (general-purpose):
   description: "Review plan document"
   prompt: |
-    You are a plan document reviewer. Verify this plan is complete and ready for implementation.
+    You are a plan document reviewer. The plan is a document; nobody has executed it. Your scope is narrow.
 
     **Plan to review:** [PLAN_FILE_PATH]
     **Spec for reference:** [SPEC_FILE_PATH]
 
-    ## What to Check
+    ## What You May Flag
+
+    Only findings that are expensive or irreversible to discover later:
 
     | Category | What to Look For |
     |----------|------------------|
-    | Completeness | TODOs, placeholders, incomplete tasks, missing steps |
-    | Spec Alignment | Plan covers spec requirements, no major scope creep |
-    | Task Decomposition | Tasks have clear boundaries, steps are actionable |
-    | Buildability | Could an engineer follow this plan without getting stuck? |
+    | Schema | a DB schema or migration shape other units will build on, and it is wrong |
+    | Contract | a public API, payload or cross-unit interface that is wrong, or missing from the Interfaces block that a later task consumes |
+    | Order | an ordering that leaves the tree red, or a dependency the index has backwards |
+    | Collision | two units that write the same files |
+    | Dropped | a spec requirement no task carries |
 
-    ## Calibration
+    ## What You May Not Do
 
-    **Only flag issues that would cause real problems during implementation.**
-    An implementer building the wrong thing or getting stuck is an issue.
-    Minor wording, stylistic preferences, and "nice to have" suggestions are not.
+    - Propose new features, buttons, endpoints or scope of any kind
+    - Prescribe UI markup, component choices, styling, copy or layout
+    - Rewrite or supply code snippets
+    - Raise style, naming or wording preferences
+    - Raise anything a code review of the finished diff would catch cheaply: whether a test passes, whether an element renders, error-handling detail
 
-    Approve unless there are serious gaps — missing requirements from the spec,
-    contradictory steps, placeholder content, or tasks so vague they can't be acted on.
+    **A finding that a code review would catch for free is not a plan finding. Silence is the expected output.**
+
+    You cannot see a rendered screen or run a test from this document. Do not sign off on markup or test bodies as correct — you are not in a position to know, and an approval you cannot back is worse than silence.
 
     ## Output Format
 
@@ -39,11 +45,10 @@ Task tool (general-purpose):
 
     **Status:** Approved | Issues Found
 
-    **Issues (if any):**
-    - [Task X, Step Y]: [specific issue] - [why it matters for implementation]
+    **Must-fix (if any):**
+    - [Task X]: [specific issue] - [what it costs to discover later]
 
-    **Recommendations (advisory, do not block approval):**
-    - [suggestions for improvement]
+    Nothing after the list: no notes, no observations, no recommendations, no strengths.
 ```
 
-**Reviewer returns:** Status, Issues (if any), Recommendations
+**Reviewer returns:** Status and the must-fix list. There is no recommendations slot — advisory suggestions are how a review grows the feature it was meant to check.

@@ -154,6 +154,31 @@ The TDD cycle — failing test, minimal implementation, refactor — is what
 trivial code and human prose earn none, and a test written to satisfy
 process costs maintenance forever.
 
+## What a Test Costs
+
+A test is code. It has bugs, it needs review, it needs maintenance, and it
+is read far more often than it is run.
+
+**If a derivation-based test takes longer to get right than the
+hand-written list it replaces, write the list.** Two signals it has
+crossed the line: it needs a docstring to justify its own design, or it
+needs its own bugfix commit. One branch carried a 118-line AST walker
+computing the transitive closure of calls to check that refusal codes had
+translations; it had a 20-line docstring defending itself and its own fix
+commit. A flat list of codes with one comment catches the same bug at a
+tenth of the cost.
+
+**Test a fact once, at one boundary.** The same constant pinned in a
+backend test, a frontend test and a locale test is one fact tested three
+times and three files to update when it changes. Three separate backend
+tests reading frontend files as text is the same disease.
+
+Coverage of the *specified* behaviour is not coverage of the *delivered*
+behaviour. 4 234 test lines proved every behaviour a plan described and
+none of them could see that the buttons had no chrome — see
+cf-powers:verification-before-completion, "Seeing Is a Verification
+Command".
+
 ## The Mutation Check
 
 Before finishing, mentally mutate the production code; at least one test
@@ -182,6 +207,8 @@ test as tautological.
 | Need cleanup only tests use | Put it in test utilities |
 | Watch mock setup balloon | Switch to an integration test with real components |
 | Finish a test file | Run the mutation check |
+| Derive the expected set programmatically | Compare the cost to a hand-written list; the list usually wins |
+| Pin the same fact in a second file | Delete one — a fact is tested once, at one boundary |
 
 ## Warning Signs
 
@@ -196,3 +223,5 @@ test as tautological.
 - A method is called only from test files
 - Mock setup is more than half the test, or you can't explain why the mock is needed
 - Mocking "just to be safe"
+- The test carries a docstring defending its own design, or needed its own bugfix commit
+- The same constant is asserted in more than one test file or layer

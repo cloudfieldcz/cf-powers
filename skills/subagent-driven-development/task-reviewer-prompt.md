@@ -92,6 +92,15 @@ Task tool (general-purpose):
     Re-running the suite to regenerate what you failed to read is not
     verification; illegibility of the evidence is not invalidation of it.
 
+    ## Rendered Surface
+
+    If the diff touches UI, the report must name each screen the implementer
+    opened, with a screenshot path or what they saw. A UI diff without that
+    line is an Important finding — the change is unverified on the axis
+    tests cannot see. You cannot see a screen from a diff either: never
+    approve markup as "renders correctly"; judge it against the screenshot
+    or flag it as unseen.
+
     ## Part 1: Spec Compliance
 
     Compare the diff against What Was Requested:

@@ -134,6 +134,11 @@ Task tool (general-purpose):
     - **TDD Evidence** (if TDD was required for this task):
       - RED: command run, relevant failing output before implementation, and why the failure was expected
       - GREEN: command run and relevant passing output after implementation
+    - **Rendered surface** (required if the task changes any UI): for each
+      screen touched, a screenshot path or "opened <screen>, saw <what>" —
+      via the `run` skill or Playwright. A green render test is not this
+      evidence; it proves presence in the DOM, not that a control looks like
+      a button
     - Files changed
     - Self-review findings (if any)
     - Any issues or concerns
@@ -143,6 +148,7 @@ Task tool (general-purpose):
     - **Status:** DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT
     - Commits created (short SHA + subject)
     - One-line test summary (e.g. "14/14 passing, output pristine")
+    - Screens looked at, one line each (or "no rendered surface changed")
     - Your concerns, if any
     - The report file path
 

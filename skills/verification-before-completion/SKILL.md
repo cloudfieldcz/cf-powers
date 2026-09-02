@@ -46,6 +46,14 @@ Skip any step = lying, not verifying
 | Regression test works | Red-green cycle verified | Test passes once |
 | Agent completed | VCS diff shows changes | Agent reports "success" |
 | Requirements met | Line-by-line checklist | Tests passing |
+| UI change works | The affected screen opened in the running app and looked at (screenshot) | Component tests pass, testids assert |
+| Feature is done | Every screen it touches seen running | Green suite, green build |
+
+## Seeing Is a Verification Command
+
+Every row above except the last two is something a terminal prints. None of them can see a screen. For any change that alters a rendered surface, the verification step is: **open the app on that screen and look at it**, or capture a screenshot — via the built-in `run` skill, or Playwright (`browser_take_screenshot`) when it is available.
+
+**Why:** a passing render test proves an element is in the DOM. It proves nothing about whether it has the shape a user recognises as a button. One branch shipped 4 234 lines of green tests, a green build and five review rounds, and its admin page rendered five of seven controls as bare text — the irreversible "reset" action was a scrap of red text. A person opened the page the next morning and saw it in one second. No command on this page could have.
 
 ## Red Flags - STOP
 
@@ -70,6 +78,7 @@ Skip any step = lying, not verifying
 | "I'm tired" | Exhaustion ≠ excuse |
 | "Partial check is enough" | Partial proves nothing |
 | "Different words so rule doesn't apply" | Spirit over letter |
+| "Component tests pass, the UI is fine" | A testid in the DOM is not a button on a screen. Open it. |
 
 ## Key Patterns
 
@@ -95,6 +104,12 @@ Skip any step = lying, not verifying
 ```
 ✅ Re-read plan → Create checklist → Verify each → Report gaps or completion
 ❌ "Tests pass, phase complete"
+```
+
+**Rendered surface:**
+```
+✅ [Open screen / screenshot] [See: controls render as buttons] "Page verified"
+❌ "Render tests pass" (they assert presence, not appearance)
 ```
 
 **Agent delegation:**

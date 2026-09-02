@@ -100,6 +100,11 @@ Task tool (general-purpose):
       required TDD: command, relevant output, why the failure was expected)
     - Files changed
     - Interfaces you created that a later unit will need to know about
+    - **Rendered surface** (required if the unit changes any UI): for each
+      screen touched, a screenshot path or "opened <screen>, saw <what>" —
+      via the `run` skill or Playwright. A green render test is not this
+      evidence; it proves presence in the DOM, not that a control looks like
+      a button
     - Self-review findings
     - Concerns, and anything in your scope you had to interpret
 
@@ -108,6 +113,7 @@ Task tool (general-purpose):
     - Items completed (N of M)
     - Commits created (short SHA + subject)
     - One-line test summary (e.g. "31/31 passing, output pristine")
+    - Screens looked at, one line each (or "no rendered surface changed")
     - Interfaces a later unit needs, one line each
     - Your concerns, if any
     - The report file path

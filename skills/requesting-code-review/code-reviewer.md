@@ -17,6 +17,14 @@ You are reviewing code changes for production readiness.
 
 {PLAN_REFERENCE}
 
+## Rendered Surface
+
+{UI_EVIDENCE}
+
+If the diff touches UI and this says "run it", open that screen before
+judging the change. A diff cannot show you whether a control renders as a
+button or as bare text; do not approve markup you have not seen rendered.
+
 ## Git Range to Review
 
 **Base:** {BASE_SHA}
@@ -56,6 +64,9 @@ so in your report.
 - Edge cases covered?
 - Integration tests where needed?
 - All tests passing?
+
+**Rendered surface (if UI changed):**
+- Seen running or in the screenshot — every control has the chrome its role implies?
 
 **Requirements:**
 - All plan requirements met?

@@ -32,7 +32,7 @@ Every feature starts the same way:
 ```
 
 1. **`/analyse`** — From idea to technical analysis in one step. Explores the idea through dialogue, then produces a full technical analysis (Czech output): architecture, DB changes, affected files, phases, risks, testing. Automatically dispatches BA and Developer reviewers for cross-check.
-2. **`/write-plan`** — Break the analysis into bite-sized TDD implementation tasks.
+2. **`/write-plan`** — Break the analysis into vertical-slice units and decision-level tasks; the implementer runs the TDD loop.
 3. **Execute** — Run the plan via subagent-driven development, or `/orchestrate` for a multi-phase index.
 
 What happens at step 3 depends on the size of the feature:

@@ -29,7 +29,14 @@ BASE_SHA=$(git rev-parse HEAD~1)  # or origin/main
 HEAD_SHA=$(git rev-parse HEAD)
 ```
 
-**2. Dispatch code-reviewer subagent:**
+**2. If the diff touches a rendered surface, capture it:** open the affected
+screen in the running app (the built-in `run` skill, or Playwright
+`browser_take_screenshot`) and save the screenshot path for the package. A
+diff-only reviewer has exactly the blindness a plan reviewer has — it cannot
+see a screen — and it approved markup that shipped as unstyled bare text.
+If you cannot capture it, the reviewer must be told to run the app itself.
+
+**3. Dispatch code-reviewer subagent:**
 
 Use Task tool with cf-powers:code-reviewer type, fill template at `code-reviewer.md`
 
@@ -43,8 +50,9 @@ however small the diff; see cf-powers:choosing-subagent-models.
 - `{BASE_SHA}` - Starting commit
 - `{HEAD_SHA}` - Ending commit
 - `{DESCRIPTION}` - Brief summary
+- `{UI_EVIDENCE}` - Screenshot path(s) of every screen the diff touches, or "no rendered surface changed", or "run it: <how>"
 
-**3. Act on feedback:**
+**4. Act on feedback:**
 - Fix Critical issues immediately
 - Fix Important issues before proceeding
 - Note Minor issues for later
@@ -83,6 +91,7 @@ You: [Fix progress indicators]
 | Excuse | Reality |
 |--------|---------|
 | "I'll just review the diff myself instead of dispatching a reviewer" | You're the coordinator — reviewing the diff inline burns the context window you need to keep driving the work. Dispatch a reviewer subagent: the diff and the evaluation live in its context, and only the findings come back to you. |
+| "The UI is covered by component tests, no screenshot needed" | Tests assert a testid exists. Neither the test nor a diff reader can see that the control looks like a paragraph. Capture the screen. |
 | "The reviewer needs my whole session history to understand the change" | Hand it precisely crafted context, never your session's history. That keeps the reviewer on the work product, not your thought process. |
 
 ## Red Flags

@@ -1,5 +1,5 @@
 ---
-description: Create detailed implementation plan with bite-sized tasks
+description: Create an implementation plan of vertical-slice units and decision-level tasks
 disable-model-invocation: true
 ---
 

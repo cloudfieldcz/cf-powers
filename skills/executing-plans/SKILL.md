@@ -46,7 +46,7 @@ so one session can drive the whole index without exhausting its context.
 
 For each task:
 1. Mark as in_progress
-2. Follow each step exactly (plan has bite-sized steps)
+2. Follow each task exactly; run the red-green-commit loop yourself (cf-powers:test-driven-development) — the plan states the deliverable, contract and trap, not the steps
 3. Run verifications as specified
 4. Mark as completed
 

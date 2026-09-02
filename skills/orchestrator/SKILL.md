@@ -116,8 +116,14 @@ only coordinates.
    - Either way, create one todo per unit.
 5. **Pre-flight.** From the list alone, check for units that contradict each
    other, an ordering the dependencies forbid, or two units that would edit the
-   same files. Present what you find as one batched question before dispatching
-   unit 1. If it is clean, proceed without comment.
+   same files. A shared-file collision is a **merge signal, not a question**:
+   two units that cannot run in parallel because they touch the same files are
+   one unit. Merge them, rewrite the work list, then dispatch. Ask your human
+   partner only when the merged unit would exceed what one executor can hold.
+   Contradictions and impossible orderings go to them as one batched question
+   before unit 1. If it is clean, proceed without comment. **Why:** a
+   twelve-unit index with four shared-file groups bought twelve rounds of
+   dispatch, review and bookkeeping and no parallelism at all.
 
 ## The Unit Loop
 
@@ -209,7 +215,11 @@ In one message:
 - append `Unit <N>: complete (commits <base7>..<head7>, review clean)` — or
   `…, <K> parked` after a tripped breaker — to the run ledger
 - update the unit's status in the work list (`⬚` → `✅` in a plan index, the
-  status column in `units.md`)
+  status column in `units.md`). A **tracked** index never gets a commit of its
+  own: fold the cell into the unit's last commit (`git commit --amend
+  --no-edit` before anything else lands) or batch the cells once per phase.
+  The ledger already carries the status; single-cell index commits were 22 of
+  one branch's 117.
 - mark the todo complete
 
 ### 7. Decide: continue or hand off
@@ -257,6 +267,8 @@ now), and cf-powers:finishing-a-development-branch to integrate.
 | "There's no plan, so there's no work list" | Then building the list is step one — scout it and write it down. An unwritten list is what gets half-executed. |
 | "The ledger is bookkeeping overhead" | It is the only thing that survives compaction. Without it, completed units get re-run. |
 | "Ask the partner which unit is next" | The list already answered that. Ask only when it is ambiguous or blocked. |
+| "Two units share a file — I'll ask how to sequence them" | Sharing files means they are one unit. Merge, rewrite the list, dispatch. |
+| "One status commit per unit keeps history honest" | The ledger is the record. Fold the cell into the unit's last commit or batch per phase. |
 
 ## Example: a plan index
 

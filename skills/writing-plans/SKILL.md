@@ -7,19 +7,37 @@ description: Use when you have a spec for a non-trivial task with non-obvious se
 
 ## Overview
 
-Write comprehensive implementation plans assuming the engineer has zero context for our codebase and questionable taste. Document everything they need to know: which files to touch for each task, code, testing, docs they might need to check, how to test it. Give them the whole plan as bite-sized tasks. DRY. YAGNI. TDD. Frequent commits.
+A plan records **decisions the implementer cannot cheaply re-derive**: the order that keeps the tree green, the files two units both touch, the exact contract between units (names, signatures, payload shapes), values copied verbatim from the spec, and the specific trap in this codebase that will bite them. Everything the implementer would arrive at on their own by reading the surrounding code is **transcription**. Cut it.
 
-Assume they are a skilled developer, but know almost nothing about our toolset or problem domain. Assume they don't know good test design very well.
+Assume a skilled developer who knows almost nothing about our toolset or problem domain and who runs cf-powers:test-driven-development on their own. The plan tells them what to build and what must not be got wrong; it does not do the work for them in Markdown.
 
 **Announce at start:** "I'm using the writing-plans skill to create the implementation plan."
 
 **Context:** The user manages their own branches. Verify they are on a feature branch before starting.
 
-**IMPORTANT:** The index file is the central orchestration point. Each phase plan must be self-contained — an executor should be able to pick up any single phase file and implement it without reading other phases.
+**IMPORTANT:** The index file is the central orchestration point. Each unit plan must be self-contained — an executor should be able to pick up any single plan file and implement it without reading other plans.
+
+## Plan Budget
+
+A plan is shorter than the code it describes: **at most a third of the production lines you expect the unit to add.** A unit that will add ~200 lines of code gets a **30-60 line** plan. Count before you save.
+
+**Stop rule:** if your plan is longer than the diff will be, you are writing the implementation twice. Stop and cut it.
+
+**Why:** a plan that contains the code is the implementation written once in Markdown and again in the editor by the same model, then deleted before the squash. One feature of 2 370 production lines carried 7 716 lines of plans — the largest line item on its branch, and none of it shipped.
+
+## Units Are Vertical Slices
+
+A unit (one plan file — a "phase" in the index) is a **user-visible capability end to end**: its validation, storage, endpoint and UI together, not a layer. The layers of one capability are reviewed and shipped together, so they are planned together.
+
+**The split test:** if two units cannot be worked by two agents at the same time because they touch the same files, they are one unit. A shared-file table in a plan index is not a coordination aid — it is proof the split was wrong. Merge and re-plan.
+
+**Default low.** Prefer 3 units over 12. Each extra unit costs a plan document, a review pass, a dispatch, a verdict and a status commit; split only where it buys real parallelism or a genuinely separate review gate. **Why:** a twelve-unit index split by layer (validation / columns / GraphQL / boot API / theme / context / page / …) had to list four groups of units sharing files. Nothing ran concurrently, and the split bought twelve rounds of overhead for what was three slices of work.
+
+The analysis document's phases are a proposal, not the unit list. Apply the split test to them before creating plan files.
 
 ## Multi-Phase Features
 
-When the input (analysis document) defines multiple implementation phases, create **one plan file per phase** plus an **index file**:
+When the work has more than one unit, create **one plan file per unit** plus an **index file**:
 
 ```
 docs/plans/YYYY-MM-DD-<feature-name>-plan-index.md    ← orchestration dashboard
@@ -28,7 +46,7 @@ docs/plans/YYYY-MM-DD-<feature-name>-plan-2-<phase>.md ← phase 2 tasks
 docs/plans/YYYY-MM-DD-<feature-name>-plan-3-<phase>.md ← phase 3 tasks
 ```
 
-For simple features with only one phase, skip the index and create a single plan: `docs/plans/YYYY-MM-DD-<feature-name>-plan.md`
+For a single-unit feature, skip the index and create a single plan: `docs/plans/YYYY-MM-DD-<feature-name>-plan.md`
 
 ### Index File Structure
 
@@ -51,8 +69,9 @@ For simple features with only one phase, skip the index and create a single plan
 
 ## Notes
 
-- Phases with no dependency between them can be executed in parallel
+- Phases with no dependency between them can be executed in parallel; if two phases share a file, they are one phase
 - Each phase plan is self-contained and can be executed independently via executing-plans or subagent-driven-development
+- Status cells are updated inside the phase's own last commit or once per batch — never in a commit of their own
 ```
 
 ## File Structure
@@ -64,25 +83,11 @@ Before defining tasks, map out which files will be created or modified and what 
 - Files that change together should live together. Split by responsibility, not by technical layer.
 - In existing codebases, follow established patterns. If the codebase uses large files, don't unilaterally restructure - but if a file you're modifying has grown unwieldy, including a split in the plan is reasonable.
 
-This structure informs the task decomposition. Each task should produce self-contained changes that make sense independently.
+## Task Granularity
 
-## Task Right-Sizing
+A task is the smallest deliverable a fresh reviewer could reject while approving its neighbour. Fold setup, configuration, scaffolding and documentation into the task whose deliverable needs them.
 
-A task is the smallest unit that carries its own test cycle and is worth a
-fresh reviewer's gate. When drawing task boundaries: fold setup,
-configuration, scaffolding, and documentation steps into the task whose
-deliverable needs them; split only where a reviewer could meaningfully
-reject one task while approving its neighbor. Each task ends with an
-independently testable deliverable.
-
-## Bite-Sized Task Granularity
-
-**Each step is one action (2-5 minutes):**
-- "Write the failing test" - step
-- "Run it to make sure it fails" - step
-- "Implement the minimal code to make the test pass" - step
-- "Run the tests and make sure they pass" - step
-- "Commit" - step
+A task states five things: what it delivers, which files, the contract it produces for later tasks, how it is verified, and the trap. Nothing else. Red-green-commit is the implementer's loop and already lives in cf-powers:test-driven-development — a plan does not enumerate "write the failing test / run it / implement / run / commit" per task. Those five lines, repeated twelve times, are the bulk of every oversized plan.
 
 ## Plan Document Header
 
@@ -91,7 +96,7 @@ independently testable deliverable.
 ```markdown
 # [Feature Name] — Phase N: [Phase Name]
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use cf-powers:subagent-driven-development (recommended) or cf-powers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use cf-powers:subagent-driven-development (recommended) or cf-powers:executing-plans to implement this plan task-by-task. Tasks use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** [One sentence describing what this phase builds]
 
@@ -120,6 +125,8 @@ For single-phase plans (no index), omit the **Index:** line and the "Phase N:" f
 ````markdown
 ### Task N: [Component Name]
 
+- [ ] **Delivers:** [one sentence — the capability this task adds, as the user or the next task sees it]
+
 **Files:**
 - Create: `exact/path/to/file.py`
 - Modify: `exact/path/to/existing.py:123-145`
@@ -131,65 +138,53 @@ For single-phase plans (no index), omit the **Index:** line and the "Phase N:" f
   and return types. A task's implementer sees only their own task; this
   block is how they learn the names and types neighboring tasks use.]
 
-- [ ] **Step 1: Write the failing test**
+**Decisions:** [only what is non-obvious and expensive to get wrong — a
+schema, a migration, a limit or regex copied from the spec, a security
+constraint. Code appears here only when a sentence cannot carry it.]
 
-```python
-def test_specific_behavior():
-    result = function(input)
-    assert result == expected
-```
+**Trap:** [the one thing in this codebase that will bite, e.g. "`TerraButton`
+is a bare primitive; callers must add their own button chrome"]
 
-- [ ] **Step 2: Run test to verify it fails**
-
-Run: `pytest tests/path/test.py::test_name -v`
-Expected: FAIL with "function not defined"
-
-- [ ] **Step 3: Write minimal implementation**
-
-```python
-def function(input):
-    return expected
-```
-
-- [ ] **Step 4: Run test to verify it passes**
-
-Run: `pytest tests/path/test.py::test_name -v`
-Expected: PASS
-
-- [ ] **Step 5: Commit**
-
-```bash
-git add tests/path/test.py src/path/file.py
-git commit -m "feat: add specific feature"
-```
+**Verify:** `pytest tests/exact/path/to/test.py -v` green; [the spec
+behaviour to check by hand]. If this task changes a rendered surface, the
+last line is always: *open the affected screen in the running app and look
+at it (screenshot).* This line is never folded away or delegated to a test.
 ````
 
 ## No Placeholders
 
-Every step must contain the actual content an engineer needs. These are **plan failures** — never write them:
+Every task must contain what an engineer needs to act. These are **plan failures** — never write them:
 - "TBD", "TODO", "implement later", "fill in details"
 - "Add appropriate error handling" / "add validation" / "handle edge cases"
-- "Write tests for the above" (without actual test code)
-- "Similar to Task N" (repeat the code — the engineer may be reading tasks out of order)
-- Steps that describe what to do without showing how (code blocks required for code steps)
-- References to types, functions, or methods not defined in any task
+- "Similar to Task N" (state it again — the engineer may be reading tasks out of order)
+- References to types, functions, or methods not defined in any task's Interfaces block
 
-## Plan Review Loop
+**Code belongs in a plan only where the choice is non-obvious and getting it wrong is expensive:** a schema, a migration, a cross-unit contract, a security constraint, an exact regex or limit from the spec. Never paste a component body, a test body, or a function the implementer will write anyway.
 
-After writing the complete plan:
+The replacement for a code block is the exact file, the exact signature, and the decision. `validate_branding_asset(kind, data) -> None, raises BrandingRefusal(code)` is a contract. Forty lines of its body is transcription.
 
-1. Dispatch plan review subagents with precisely crafted review context — never your session history. This keeps reviewers focused on the plan, not your thought process.
-   - **Developer review** (always): general-purpose subagent following cf-powers:review-as-dev — verifies file paths exist or marked as new, code snippets are correct, test cases cover the right scenarios, task ordering makes sense, no gaps between analysis and plan
-   - **Security review** (if plan touches auth, data handling, external APIs, trust boundaries): general-purpose subagent following cf-powers:review-as-security — verifies plan doesn't introduce security regressions, trust boundaries are maintained, input validation is included in tasks
-   - **Performance review** (if plan touches DB queries, data processing, caching, search): general-purpose subagent following cf-powers:review-as-perf — verifies indexes are planned, no N+1 patterns in tasks, caching strategy is sound, algorithm choices are appropriate
-   - Provide each reviewer: path to the plan document, path to analysis/spec document
-2. If Issues Found: fix the issues, re-dispatch reviewer for the whole plan
-3. If Approved: proceed to execution handoff
+## Plan Review
 
-**Review loop guidance:**
-- Same agent that wrote the plan fixes it (preserves context)
-- If loop exceeds 3 iterations, surface to human for guidance
-- Reviewers are advisory — explain disagreements if you believe feedback is incorrect
+Review happens on code, once. A plan gets a review only when it draws a shape that is expensive to reverse after implementation starts: **if no task's Decisions block introduces a DB schema or migration, a public API or payload shape, or a cross-unit contract, skip the plan review entirely** and go to Execution Handoff.
+
+When one of those is present: one reviewer, one pass, narrow scope. Dispatch a single general-purpose subagent with [plan-document-reviewer-prompt.md](plan-document-reviewer-prompt.md), giving it the plan path and the analysis path — never your session history.
+
+The only findings it may return are ones **expensive or irreversible to discover later**:
+- a DB schema or migration shape other units will build on
+- a public API, payload or cross-unit contract shape
+- an ordering that would leave the tree red, or a dependency the index has backwards
+- two units that write the same files
+- a spec requirement silently dropped from every task
+
+Everything else — whether a test will pass, whether markup renders, naming, wording — the implementer finds out in one command and code review catches for free. A plan reviewer reasoning about it is guessing.
+
+**One iteration.** Fix what came back; do not re-dispatch. If the reviewer returns more than ~3 must-fix items, the plan is too detailed, not too thin — cut it rather than grow it.
+
+**Security review** (cf-powers:review-as-security) only where a trust boundary is drawn for the first time: a new endpoint's authz, a new upload path, a new external input. Not because the feature "touches data". No performance review of a document — performance is measured on code.
+
+## Anti-patterns
+
+**Reviewing the document instead of the code.** One branch ran three reviewers over its plans for up to three rounds each. The result: whole commits whose only content was edits to plan files; a destructive "reset all branding" button nobody had asked for, proposed as a review finding and inserted into a plan; and explicit approval of `<TerraButton style={{ color: "var(--danger)" }}>` on a primitive whose docstring says callers must supply their own look — which shipped as an unstyled scrap of red text a human found the next morning. A reviewer reading a document cannot see a rendered screen. It spent its budget where it was blind and approved what it could not check.
 
 ## Execution Handoff
 

@@ -7,6 +7,51 @@ Project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [2.4.0] — 2026-09-02
+
+Real-usage feedback release: a CRUD feature in a consuming project cost 117
+commits, 7 716 plan lines for 2 370 code lines, and shipped an admin page whose
+buttons had no chrome despite 4 234 test lines and five review rounds.
+
+### Changed
+- **`writing-plans` — plans record decisions, not the implementation.** New
+  Plan Budget (at most a third of the expected production lines; a ~200-line
+  unit gets a 30-60 line plan, with a stop rule), a decision-vs-transcription
+  test for every line, a task template of Delivers / Files / Interfaces /
+  Decisions / Trap / Verify in place of the five-step TDD enumeration, and a
+  No Placeholders section that bans vagueness without demanding code. Units
+  are vertical slices with a checkable split test: two units that touch the
+  same files are one unit. Real-session evidence: a CRUD feature of 2 370
+  production lines carried 7 716 lines of plans and 117 commits.
+- **`writing-plans` — plan review is skipped unless a task's Decisions block
+  draws a schema, public API/payload shape or cross-unit contract; then one
+  reviewer, one pass, narrow scope.** Replaces the dev + security + perf loop
+  of up to three rounds. The reviewer
+  prompt now lists what it may not do (no new scope, no UI markup, no code, no
+  style, nothing code review catches for free); security review only where a
+  trust boundary is drawn for the first time; more than ~3 must-fix findings
+  means cut the plan, not re-dispatch. The old loop produced plan-only
+  commits, invented a destructive button, and approved the markup that
+  shipped broken.
+- **`verification-before-completion` — seeing is a verification command.**
+  Two new Common Failures rows (UI change works / Feature is done) and a
+  section naming the mechanism (`run` skill, Playwright screenshot). Every
+  prior row was something a terminal prints.
+- **`orchestrator/unit-executor-prompt`, `subagent-driven-development`
+  implementer and task-reviewer prompts — rendered-surface evidence.** A unit
+  or task that changes UI reports each screen opened (screenshot path or what
+  was seen); the task reviewer treats a UI diff without it as Important and
+  never approves markup as rendering correctly from the diff alone.
+- **`requesting-code-review` — `{UI_EVIDENCE}` placeholder.** A diff that
+  touches a rendered surface ships with a screenshot or an instruction to run
+  the app; the reviewer template checks the rendered surface.
+- **`orchestrator` — shared-file collisions are a merge signal**, not a
+  batched question; tracked-index status cells are folded into the unit's
+  last commit or batched per phase, never committed alone.
+- **`test-driven-development/writing-good-tests` — "What a Test Costs".**
+  Prefer the hand-written list over a derivation that needs a defending
+  docstring; test a fact once, at one boundary.
+
 ## [2.3.0] — 2026-09-02
 
 Selective upstream sync (obra/superpowers v6.2.0 → v6.3.0), Claude Code scope
