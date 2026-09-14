@@ -5,6 +5,8 @@ description: Use for non-trivial implementations involving design choices, multi
 
 # From Idea to Technical Analysis
 
+**Runtime:** Before using host tools or dispatching, read [runtime operations](../using-superpowers/references/runtime.md) and its active-host reference (once per context). Keep this skill's workflow decisions unchanged.
+
 ## Overview
 
 A single skill that takes you from a vague idea to a reviewed technical analysis document, ready for implementation planning. Combines collaborative dialogue (understanding what to build) with rigorous technical analysis (how to build it).
@@ -277,14 +279,19 @@ Save the document to `docs/plans/YYYY-MM-DD-<topic>.md`. Commit to git.
 
 ### Phase 6: Dispatch Cross-Check Reviews
 
-**REQUIRED:** After saving, dispatch four review subagents in parallel using the Task tool.
-Leave their model unset so they inherit the session's default (Opus) — review is
-the one tier that is never downgraded, per cf-powers:choosing-subagent-models.
+**REQUIRED:** After saving, dispatch the four review subagents below using the
+active runtime. Run them in parallel up to available capacity, queueing the rest.
+All use the judgment tier per cf-powers:choosing-subagent-models. Give each child
+the absolute runtime reference, role file and review-skill path from this plugin;
+role files are `agents/business-analyst-reviewer.md`, `developer-reviewer.md`,
+`security-reviewer.md` and `performance-reviewer.md` respectively. Review source
+files read-only; write only the assigned review report. The examples below are
+dispatch briefs, not a literal tool schema.
 
 **Business Analyst Review:**
 ```
-Task tool:
-  subagent_type: general-purpose
+Reviewer dispatch:
+  role: general-purpose
   description: "BA review of analysis"
   prompt: >
     You are a Business Analyst reviewer.
@@ -297,8 +304,8 @@ Task tool:
 
 **Developer Review:**
 ```
-Task tool:
-  subagent_type: general-purpose
+Reviewer dispatch:
+  role: general-purpose
   description: "Dev review of analysis"
   prompt: >
     You are a Developer reviewer.
@@ -312,8 +319,8 @@ Task tool:
 
 **Security Review:**
 ```
-Task tool:
-  subagent_type: general-purpose
+Reviewer dispatch:
+  role: general-purpose
   description: "Security review of analysis"
   prompt: >
     You are a Security Engineer reviewer.
@@ -321,15 +328,15 @@ Task tool:
 
     Document to review: docs/plans/YYYY-MM-DD-<topic>.md
 
-    Read the actual codebase to verify security claims. Check CLAUDE.md for
+    Read the actual codebase to verify security claims. Check applicable project instructions (CLAUDE.md on Claude, AGENTS.md on Codex) for
     project-specific security invariants. Provide your structured review
     following the skill's output format.
 ```
 
 **Performance Review:**
 ```
-Task tool:
-  subagent_type: general-purpose
+Reviewer dispatch:
+  role: general-purpose
   description: "Performance review of analysis"
   prompt: >
     You are a Performance Engineer reviewer.

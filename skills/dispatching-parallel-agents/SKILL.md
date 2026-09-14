@@ -5,6 +5,8 @@ description: Use when facing 2+ independent tasks that can be worked on without 
 
 # Dispatching Parallel Agents
 
+**Runtime:** Before using host tools or dispatching, read [runtime operations](../using-superpowers/references/runtime.md) and its active-host reference (once per context). Keep this skill's workflow decisions unchanged.
+
 ## Overview
 
 You delegate tasks to specialized agents with isolated context. By precisely crafting their instructions and context, you ensure they stay focused and succeed at their task. They should never inherit your session's context or history — you construct exactly what they need. This also preserves your own context for coordination work.
@@ -50,9 +52,9 @@ digraph when_to_use {
 explicitly on every dispatch — parallel dispatch multiplies the cost of
 defaulting to the session's model, since you pay it N times at once.
 
-The usual split here: mechanical sweeps across a file list on Haiku, focused
-single-domain fixes with a clear symptom on Sonnet, unknown root causes and
-every reviewer on Opus.
+The usual split here: mechanical sweeps across a file list on the mechanical tier, focused
+single-domain fixes with a clear symptom on the implementation tier, unknown
+root causes and every reviewer on the judgment tier.
 
 ## The Pattern
 

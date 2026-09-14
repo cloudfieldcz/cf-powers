@@ -5,6 +5,8 @@ description: Use when reviewing a technical analysis, design document, or specif
 
 # Review as Developer
 
+**Runtime:** Before using host tools or dispatching, read [runtime operations](../using-superpowers/references/runtime.md) and its active-host reference (once per context). Keep this skill's workflow decisions unchanged.
+
 ## Overview
 
 Review a technical analysis or specification document from a senior developer perspective. Focus on whether the proposed solution is technically sound, feasible, and addresses architecture, performance, and security concerns.

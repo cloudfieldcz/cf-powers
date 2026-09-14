@@ -8,12 +8,13 @@ code quality.
 more, nothing less) and is well-built (clean, tested, maintainable)
 
 ```
-Task tool (general-purpose):
+Dispatch brief (translate through the active runtime):
   description: "Review Task N (spec + quality)"
-  model: [Opus — leave unset to inherit the session default. Review is the one
-         tier that is never downgraded to save time; see
-         cf-powers:choosing-subagent-models]
+  tier: judgment — resolve through cf-powers:choosing-subagent-models;
+        inherit only when the parent provides that tier
   prompt: |
+    Runtime reference: [ABSOLUTE_RUNTIME_REFERENCE_PATH]. Read it before using
+    skills or runtime tools; follow only the instructions for your assigned role.
     You are reviewing one task's implementation: first whether it matches its
     requirements, then whether it is well-built. This is a task-scoped gate,
     not a merge review — a broad whole-branch review happens separately after
@@ -198,8 +199,8 @@ Task tool (general-purpose):
 ```
 
 **Placeholders:**
-- `[MODEL]` — Opus, per cf-powers:choosing-subagent-models (leave unset to
-  inherit the session default)
+- `tier` — judgment, resolved per cf-powers:choosing-subagent-models; inherit
+  only from a known judgment-tier parent
 - `[BRIEF_FILE]` — REQUIRED: the task brief file (`scripts/task-brief PLAN N`
   prints the path; same file the implementer worked from)
 - `[GLOBAL_CONSTRAINTS]` — the binding requirements copied verbatim from

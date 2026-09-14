@@ -5,6 +5,8 @@ description: Use when executing implementation plans with independent tasks in t
 
 # Subagent-Driven Development
 
+**Runtime:** Before using host tools or dispatching, read [runtime operations](../using-superpowers/references/runtime.md) and its active-host reference (once per context). Keep this skill's workflow decisions unchanged.
+
 Execute plan by dispatching a fresh implementer subagent per task, a task review (spec compliance + code quality) after each, and a broad whole-branch review at the end.
 
 **Why subagents:** You delegate tasks to specialized agents with isolated context. By precisely crafting their instructions and context, you ensure they stay focused and succeed at their task. They should never inherit your session's context or history — you construct exactly what they need. This also preserves your own context for coordination work.
@@ -130,7 +132,9 @@ digraph process {
 
 ## Setup
 
-Verify the work is on a feature branch before dispatching anything. Your
+Inspect the Git environment with the active runtime reference. Use an existing
+feature branch or host-provided detached worktree; a detached workspace needs
+a valid integration handoff rather than an invented branch name. Your
 human partner manages their own branches; do not create worktrees
 automatically. Never start implementation on a main/master branch without
 their explicit consent.
@@ -190,20 +194,19 @@ emerge from implementation.
 ## Model Selection
 
 **REQUIRED SUB-SKILL:** cf-powers:choosing-subagent-models. Read it before the
-first dispatch. Its rule in one line: pick the tier from how much the task has
-to decide, and name it on every dispatch where the answer is not Opus — an
-omitted model inherits your session's default (Opus), which is correct for a
-reviewer and wasted latency for a mechanical implementer.
+first dispatch. Pick the tier from how much the task has to decide and resolve
+it through the active runtime. Record the actual model/effort or deliberate
+inheritance; never assume the session default is the judgment tier.
 
 How it lands on the roles in this loop:
 
 | Role | Tier |
 |---|---|
-| Implementer, plan text contains the code to write (transcription + testing) | Haiku |
-| Implementer, single-file mechanical change | Haiku |
-| Implementer, 1-2 files with a complete spec, shape already decided | Sonnet |
-| Implementer, multi-file integration or an open design question | Opus |
-| **Task reviewer, scoped re-reviewer, final whole-branch reviewer** | **Opus, always** — leave `model` unset |
+| Implementer, plan text contains the code to write (transcription + testing) | Mechanical |
+| Implementer, single-file mechanical change | Mechanical |
+| Implementer, 1-2 files with a complete spec, shape already decided | Implementation |
+| Implementer, multi-file integration or an open design question | Judgment |
+| **Task reviewer, scoped re-reviewer, final whole-branch reviewer** | **Judgment, always** — inherit only from a known judgment-tier parent |
 | Fix-loop escalation (rounds 4-5) | at least one tier above the implementer that got stuck |
 
 **Reviews are never downgraded, whatever the diff looks like.** A small diff does
@@ -211,7 +214,7 @@ not change who is qualified to judge it, and in this repo review has repeatedly
 found blocking defects that a fully green test suite did not.
 
 **Turn count beats token price.** The cheapest tier routinely takes 2-3x the
-turns on multi-step work and costs more overall. Sonnet is the floor for an
+turns on multi-step work and costs more overall. The implementation tier is the floor for an
 implementer working from prose rather than from spelled-out code.
 
 ## The Task Loop
@@ -368,8 +371,9 @@ Everything else enters the loop. A fix round is one fix dispatch plus one
 scoped re-review. Five rounds maximum per task:
 
 **Rounds 1-3 — resume the original implementer.** Send it the open findings
-verbatim with SendMessage, addressed to the agent ID you recorded at
-dispatch. Its context is intact: it knows the task, the code, and its own
+verbatim with the runtime's turn-triggering follow-up/resume operation,
+addressed to the agent ID you recorded at dispatch. On Codex this is
+`followup_task` when exposed, not a passive message to an idle agent. Its context is intact: it knows the task, the code, and its own
 choices. If that agent is gone — a compacted or restarted session loses the
 handle — dispatch a fresh implementer carrying the brief path, the
 report-file path, and the findings; the report file is the persistent memory

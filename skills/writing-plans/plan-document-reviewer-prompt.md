@@ -7,9 +7,12 @@ Use this template for the single plan reviewer dispatched by cf-powers:writing-p
 **Dispatch after:** The complete plan is written. Once — there is no second round.
 
 ```
-Task tool (general-purpose):
+Dispatch brief (translate through the active runtime):
   description: "Review plan document"
+  tier: judgment — resolve through cf-powers:choosing-subagent-models
   prompt: |
+    Runtime reference: [ABSOLUTE_RUNTIME_REFERENCE_PATH]. Read it before using
+    skills or runtime tools; follow only the instructions for your assigned role.
     You are a plan document reviewer. The plan is a document; nobody has executed it. Your scope is narrow.
 
     **Plan to review:** [PLAN_FILE_PATH]

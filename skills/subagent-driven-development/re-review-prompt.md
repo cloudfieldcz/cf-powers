@@ -10,10 +10,11 @@ that the fix itself broke nothing.
 ```
 Subagent (general-purpose):
   description: "Re-review Task N fix round R"
-  model: [Opus — leave unset to inherit the session default. A re-review is a
-         review; per cf-powers:choosing-subagent-models it is never downgraded,
-         however small the fix diff is]
+  tier: judgment — resolve through cf-powers:choosing-subagent-models;
+        inherit only when the parent provides that tier
   prompt: |
+    Runtime reference: [ABSOLUTE_RUNTIME_REFERENCE_PATH]. Read it before using
+    skills or runtime tools; follow only the instructions for your assigned role.
     You are re-reviewing one task's fix round. A previous review produced
     findings; an implementer has attempted to fix them. Your job is to
     verdict each finding and inspect the fix diff — nothing else.
@@ -102,8 +103,8 @@ Subagent (general-purpose):
 ```
 
 **Placeholders:**
-- `[MODEL]` — Opus, per cf-powers:choosing-subagent-models (leave unset to
-  inherit the session default). A small fix diff does not change who is
+- `tier` — judgment, resolved per cf-powers:choosing-subagent-models; inherit
+  only from a known judgment-tier parent. A small fix diff does not change who is
   qualified to judge it
 - `[BRIEF_FILE]` — the task brief file (same file the implementer worked from)
 - `[FINDINGS]` — the Critical/Important findings and spec gaps from the

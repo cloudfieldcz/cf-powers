@@ -5,6 +5,8 @@ description: Use when you have a spec for a non-trivial task with non-obvious se
 
 # Writing Plans
 
+**Runtime:** Before using host tools or dispatching, read [runtime operations](../using-superpowers/references/runtime.md) and its active-host reference (once per context). Keep this skill's workflow decisions unchanged.
+
 ## Overview
 
 A plan records **decisions the implementer cannot cheaply re-derive**: the order that keeps the tree green, the files two units both touch, the exact contract between units (names, signatures, payload shapes), values copied verbatim from the spec, and the specific trap in this codebase that will bite them. Everything the implementer would arrive at on their own by reading the surrounding code is **transcription**. Cut it.
@@ -13,7 +15,10 @@ Assume a skilled developer who knows almost nothing about our toolset or problem
 
 **Announce at start:** "I'm using the writing-plans skill to create the implementation plan."
 
-**Context:** The user manages their own branches. Verify they are on a feature branch before starting.
+**Context:** The user manages their own branches. Verify a feature branch before starting, or use a host-provided detached
+worktree via the runtime reference. On main/master, obtain the user's branch
+choice before writing unless they already explicitly authorized work there.
+Preserve their workspace choice.
 
 **IMPORTANT:** The index file is the central orchestration point. Each unit plan must be self-contained — an executor should be able to pick up any single plan file and implement it without reading other plans.
 
@@ -167,7 +172,7 @@ The replacement for a code block is the exact file, the exact signature, and the
 
 Review happens on code, once. A plan gets a review only when it draws a shape that is expensive to reverse after implementation starts: **if no task's Decisions block introduces a DB schema or migration, a public API or payload shape, or a cross-unit contract, skip the plan review entirely** and go to Execution Handoff.
 
-When one of those is present: one reviewer, one pass, narrow scope. Dispatch a single general-purpose subagent with [plan-document-reviewer-prompt.md](plan-document-reviewer-prompt.md), giving it the plan path and the analysis path — never your session history.
+When one of those is present: one reviewer, one pass, narrow scope. Use the judgment tier per cf-powers:choosing-subagent-models. Dispatch a single general-purpose subagent with [plan-document-reviewer-prompt.md](plan-document-reviewer-prompt.md), giving it the plan path and the analysis path — never your session history.
 
 The only findings it may return are ones **expensive or irreversible to discover later**:
 - a DB schema or migration shape other units will build on

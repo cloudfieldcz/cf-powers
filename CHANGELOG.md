@@ -7,6 +7,26 @@ Project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [2.5.0] — 2026-09-14
+
+### Added
+- Native Codex plugin manifest and repo marketplace, sharing the cf-powers skill
+  bodies and reviewer definitions with Claude.
+- Runtime references for skill loading, model tiers, reviewer dispatch, worker
+  continuation, bounded waits, available slots and detached worktree handoff.
+- Read-only `bin/check-integrity`; Codex runs hookless like upstream v6.3.0.
+- Offline integrity/manifest tests and an isolated real Codex install/update test
+  using skills/list and hooks/list, plus reproducible behavior fixtures.
+
+### Compatibility
+- Preserved cf-powers workflow decisions. Model labels and tool invocations now
+  resolve through the active runtime; all review tiers, skip flags, conditional
+  plan review, SDD fix limits and orchestrator ledgers remain local policy.
+- Codex CLI 0.154.0 native install/update/discovery and a clean-context review
+  forward-test passed. Full workflow, desktop UI and new Claude behavior checks
+  remain tracked in `docs/codex-verification.md`; previous Claude test results
+  cover the upstream-sync baseline, not this port.
+
 ### Changed
 - **`analysis` — preserve intent.** Adapted upstream dev `3b4f2ca`: distinguish
   requirements from assumptions in the existing design summary and carry the
@@ -17,7 +37,7 @@ Project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   phase order. Plan-only requests stop at delivery; already-authorized
   execution proceeds. Keeps v2.4.0's conditional plan review.
 - **Upstream tracking.** Corrected the stale v6.2.0 sync reference and recorded
-  the current main/dev audit. Runtime support remains Claude Code.
+  the current main/dev audit. The subsequent Codex port adds dual-runtime support.
 
 ## [2.4.0] — 2026-09-02
 

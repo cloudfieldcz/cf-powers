@@ -5,6 +5,8 @@ description: Use when completing tasks, implementing major features, or before m
 
 # Requesting Code Review
 
+**Runtime:** Before using host tools or dispatching, read [runtime operations](../using-superpowers/references/runtime.md) and its active-host reference (once per context). Keep this skill's workflow decisions unchanged.
+
 Dispatch cf-powers:code-reviewer subagent to catch issues before they cascade. The reviewer gets precisely crafted context for evaluation — never your session's history.
 
 **Core principle:** Review early, review often.
@@ -38,10 +40,13 @@ If you cannot capture it, the reviewer must be told to run the app itself.
 
 **3. Dispatch code-reviewer subagent:**
 
-Use Task tool with cf-powers:code-reviewer type, fill template at `code-reviewer.md`
+Use the active runtime with the cf-powers code-reviewer role and fill the
+template at `code-reviewer.md`. On Codex, pass the resolved absolute path to
+`agents/code-reviewer.md` as well as the template and evidence; its frontmatter
+is Claude registration metadata, while the body is the shared review role.
 
-Dispatch it on **Opus** — leave `model` unset so it inherits the session
-default. Review is the one role that is never downgraded to a cheaper tier,
+Dispatch it on the **judgment tier**. Inherit only when the parent is known to
+provide that tier. Review is the one role that is never downgraded to a cheaper tier,
 however small the diff; see cf-powers:choosing-subagent-models.
 
 **Placeholders:**

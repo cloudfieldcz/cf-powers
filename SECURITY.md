@@ -4,8 +4,9 @@
 
 | Version | Supported |
 |---------|-----------|
-| 1.7.x   | :white_check_mark: |
-| < 1.7   | :x:       |
+| 2.4.x (Claude Code) | :white_check_mark: |
+| 2.5.x (Claude Code + Codex) | :white_check_mark:; validation coverage in [verification record](docs/codex-verification.md) |
+| Older releases | Upgrade to a maintained release |
 
 ## Reporting a vulnerability
 
@@ -33,11 +34,14 @@ In-scope:
   integrity baseline tooling)
 - `skills/*/SKILL.md` (skill content loaded by the agent)
 - Plugin manifest files: `.claude-plugin/plugin.json`,
-  `.claude-plugin/marketplace.json`
+  `.claude-plugin/marketplace.json`, `.codex-plugin/plugin.json`,
+  `.agents/plugins/marketplace.json`
+- `bin/check-integrity` (read-only baseline verification)
+- Runtime references and reviewer definitions distributed with the plugin
 
 Out-of-scope:
 
-- Upstream Anthropic Claude Code runtime
+- Upstream Anthropic Claude Code and OpenAI Codex runtimes
 - Third-party skills installed by the user outside this plugin
 - Issues in the upstream `obra/superpowers` project unless they reproduce in
   this plugin's distributed artifacts
@@ -58,3 +62,17 @@ post-install corruption, accidental edits, encoding changes after a
 attacker who can also modify the baseline file in the same checkout — a
 fully signed-release model would be required for that, which this plugin
 does not yet ship.
+
+
+## Codex integrity boundary
+
+Codex uses native skill discovery. Its manifest explicitly declares `hooks: {}`
+to suppress auto-discovery of the Claude hook. There is no automatic startup
+hash check in Codex and installing through a marketplace does not run our
+checker. `bin/check-integrity` provides read-only verification for release checks
+and troubleshooting; only `bin/update-integrity` refreshes the baseline.
+
+The existing baseline covers `skills/*/SKILL.md`. It does not cover supporting
+references, scripts or `agents/*.md`, on either runtime. Do not interpret a green
+baseline check as verification of every distributed file or as a signature.
+Claude's existing hook and fail-closed injection behavior are unchanged.

@@ -7,25 +7,41 @@ important — what we deliberately left behind.
 
 ## Standing policy
 
-cf-powers targets **Claude Code only**. That shapes what we take:
+cf-powers targets **Claude Code and Codex**. The behavioral source of truth is
+our fork, including the maintainer's changes. Upstream supplies compatible fixes
+and runtime integration mechanics, not a replacement workflow.
 
-- **We do not take vendor-neutralization.** Upstream rewrites Claude-specific
-  vocabulary ("use the Task tool", "put it in CLAUDE.md", "future Claude") into
-  generic phrasing ("dispatch a subagent", "your instructions file", "your
-  agent") so one skill set runs on Codex/Gemini/Copilot/Kimi/Pi/Antigravity. For
-  a Claude-Code-only fork that is churn at best and a small loss of precision at
-  worst, so we keep the Claude dialect.
-- **We skip other-harness machinery wholesale** — per-runtime tool references,
-  bootstraps, manifests, and install docs for non-Claude harnesses.
-- **We keep our own additions** that have no upstream equivalent: the `analysis`
-  workflow, `documenting-changes`, the four `review-as-*` skills and their
-  paired reviewer agents, the multi-phase plan index, and the Czech-output
-  analysis dialogue.
+- Keep local analysis/review roles, skip flags, short decision-level plans,
+  conditional reviews, visual verification, SDD rulings and orchestrator ledgers.
+- Adapt tool/model names only where required by a supported runtime. Start from
+  our skill bodies; do not replace them with upstream's bodies.
+- Skip other-runtime manifests, bootstraps and install documentation.
+- State actual host limitations explicitly rather than silently changing shared
+  behavior. Workflow redesign is a separate scope decision.
 
-We take, adapted to the above: genuine bug fixes, and skill-content improvements
-whose value is independent of harness.
+We take genuine bug fixes and content improvements selectively under this policy.
 
 ## Sync history
+
+### 2026-09-14 — Codex integration from v6.3.0
+
+After completing the Claude-only backports at `3ae09eb`, added Codex integration
+from upstream `b36e082` selectively: native manifest with `hooks: {}`, repo
+marketplace and platform-reference routing. Used the current native marketplace
+local-source form for the repository root. Adapted clean-context dispatch,
+turn-triggering continuation, capacity-aware waiting and Git environment guidance
+to the host's actual tool contract.
+
+Kept the fork's skill bodies, reviewer roles and workflow policy. Added our own
+Claude reference, reviewer-path resolution, three-tier runtime model mapping,
+read-only integrity checker and native installation tests. Skipped upstream's
+portal packager and official-plugin-repository sync script; both assume a
+different distribution process and the packager omits our `agents/` directory.
+
+Verification and remaining release checks: [Codex verification](codex-verification.md).
+The standalone Plugin Creator ingestion validator rejects `hooks`, while the
+actual Codex 0.154.0 consumer accepts the manifest and registers zero hooks;
+the approved upstream-compatible empty object is intentional.
 
 ### 2026-09-14 — main v6.3.0 audit + selective dev backports
 

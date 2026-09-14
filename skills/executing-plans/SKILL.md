@@ -5,6 +5,8 @@ description: Use when you have a written implementation plan to execute in a sep
 
 # Executing Plans
 
+**Runtime:** Before using host tools or dispatching, read [runtime operations](../using-superpowers/references/runtime.md) and its active-host reference (once per context). Keep this skill's workflow decisions unchanged.
+
 ## Overview
 
 Load plan, review critically, execute all tasks, report when complete.
@@ -23,6 +25,9 @@ so one session can drive the whole index without exhausting its context.
 1. Check current git branch: `git branch --show-current`
 2. If on `main` or `master`: **STOP** — ask user to create/switch to a feature branch first
 3. If on a feature branch: proceed
+4. If the host provided a detached worktree: follow the runtime reference,
+   preserve that workspace and its eventual integration handoff; do not create
+   or switch a branch merely to satisfy this check.
 
 ### Step 1: Load and Review Plan
 
@@ -32,13 +37,13 @@ so one session can drive the whole index without exhausting its context.
 3. Read **only that phase's plan file** — do NOT load all phases at once
 4. Review critically - identify any questions or concerns
 5. If concerns: Raise them with your human partner before starting
-6. If no concerns: Create TodoWrite and proceed
+6. If no concerns: Create native task tracking (or use the existing ledger) and proceed
 
 **For single-phase plans:**
 1. Read the plan file
 2. Review critically - identify any questions or concerns about the plan
 3. If concerns: Raise them with your human partner before starting
-4. If no concerns: Create TodoWrite and proceed
+4. If no concerns: Create native task tracking (or use the existing ledger) and proceed
 
 **Context loading principle:** Only load what you need for the current phase. If you need context from a previous phase's plan, read it on-demand, not upfront.
 

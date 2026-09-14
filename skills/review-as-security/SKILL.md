@@ -5,6 +5,8 @@ description: Use when reviewing a technical analysis, design document, or specif
 
 # Review as Security Engineer
 
+**Runtime:** Before using host tools or dispatching, read [runtime operations](../using-superpowers/references/runtime.md) and its active-host reference (once per context). Keep this skill's workflow decisions unchanged.
+
 ## Overview
 
 Review a technical analysis or specification document from a security engineer perspective. Focus on whether the proposed solution correctly handles trust boundaries, input validation, authentication, data integrity, and fail-safe behavior.
@@ -15,13 +17,13 @@ Review a technical analysis or specification document from a security engineer p
 
 - Design + analysis document (typically `docs/plans/YYYY-MM-DD-<topic>.md`)
 - The actual codebase (read relevant files to verify security claims)
-- CLAUDE.md security-related sections (if project defines security invariants, they are absolute)
+- applicable project instructions (CLAUDE.md on Claude Code, AGENTS.md on Codex) security-related sections (if project defines security invariants, they are absolute)
 
 ## Review Checklist
 
 ### 1. Security Invariant Compliance (DO THIS FIRST)
 
-**CRITICAL:** Check if the project defines security invariants in CLAUDE.md. If so, verify every proposed change against them. Any violation is automatically CRITICAL.
+**CRITICAL:** Check if the project defines security invariants in applicable project instructions (CLAUDE.md on Claude Code, AGENTS.md on Codex). If so, verify every proposed change against them. Any violation is automatically CRITICAL.
 
 Read the actual code paths affected by the proposed changes.
 
@@ -87,7 +89,7 @@ Structure your review exactly like this:
 ## Security invariants
 - ✅ [Invariant maintained — cite evidence]
 - CRITICAL: [Invariant violated — cite code, describe attack]
-(If project has no defined invariants, note "Project defines no explicit security invariants in CLAUDE.md")
+(If project has no defined invariants, note "Project defines no explicit security invariants in applicable project instructions (CLAUDE.md on Claude Code, AGENTS.md on Codex)")
 
 ## Attack surface
 - HIGH: [Attack vector — scenario, impact, remediation]
@@ -140,4 +142,4 @@ Structure your review exactly like this:
 - **Specific attack scenarios** — Don't say "could be vulnerable"; describe the exact attack path
 - **Prioritize by exploitability** — Real risks over theoretical concerns
 - **Defense in depth** — One control failing shouldn't compromise the system
-- **Project invariants are sacred** — If CLAUDE.md defines security invariants, any violation is CRITICAL
+- **Project invariants are sacred** — If applicable project instructions (CLAUDE.md on Claude Code, AGENTS.md on Codex) define security invariants, any violation is CRITICAL

@@ -5,6 +5,8 @@ description: Use when reviewing a technical analysis, design document, or specif
 
 # Review as Business Analyst
 
+**Runtime:** Before using host tools or dispatching, read [runtime operations](../using-superpowers/references/runtime.md) and its active-host reference (once per context). Keep this skill's workflow decisions unchanged.
+
 ## Overview
 
 Review a technical analysis or specification document from a business analyst perspective. Focus on whether the document completely and correctly captures business requirements, user workflows, and edge cases.

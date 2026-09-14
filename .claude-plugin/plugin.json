@@ -1,7 +1,7 @@
 {
   "name": "cf-powers",
-  "description": "Skills plugin for Claude Code: analysis, TDD, debugging, and structured workflows",
-  "version": "2.4.0",
+  "description": "CF Powers development workflows for Claude Code and Codex: analysis, planning, TDD, review and orchestration.",
+  "version": "2.5.0",
   "author": {
     "name": "Cloudfield",
     "email": "valda@cloudfield.cz"
@@ -9,5 +9,11 @@
   "homepage": "https://github.com/cloudfieldcz/cf-powers",
   "repository": "https://github.com/cloudfieldcz/cf-powers",
   "license": "MIT",
-  "keywords": ["skills", "tdd", "debugging", "analysis", "workflows"]
+  "keywords": [
+    "skills",
+    "tdd",
+    "debugging",
+    "analysis",
+    "workflows"
+  ]
 }

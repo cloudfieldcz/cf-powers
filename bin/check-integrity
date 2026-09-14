@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# Read-only verification of the existing SKILL.md baseline. Not a Codex hook.
+set -euo pipefail
+SCRIPT_DIR="$(cd -- "${BASH_SOURCE[0]%/*}" && pwd)"
+PLUGIN_ROOT="$(cd -- "${SCRIPT_DIR}/.." && pwd)"
+BASELINE="${PLUGIN_ROOT}/.claude-plugin/integrity.sha256"
+
+if [ ! -f "${BASELINE}" ]; then
+    echo "check-integrity: missing baseline: ${BASELINE}" >&2
+    exit 1
+fi
+cd -- "${PLUGIN_ROOT}"
+if command -v sha256sum >/dev/null 2>&1; then
+    sha256sum -c --quiet "${BASELINE}"
+elif command -v shasum >/dev/null 2>&1; then
+    shasum -a 256 -c -s "${BASELINE}"
+else
+    echo "check-integrity: no sha256sum or shasum available on PATH" >&2
+    exit 1
+fi

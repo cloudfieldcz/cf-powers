@@ -5,6 +5,8 @@ description: Use when implementation is complete, all tests pass, and you need t
 
 # Finishing a Development Branch
 
+**Runtime:** Before using host tools or dispatching, read [runtime operations](../using-superpowers/references/runtime.md) and its active-host reference (once per context). Keep this skill's workflow decisions unchanged.
+
 ## Overview
 
 Guide completion of development work by presenting clear options and handling chosen workflow.
@@ -51,6 +53,13 @@ The user chooses **now / defer / skip**:
 Continue to Step 2 once the user has decided.
 
 ### Step 2: Determine Base Branch
+
+Inspect the branch/worktree state with the runtime reference first. On a
+host-provided detached HEAD, preserve the workspace and commits. Only present
+merge/push options once an existing or explicitly authorized branch makes them
+valid. If the host prevents that, hand off the exact commit/diff and workspace
+state for native integration; never fabricate a branch or delete a worktree.
+
 
 The base branch is whatever this work forked from — usually named in the plan, the conversation, or the branch's upstream. If it is not already known, ask: "This branch split from <your best guess> - is that correct?" Confirm before merging: merging into the wrong base is expensive to undo.
 

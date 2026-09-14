@@ -1,0 +1,38 @@
+{
+  "name": "cf-powers",
+  "description": "CF Powers development workflows for Claude Code and Codex: analysis, planning, TDD, review and orchestration.",
+  "version": "2.5.0",
+  "author": {
+    "name": "Cloudfield",
+    "email": "valda@cloudfield.cz"
+  },
+  "homepage": "https://github.com/cloudfieldcz/cf-powers",
+  "repository": "https://github.com/cloudfieldcz/cf-powers",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "tdd",
+    "debugging",
+    "analysis",
+    "workflows"
+  ],
+  "skills": "./skills/",
+  "hooks": {},
+  "interface": {
+    "displayName": "CF Powers",
+    "shortDescription": "Analysis, planning, TDD, review and orchestration",
+    "longDescription": "CF Powers development workflows for Claude Code and Codex: analysis, planning, TDD, review and orchestration.",
+    "developerName": "Cloudfield",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/cloudfieldcz/cf-powers",
+    "defaultPrompt": [
+      "Analyze this feature with cf-powers.",
+      "Execute this plan with cf-powers."
+    ]
+  }
+}

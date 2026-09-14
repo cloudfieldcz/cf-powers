@@ -1,6 +1,6 @@
 ---
 name: using-superpowers
-description: Use when starting any conversation - establishes how to find and use skills, requiring Skill tool invocation before ANY response including clarifying questions
+description: Use when starting any conversation - establishes how to find and use skills, requiring skill invocation before ANY response including clarifying questions
 ---
 
 <SUBAGENT-STOP>
@@ -17,13 +17,15 @@ This is not negotiable. You cannot rationalize your way out of this.
 
 # Using Superpowers
 
+**Runtime:** Before using host tools or dispatching, read [runtime operations](references/runtime.md) and its active-host reference (once per context). Keep this skill's workflow decisions unchanged.
+
 ## The Rule
 
 **Invoke relevant or requested skills BEFORE any response or action** — including clarifying questions, exploring the codebase, or checking files. Even a 1% chance a skill might apply means you invoke it to check. If it turns out wrong for the situation, you don't have to use it.
 
-Then announce "Using [skill] to [purpose]" and follow the skill exactly. If it has a checklist, create a TodoWrite todo per item.
+Then announce "Using [skill] to [purpose]" and follow the skill exactly. If it has a checklist, create a native todo per item (or track it in the existing ledger).
 
-Use the `Skill` tool to load a skill — never the Read tool on a skill file, which loads the text without activating the skill.
+Use the active runtime's skill-loading mechanism from [runtime operations](references/runtime.md). Claude uses its native Skill tool; Codex can read the resolved skill file when that is its exposed mechanism.
 
 ## Red Flags
 
@@ -68,6 +70,6 @@ When multiple skills apply, process skills come first — they set the approach,
 
 ## User Instructions
 
-User instructions (CLAUDE.md, AGENTS.md, direct requests) take precedence over skills, which in turn override default system behavior. If CLAUDE.md says "don't use TDD" and a skill says "always use TDD," follow the user. Only skip a skill's workflow when your human partner has explicitly told you to.
+User instructions (CLAUDE.md, AGENTS.md, direct requests) take precedence over skills, subject to the host's system and developer instructions. If CLAUDE.md says "don't use TDD" and a skill says "always use TDD," follow the user. Only skip a skill's workflow when your human partner has explicitly told you to.
 
 Instructions say WHAT, not HOW. "Add X" or "Fix Y" doesn't mean skip workflows.

@@ -6,13 +6,14 @@ For a unit big or risky enough to need per-task review, run
 cf-powers:subagent-driven-development on it instead of using this template.
 
 ```
-Task tool (general-purpose):
+Dispatch brief (translate through the active runtime):
   description: "Execute Unit N: [unit name]"
-  model: [REQUIRED — pick per cf-powers:choosing-subagent-models. Haiku for a
-         purely mechanical sweep; Sonnet when the scope spells the work out;
-         Opus (leave unset) when a design question is still open. Omitting it
-         for mechanical work silently pays the session default]
+  tier: [REQUIRED — pick per cf-powers:choosing-subagent-models. mechanical tier for a
+         purely mechanical sweep; implementation tier when the scope spells the work out;
+         judgment tier when a design question is still open. Resolve this tier to an actual model through the runtime reference]
   prompt: |
+    Runtime reference: [ABSOLUTE_RUNTIME_REFERENCE_PATH]. Read it before using
+    skills or runtime tools; follow only the instructions for your assigned role.
     You are executing Unit N: [unit name], one unit of a larger job.
 
     ## Your Scope
@@ -45,6 +46,9 @@ Task tool (general-purpose):
     question costs one message; guessing wrong costs the unit.
 
     ## Your Job
+
+    Execute this unit yourself. Do not dispatch subagents; the parent owns
+    coordination and independent review.
 
     1. Work through your scope's items in order
     2. Follow the testing discipline your scope specifies (TDD where it says so)

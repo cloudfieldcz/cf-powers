@@ -5,6 +5,8 @@ description: Use when a job is too big for one session to do itself - a plan ind
 
 # Orchestrator
 
+**Runtime:** Before using host tools or dispatching, read [runtime operations](../using-superpowers/references/runtime.md) and its active-host reference (once per context). Keep this skill's workflow decisions unchanged.
+
 Drive a large body of work from one session without spending that session's
 context on the work itself. You own the work list, the order, the dispatches,
 the verdicts and the bookkeeping. Subagents own the work.
@@ -79,16 +81,19 @@ digraph when_to_use {
 ## Model Selection
 
 **REQUIRED SUB-SKILL:** cf-powers:choosing-subagent-models. Read it before the
-first dispatch and set `model` explicitly on every one.
+first dispatch and record the actual model selection on every one, using the
+runtime's supported parameters or deliberate inheritance.
 
-The shape it usually takes here: Haiku for mechanical sweeps, Sonnet for units
-whose shape is already decided, Opus for every review and for any unit with an
+The shape it usually takes here: the mechanical tier for sweeps, the implementation tier for units
+whose shape is already decided, the judgment tier for every review and for any unit with an
 open design question. The orchestrator itself stays on the session's model — it
 only coordinates.
 
 ## Setup
 
-1. **Branch check.** `git branch --show-current`. On `main`/`master` with code
+1. **Branch check.** Inspect the Git environment via the runtime reference,
+   including an existing linked worktree or host-provided detached workspace.
+   `git branch --show-current`. On `main`/`master` with code
    changes ahead: STOP and ask your human partner for a feature branch. Never
    create worktrees on your own initiative. Read-only jobs (audits, surveys)
    need no branch.
@@ -141,6 +146,12 @@ For each unit, in dependency order:
 When in doubt, delegate whole: you can always fall back to per-task execution
 for that unit if the executor returns BLOCKED or NEEDS_CONTEXT.
 
+Before dispatching a phase controller, check nested-agent support and occupied
+ancestor slots. If there is no capacity for that controller and its worker,
+run that phase's SDD controller loop in this parent. Do not occupy the last slot
+with a controller that can only wait for another slot. Leaf unit executors and
+reviewers never delegate; an explicitly assigned phase controller may run SDD.
+
 ### 2. Dispatch the unit
 
 For code-changing work, record `BASE=$(git rev-parse HEAD)` first — the review
@@ -179,8 +190,8 @@ cf-powers:subagent-driven-development's `scripts/review-package SCOPE_FILE BASE 
 and hand the reviewer the printed path. Never review from your own reading of
 the diff — the diff must not enter your context.
 
-Dispatch `cf-powers:code-reviewer` on **Opus** (leave `model` unset — the
-session default) with the package path, the unit's
+Dispatch `cf-powers:code-reviewer` on the **judgment tier** (inherit only if the
+parent is known to provide that tier) with the package path, the unit's
 scope path, the executor's report path, and the binding constraints verbatim. Do
 not pre-judge findings for the reviewer. For a non-code unit (research, audit,
 docs), review means the same thing with a different artifact: a reviewer reads
@@ -241,7 +252,7 @@ continue?" between units — they asked for the job, not for the first unit.
 
 When the last unit is complete, review the whole job once. For code:
 `scripts/review-package SCOPE_FILE MERGE_BASE HEAD` (MERGE_BASE =
-`git merge-base main HEAD`) dispatched to `cf-powers:code-reviewer` on Opus,
+`git merge-base main HEAD`) dispatched to `cf-powers:code-reviewer` on the judgment tier,
 pointed at the ledger's deferred-minor and parked lines so it can triage what
 must be fixed before merge. For a non-code job, the equivalent is one reviewer
 over the assembled output against the original request.
@@ -263,7 +274,7 @@ now), and cf-powers:finishing-a-development-branch to integrate.
 | "I'll paste the last unit's report into the next dispatch" | A fresh executor needs its scope, its interfaces and the constraints. Accumulated history is what blew up past sessions. |
 | "Both units are independent, dispatch them together" | Two writers on one branch collide. Parallel is for read-only units or isolated worktrees. |
 | "The executor's diff looks fine to me" | Reading it puts it in your context and skips a real review. Dispatch the reviewer. |
-| "Reviews on Sonnet, the diff is small" | Reviews are Opus. Diff size does not change who is qualified to judge it. |
+| "Reviews on the implementation tier, the diff is small" | Reviews use the judgment tier. Diff size does not change who is qualified to judge it. |
 | "There's no plan, so there's no work list" | Then building the list is step one — scout it and write it down. An unwritten list is what gets half-executed. |
 | "The ledger is bookkeeping overhead" | It is the only thing that survives compaction. Without it, completed units get re-run. |
 | "Ask the partner which unit is next" | The list already answered that. Ask only when it is ambiguous or blocked. |
@@ -282,11 +293,11 @@ You: I'm using the orchestrator skill to drive this work.
 [Todos: one per phase. Pre-flight over the index: clean.]
 
 Unit 1 (phase 1 — models). Plan text is concrete → delegate whole.
-[BASE=a1b2c3d; dispatch unit executor, model: "sonnet", scope path + report path]
+[BASE=a1b2c3d; dispatch unit executor, tier: implementation, scope path + report path]
 Executor: DONE — 4 commits, 12/12 tests pass, report at …/unit-1-report.md
 
 [review-package plan-1-models.md a1b2c3d HEAD]
-[Dispatch cf-powers:code-reviewer on Opus with the package path]
+[Dispatch cf-powers:code-reviewer on the judgment tier with the package path]
 Reviewer: Spec ✅. One Important: missing NOT NULL on invoice_id.
 [Fix round 1/3: resume executor with the finding verbatim → scoped re-review → ADDRESSED]
 [Ledger: Unit 1: complete (commits a1b2c3d..e4f5a6b, review clean)]
@@ -316,16 +327,16 @@ You: I'm using the orchestrator skill to drive this work.
 [Todos: 4. Pre-flight: no file overlap between clusters ✅]
 
 Unit 1 — read/GET handlers (7 files). Purely mechanical, pattern fixed.
-[BASE recorded; dispatch executor, model: "haiku", units.md line + file list]
+[BASE recorded; dispatch executor, tier: mechanical, units.md line + file list]
 Executor: DONE — 1 commit, 41/41 tests pass
-[review-package + cf-powers:code-reviewer on Opus]
+[review-package + cf-powers:code-reviewer on the judgment tier]
 Reviewer: Important — two handlers lost their tenant scope in the rewrite.
 [Fix round 1/3 → ADDRESSED]
 [Ledger: Unit 1: complete. units.md: unit 1 → ✅]
 
-Unit 2 — write/POST handlers … (same shape, model: "sonnet" — these carry
+Unit 2 — write/POST handlers … (same shape, tier: implementation — these carry
  permission checks the pattern doesn't cover)
 …
-[After unit 4: whole-branch review on Opus over the full range, one fix wave,
+[After unit 4: whole-branch review on the judgment tier over the full range, one fix wave,
  then documenting-changes and finishing-a-development-branch]
 ```
