@@ -27,6 +27,57 @@ whose value is independent of harness.
 
 ## Sync history
 
+### 2026-09-14 — main v6.3.0 audit + selective dev backports
+
+Fetched upstream and compared tree contents (not just commit counts: upstream
+rebases release merges, so `v6.3.0..dev` also lists older equivalent commits).
+`main` remains **v6.3.0**, `b36e0829c6d0140e93cfef2ca599b1b07d4a7797`
+(2026-08-12); it has no changes beyond the release already synced in v2.3.0.
+Reviewed `dev` at `5940bd8` (2026-09-11). These are unreleased backports, not a
+claim that the whole dev branch has been adopted.
+
+**Adopted, with fork adaptations:**
+
+- `3b4f2ca` (shared intent): carry the intended outcome, audience and success
+  criteria into our `analysis` design summary; distinguish requirements from
+  assumptions and ask only for missing information. Uses our existing dialogue,
+  not another approval stage.
+- `069edf3` (saved-plan handoff): link the actual saved plan and preserve an
+  execution method already supplied by the user. Keep v2.4.0's conditional
+  plan review and short decision-level plans. Plan-only requests stop for the
+  user; prior authorization to execute is retained.
+- Refreshed the integrity baseline for both changed skills.
+
+**Deliberately skipped:**
+
+- The new unconditional artifact-approval gates in brainstorming/planning.
+  Requiring another confirmation despite an explicit instruction to plan and
+  execute would undo our reduction of workflow overhead.
+- `diagnosing-superpowers` and its follow-up fixes: useful as an optional future
+  session-audit capability, but currently mandates seven analysts, has an
+  upstream-specific issue-reporting contract, and forbids proposing skill fixes.
+  Importing its entire support/export workflow is not a small maintenance fix.
+- Upstream issue-template labels, community code of conduct and research plans;
+  these are upstream project administration and development records.
+- Other-runtime packaging remains out of the shipped Claude-only surface.
+
+**Verification:** all four offline suites passed (`sdd-scripts`,
+`orchestrator-scripts`, `systematic-debugging`, `integrity`); frontmatter
+validation passed for both changed skills. The maintainer confirmed that the
+behavioral tests run separately by Claude passed. This result is maintainer-
+reported; transcripts were not reviewed in this audit.
+
+### 2026-09-02 — v6.2.0 → v6.3.0 (released as cf-powers v2.3.0)
+
+Already landed in `d7d3347`; this entry repairs the missing sync-log record.
+The detailed adopted/skipped list and verification results are in
+[CHANGELOG.md, v2.3.0](../CHANGELOG.md#230--2026-09-02). Adopted Claude-relevant
+SDD rulings, evidence-bearing preflight, batching, bounded waits, analysis
+handoff, worker/reviewer delegation limits and safe Graphviz execution. Kept
+our branch policy and CommonJS renderer; skipped other-runtime support and
+removed obsolete OpenCode/Codex documentation. v2.4.0 subsequently refined
+planning and visual verification from local usage feedback.
+
 ### 2026-07-25 — v6.0.3 → v6.2.0 (released as cf-powers v2.1.0)
 
 Upstream shipped v6.1.0, v6.1.1 and v6.2.0 in this range — 70 commits.
@@ -168,7 +219,8 @@ are ours.
 
 ## Reference points
 
-- Last fully-tracked upstream version: **v6.2.0** (synced in cf-powers v2.1.0).
+- Last fully-tracked upstream release: **v6.3.0** (synced in cf-powers v2.3.0;
+  rechecked 2026-09-14). Selected later dev changes are listed above.
 - Last fully-tracked upstream version before this log started: **v5.0.7**
   (synced in cf-powers v1.4.1, commit `c107d3b`).
 - Earlier syncs are recorded only in commit messages (`git log --grep upstream`).

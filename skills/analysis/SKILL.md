@@ -15,6 +15,19 @@ A single skill that takes you from a vague idea to a reviewed technical analysis
 
 **Output language:** English (document, dialogue, and all skill artifacts).
 
+## Preserve the Intended Outcome
+
+Before proposing an approach, identify the intended outcome, who it serves,
+and what success looks like from the request and available context. Ask a
+focused question only for missing information that would change the design;
+do not ask the user to repeat a purpose or constraint they already supplied.
+
+In the selected path's design summary, distinguish the user's requirements
+from your assumptions and make them easy to correct. Carry that understanding
+into the analysis document when one is needed. Check proposed features against
+it so familiarity with an app genre does not substitute for the user's goal.
+Use the existing design dialogue for this; it is not another approval stage.
+
 <HARD-GATE>
 Do NOT invoke an implementation skill, write code, scaffold a project, or take
 any implementation action until you have told your human partner what you

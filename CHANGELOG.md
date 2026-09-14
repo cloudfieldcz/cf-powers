@@ -7,6 +7,18 @@ Project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Changed
+- **`analysis` — preserve intent.** Adapted upstream dev `3b4f2ca`: distinguish
+  requirements from assumptions in the existing design summary and carry the
+  intended outcome into the analysis. Ask only for missing design-relevant
+  information; no additional approval stage.
+- **`writing-plans` — preserve the handoff choices.** Adapted upstream dev
+  `069edf3`: link the saved plan and retain the user's execution method and
+  phase order. Plan-only requests stop at delivery; already-authorized
+  execution proceeds. Keeps v2.4.0's conditional plan review.
+- **Upstream tracking.** Corrected the stale v6.2.0 sync reference and recorded
+  the current main/dev audit. Runtime support remains Claude Code.
+
 ## [2.4.0] — 2026-09-02
 
 Real-usage feedback release: a CRUD feature in a consuming project cost 117

@@ -188,15 +188,21 @@ Everything else — whether a test will pass, whether markup renders, naming, wo
 
 ## Execution Handoff
 
-After saving all plan files and completing plan review, offer execution choice:
+After saving all plan files and completing any applicable plan review, link
+the saved plan (or index) and summarize the decisions the user needs to see.
+Preserve any execution method and phase order the user already supplied.
+If execution is already authorized, continue using those choices; do not ask
+for the same authorization again. If the user requested only a plan, deliver
+it for review and wait for an execution request. Ask only for a missing choice
+that matters to the handoff.
 
-**For multi-phase plans:**
+**For multi-phase plans when the starting phase has not been chosen:**
 
-**"Plans complete. Index: `docs/plans/<filename>-plan-index.md`. Which phase to start with?"**
+**"Plans complete. Please review the [index](docs/plans/<filename>-plan-index.md). Which phase should we start with?"**
 
-Then for the chosen phase:
+**When no execution method has already been supplied:**
 
-**"Two execution options:**
+**"Plan saved: [plan](docs/plans/<filename>.md). Two execution options:**
 
 **1. Subagent-Driven (recommended)** - I dispatch a fresh subagent per task, review between tasks, fast iteration
 
