@@ -69,3 +69,9 @@ Use these additional scenarios (acceptance is behavior, not exact wording):
 
 See [the current verification record](../../docs/codex-verification.md) for the
 checks actually performed. A documented scenario is not a passing result.
+
+Standalone discovery: `python3 -B tests/codex/test_standalone.py` exercises the
+installer with a temporary project discovery directory and fresh App Server.
+It checks all source skills, role resolution, repeat install, uninstall and
+collision protection. This is included in `run-test.sh --native`; it does not
+claim visual verification inside VS Code.

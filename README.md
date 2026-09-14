@@ -12,6 +12,9 @@ regression and desktop UI checks are tracked in the
 
 ## Quick Start
 
+See the **[installation guide](docs/installation.md)** for choosing between CLI
+plugins and VS Code standalone skills, updates, removal and troubleshooting.
+
 ### Claude Code
 
 ```bash
@@ -45,6 +48,40 @@ Codex 0.154.0 additionally imports the Claude command wrappers as
 For installation directly from GitHub, use
 `codex plugin marketplace add https://github.com/cloudfieldcz/cf-powers.git`
 instead of the local path.
+
+### Codex in VS Code (standalone skills)
+
+The IDE extension supports standalone skills, but currently does not support
+plugins. Install the shared skill tree from a complete checkout (macOS/Linux,
+Python 3):
+
+```bash
+git clone https://github.com/cloudfieldcz/cf-powers.git ~/.codex/cf-powers
+python3 ~/.codex/cf-powers/bin/codex-skills install
+```
+
+For an existing checkout, run `python3 bin/codex-skills install` there instead.
+The installer creates `~/.agents/skills/cf-powers` pointing to that checkout's
+`skills/` directory and refuses to overwrite unrelated files. Keep the complete
+checkout: skills also use its reviewer definitions and helper scripts.
+
+Reload VS Code and start a new Codex chat. Type `$` or `/skills` and select
+`cf-powers:analysis`, `cf-powers:writing-plans`, or `cf-powers:orchestrator`.
+Codex 0.154.0 prefixes these with the discovery folder name; older clients may
+show the plain skill names. This discovery route also works in CLI.
+Use one installation route per environment to avoid duplicate entries; standalone
+upstream Superpowers shares some names, so avoid enabling both standalone trees.
+Available subagent tools depend on the host; missing independent review is
+reported explicitly, never treated as passed.
+
+Update with `git -C ~/.codex/cf-powers pull --ff-only`, then start a new session.
+Uninstall with `python3 ~/.codex/cf-powers/bin/codex-skills uninstall`; the checkout
+is retained. With Remote SSH, WSL or a dev container, install in the environment
+where the Codex extension runs.
+
+This follows upstream's earlier clone-and-symlink installation. See
+[OpenAI standalone skill discovery](https://learn.chatgpt.com/docs/build-skills)
+and [IDE plugin limitations](https://learn.chatgpt.com/docs/plugins).
 
 ### Codex App
 

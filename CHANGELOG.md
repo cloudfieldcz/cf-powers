@@ -7,6 +7,17 @@ Project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [2.5.1] — 2026-09-14
+
+### Added
+- Complete installation guide for Claude Code, Codex CLI and standalone IDE
+  skills, including updates, removal, migration and troubleshooting.
+- Standalone Codex skill installation for IDE environments through
+  `bin/codex-skills install|uninstall`, using the complete checkout and native
+  symlink discovery. Refuses unrelated destinations and preserves shared roles.
+- Real App Server discovery and installer lifecycle test; VS Code UI execution
+  remains unverified.
+
 ## [2.5.0] — 2026-09-14
 
 ### Added

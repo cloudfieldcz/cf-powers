@@ -240,3 +240,12 @@ are ours.
 - Last fully-tracked upstream version before this log started: **v5.0.7**
   (synced in cf-powers v1.4.1, commit `c107d3b`).
 - Earlier syncs are recorded only in commit messages (`git log --grep upstream`).
+
+## Standalone Codex discovery — 2026-09-14
+
+Re-fetched upstream; current main documents App/CLI plugin installation only.
+The earlier `.codex/INSTALL.md` at `f2cbfbe^` uses a complete checkout plus
+`~/.agents/skills/superpowers` symlink to `skills/`. Adapted that mechanism as
+`bin/codex-skills`, with collision protection, idempotency and uninstall.
+Shared runtime resolves physical paths; no upstream skill behavior was copied.
+Official docs distinguish IDE standalone skills from unsupported IDE plugins.

@@ -68,3 +68,17 @@ compatibility manifest. No other plugin-validation failures were reported.
 See [tests/codex/README.md](../tests/codex/README.md) for reproducible scenarios.
 Do not mark unexecuted scenarios as passed or publish a fully validated release
 solely on the offline/install results above.
+
+## Standalone IDE installation follow-up
+
+Version 2.5.1 adds `bin/codex-skills`. On macOS with Codex
+0.154.0, an isolated project discovery directory loads all 20 skills through
+the symlink with `cf-powers:` identities. Real paths resolve shared reviewer
+resources. Repeated install, uninstall preserving source, unrelated directory
+and broken-symlink collision checks pass. Run
+`python3 -B tests/codex/test_standalone.py` (also included in `--native`).
+
+This verifies the shared discovery backend, not a VS Code UI session or its
+subagent availability. The installer defaults to the documented user discovery
+directory; the automated test uses the equivalent project-scoped directory to
+avoid modifying the user's profile. No normal-profile installation was made.
