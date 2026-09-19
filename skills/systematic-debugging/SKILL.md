@@ -5,6 +5,11 @@ description: Use when encountering any bug, test failure, or unexpected behavior
 
 # Systematic Debugging
 
+**Codex model selection:** Before this workflow, read
+[choosing-subagent-models](../choosing-subagent-models/SKILL.md) and apply its
+Codex defaults for the actual task. This does not itself require delegation or
+change the current session model.
+
 ## Overview
 
 **Core principle:** ALWAYS find root cause before attempting fixes. Symptom fixes are failure.

@@ -5,6 +5,11 @@ description: Use when implementing any feature or bugfix, before writing impleme
 
 # Test-Driven Development (TDD)
 
+**Codex model selection:** Before this workflow, read
+[choosing-subagent-models](../choosing-subagent-models/SKILL.md) and apply its
+Codex defaults for the actual task. This does not itself require delegation or
+change the current session model.
+
 ## Overview
 
 Write the test first. Watch it fail. Write minimal code to pass.

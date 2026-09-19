@@ -7,6 +7,11 @@ description: Use when you have a spec for a non-trivial task with non-obvious se
 
 **Runtime:** Before using host tools or dispatching, read [runtime operations](../using-superpowers/references/runtime.md) and its active-host reference (once per context). Keep this skill's workflow decisions unchanged.
 
+**Codex model selection:** Before this workflow, read
+[choosing-subagent-models](../choosing-subagent-models/SKILL.md) and apply its
+Codex defaults for the actual task. This does not itself require delegation or
+change the current session model.
+
 ## Overview
 
 A plan records **decisions the implementer cannot cheaply re-derive**: the order that keeps the tree green, the files two units both touch, the exact contract between units (names, signatures, payload shapes), values copied verbatim from the spec, and the specific trap in this codebase that will bite them. Everything the implementer would arrive at on their own by reading the surrounding code is **transcription**. Cut it.

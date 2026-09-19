@@ -11,6 +11,11 @@ Dispatch cf-powers:code-reviewer subagent to catch issues before they cascade. T
 
 **Core principle:** Review early, review often.
 
+**Codex model selection:** Before this workflow, read
+[choosing-subagent-models](../choosing-subagent-models/SKILL.md) and apply its
+Codex defaults for the actual task. This does not itself require delegation or
+change the current session model.
+
 ## When to Request Review
 
 **Mandatory:**

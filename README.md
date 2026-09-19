@@ -155,7 +155,7 @@ You can still execute phases one at a time by hand if you prefer; the index file
 | **executing-plans** | Batch execution with human checkpoints |
 | **subagent-driven-development** | Fast parallel execution with two-stage review |
 | **orchestrator** | Any job too big for one session — plan index, migration, bug batch, audit; delegates each unit to subagents |
-| **choosing-subagent-models** | Before any dispatch — picks a mechanical / implementation / judgment tier for the active runtime |
+| **choosing-subagent-models** | Before workflow model selection or dispatch — central Codex model/effort defaults and runtime tiers |
 | **test-driven-development** | During implementation (RED-GREEN-REFACTOR) |
 | **systematic-debugging** | When encountering bugs or test failures |
 | **verification-before-completion** | Before claiming work is done |

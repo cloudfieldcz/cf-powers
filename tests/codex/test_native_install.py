@@ -116,7 +116,14 @@ class NativeInstall(unittest.TestCase):
             result = app.call('skills/list', {'cwds': [str(project)], 'forceReload': True})
             row = result['data'][0]
             self.assertEqual(row['errors'], [])
-            skills = [s for s in row['skills'] if s['name'].startswith('cf-powers:')]
+            # CODEX_HOME isolates plugins, but native ~/.agents/skills discovery
+            # still includes the user's standalone installation. Check identities
+            # across this test profile (including stale cached versions), not
+            # unrelated global skills with the same namespace.
+            profile = Path(env['CODEX_HOME']).resolve()
+            skills = [s for s in row['skills']
+                      if s['name'].startswith('cf-powers:')
+                      and Path(s['path']).resolve().is_relative_to(profile)]
             names = [s['name'] for s in skills]
             self.assertEqual(len(names), len(set(names)), 'duplicate identities after install/update')
             for path in (source / 'skills').glob('*/SKILL.md'):

@@ -7,6 +7,11 @@ description: Use for non-trivial implementations involving design choices, multi
 
 **Runtime:** Before using host tools or dispatching, read [runtime operations](../using-superpowers/references/runtime.md) and its active-host reference (once per context). Keep this skill's workflow decisions unchanged.
 
+**Codex model selection:** Before this workflow, read
+[choosing-subagent-models](../choosing-subagent-models/SKILL.md) and apply its
+Codex defaults for the actual task. This does not itself require delegation or
+change the current session model.
+
 ## Overview
 
 A single skill that takes you from a vague idea to a reviewed technical analysis document, ready for implementation planning. Combines collaborative dialogue (understanding what to build) with rigorous technical analysis (how to build it).

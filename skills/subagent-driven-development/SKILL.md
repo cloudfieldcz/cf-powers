@@ -193,6 +193,10 @@ emerge from implementation.
 
 ## Model Selection
 
+For Codex, the task-specific table in
+[choosing-subagent-models](../choosing-subagent-models/SKILL.md) takes precedence
+over the generic tier examples below.
+
 **REQUIRED SUB-SKILL:** cf-powers:choosing-subagent-models. Read it before the
 first dispatch. Pick the tier from how much the task has to decide and resolve
 it through the active runtime. Record the actual model/effort or deliberate
@@ -207,15 +211,15 @@ How it lands on the roles in this loop:
 | Implementer, 1-2 files with a complete spec, shape already decided | Implementation |
 | Implementer, multi-file integration or an open design question | Judgment |
 | **Task reviewer, scoped re-reviewer, final whole-branch reviewer** | **Judgment, always** — inherit only from a known judgment-tier parent |
-| Fix-loop escalation (rounds 4-5) | at least one tier above the implementer that got stuck |
+| Fix-loop escalation (rounds 4-5) | at least one tier above the implementer that got stuck; for Codex, apply the central escalation policy (stronger model or narrower task, including at the highest tier) |
 
 **Reviews are never downgraded, whatever the diff looks like.** A small diff does
 not change who is qualified to judge it, and in this repo review has repeatedly
 found blocking defects that a fully green test suite did not.
 
-**Turn count beats token price.** The cheapest tier routinely takes 2-3x the
-turns on multi-step work and costs more overall. The implementation tier is the floor for an
-implementer working from prose rather than from spelled-out code.
+For Claude, the implementation tier remains the floor for an implementer
+working from prose rather than from spelled-out code. For Codex, use the
+central task table; tier choices do not guarantee cost or quota savings.
 
 ## The Task Loop
 

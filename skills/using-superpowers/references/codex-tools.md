@@ -25,11 +25,13 @@ exposed planning tool for todos, or the existing run ledger when none is exposed
 - Use the exposed spawn tool (for example `spawn_agent`), with a clean context:
   `fork_turns: "none"` where supported. Supply absolute brief, report, role and
   runtime-reference paths, the task directory and binding constraints.
-- Follow choosing-subagent-models: resolve mechanical / implementation / judgment
-  tiers once per run against the host's available models and their documented
-  capabilities. Use a light model for mechanical edits, a capable middle tier
-  for decided implementation, and the strongest available judgment tier for
-  architecture and every review. Never pass `haiku`, `sonnet` or `opus` to Codex.
+- **Required:** read [choosing-subagent-models](../../choosing-subagent-models/SKILL.md)
+  before model selection, including inline analysis, planning, implementation,
+  testing, coordination and debugging. Its Codex table is the single source of
+  defaults and overrides generic tier examples in workflows. Validate against
+  the current host's model and effort allowlists. Never pass `haiku`, `sonnet`
+  or `opus` to Codex. Loading this policy does not require delegation or permit
+  unsupported changes to the current session model.
 - Name both model and reasoning effort when the tool supports overrides; validate
   both against its allowlist. Preserve explicit user choices. Record actual
   selections in the brief/ledger. Full-history forks may prohibit overrides;

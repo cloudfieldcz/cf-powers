@@ -7,6 +7,22 @@ Project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [2.5.2] — 2026-09-19
+
+### Fixed
+- Scoped native Codex install/update identity checks to the temporary profile,
+  so an existing global standalone installation does not cause false failures.
+
+### Changed
+- Added a Claude-only Fable 5.1 escalation for exceptionally difficult judgment
+  tasks and repeated Opus failures after narrowing; normal Claude defaults and
+  Codex routing remain unchanged.
+- Centralized Codex workflow model and reasoning-effort defaults in
+  `choosing-subagent-models`, with explicit loading from runtime and workflows.
+  Preserved Claude model mapping and judgment-tier reviews, including rechecks.
+- Clarified host availability checks, user overrides, bounded child context,
+  escalation after repeated failure and limits on automatic effort increases.
+
 ## [2.5.1] — 2026-09-14
 
 ### Added

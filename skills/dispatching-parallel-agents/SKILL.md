@@ -48,6 +48,10 @@ digraph when_to_use {
 
 ## Model Selection
 
+For Codex, the task-specific table in
+[choosing-subagent-models](../choosing-subagent-models/SKILL.md) takes precedence
+over the generic tier examples below.
+
 **REQUIRED SUB-SKILL:** cf-powers:choosing-subagent-models. Set `model`
 explicitly on every dispatch — parallel dispatch multiplies the cost of
 defaulting to the session's model, since you pay it N times at once.

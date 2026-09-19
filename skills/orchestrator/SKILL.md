@@ -80,6 +80,10 @@ digraph when_to_use {
 
 ## Model Selection
 
+For Codex, the task-specific table in
+[choosing-subagent-models](../choosing-subagent-models/SKILL.md) takes precedence
+over the generic tier examples below.
+
 **REQUIRED SUB-SKILL:** cf-powers:choosing-subagent-models. Read it before the
 first dispatch and record the actual model selection on every one, using the
 runtime's supported parameters or deliberate inheritance.
@@ -202,6 +206,9 @@ the unit's output against its acceptance line.
 Three rounds maximum per unit. Rounds 1-2 resume the executor with the open
 findings verbatim; round 3 dispatches a fresh executor one tier up, framed as "a
 prior executor attempted this twice; you own it now — read the report file."
+For Codex, apply the central choosing-subagent-models escalation policy in
+place of the tier increase: select a stronger available model or narrow the
+task; at the highest available tier, narrow it. Keep the three-round limit.
 Each round ends with a scoped re-review
 ([re-review-prompt.md](../subagent-driven-development/re-review-prompt.md)) over
 the fix diff only.

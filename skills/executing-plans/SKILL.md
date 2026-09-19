@@ -7,6 +7,11 @@ description: Use when you have a written implementation plan to execute in a sep
 
 **Runtime:** Before using host tools or dispatching, read [runtime operations](../using-superpowers/references/runtime.md) and its active-host reference (once per context). Keep this skill's workflow decisions unchanged.
 
+**Codex model selection:** Before this workflow, read
+[choosing-subagent-models](../choosing-subagent-models/SKILL.md) and apply its
+Codex defaults for the actual task. This does not itself require delegation or
+change the current session model.
+
 ## Overview
 
 Load plan, review critically, execute all tasks, report when complete.
