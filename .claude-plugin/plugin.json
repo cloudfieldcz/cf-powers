@@ -1,7 +1,7 @@
 {
   "name": "cf-powers",
   "description": "CF Powers development workflows for Claude Code and Codex: analysis, planning, TDD, review and orchestration.",
-  "version": "2.5.2",
+  "version": "2.5.3",
   "author": {
     "name": "Cloudfield",
     "email": "valda@cloudfield.cz"

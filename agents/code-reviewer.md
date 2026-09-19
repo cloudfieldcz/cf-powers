@@ -31,8 +31,9 @@ When reviewing completed work, you will:
    - Assess scalability and extensibility considerations
 
 4. **Documentation and Standards**:
-   - Verify that code includes appropriate comments and documentation
-   - Check that file headers, function documentation, and inline comments are present and accurate
+   - Verify the documentation the project actually requires is present and accurate (README, docs/, CHANGELOG, public API signatures)
+   - Check that the inline comments and docstrings that exist still match the code they sit on
+   - Flag comments that restate the code, narrate the flow, or carry background belonging in docs/ — over-commenting is a defect to report, not a safe default. Never ask for a comment to be added unless a reader would otherwise miss a non-obvious fact
    - Ensure adherence to project-specific coding standards and conventions
 
 5. **Issue Identification and Recommendations**:

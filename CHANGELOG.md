@@ -7,6 +7,18 @@ Project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [2.5.3] — 2026-09-19
+
+### Changed
+- Code comments are now governed by one rule carried on every code-writing path:
+  `using-superpowers` for the main session, and the implementer and unit-executor
+  prompt templates for subagents, which skip that skill by design. A comment must
+  say what the line cannot; roughly one comment line per ten lines of code is the
+  smell threshold.
+- `code-reviewer` no longer asks for comments and documentation to be present as a
+  default. It reports over-commenting as a defect and requests a comment only where
+  a reader would otherwise miss a non-obvious fact.
+
 ## [2.5.2] — 2026-09-19
 
 ### Fixed

@@ -74,6 +74,17 @@ Dispatch brief (translate through the active runtime):
     - In existing codebases, follow established patterns. Improve code you're touching
       the way a good developer would, but don't restructure things outside your task.
 
+    ## Comments
+
+    A comment earns its place only by saying what the line cannot: a non-local
+    coupling, a refusal the code implies but never names, why the obvious simpler
+    version is wrong. Cut the rest — restating the code, narrating the flow,
+    background, section banners, ALL-CAPS emphasis, a module docstring that tells
+    the feature's story. Long rationale belongs in the project's docs, where it can
+    be found and maintained. Past roughly one comment line per ten lines of code you
+    are writing prose. The surrounding file is not the standard: write the new
+    comment short even where the one above it runs six lines.
+
     ## When You're in Over Your Head
 
     It is always OK to stop and say "this is too hard for me." Bad work is worse than
@@ -104,6 +115,7 @@ Dispatch brief (translate through the active runtime):
     - Is this my best work?
     - Are names clear and accurate (match what things do, not how they work)?
     - Is the code clean and maintainable?
+    - Does every comment I wrote say something the code cannot?
 
     **Discipline:**
     - Did I avoid overbuilding (YAGNI)?

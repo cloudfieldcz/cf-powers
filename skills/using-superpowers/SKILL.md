@@ -68,6 +68,16 @@ When multiple skills apply, process skills come first — they set the approach,
 - "Let's build X" → cf-powers:analysis first, then implementation skills.
 - "Fix this bug" → cf-powers:systematic-debugging first, then domain skills.
 
+## Comments in Code You Write
+
+A comment earns its place only by saying what the line cannot: a non-local coupling, a
+refusal the code implies but never names, why the obvious simpler version is wrong. Cut
+the rest — restating the code, narrating the flow, background, section banners, ALL-CAPS
+emphasis, a module docstring that tells the feature's story. Long rationale belongs in the
+project's docs, where it can be found and maintained. Past roughly one comment line per ten
+lines of code you are writing prose. The surrounding file is not the standard: write the
+new comment short even where the one above it runs six lines.
+
 ## User Instructions
 
 User instructions (CLAUDE.md, AGENTS.md, direct requests) take precedence over skills, subject to the host's system and developer instructions. If CLAUDE.md says "don't use TDD" and a skill says "always use TDD," follow the user. Only skip a skill's workflow when your human partner has explicitly told you to.
