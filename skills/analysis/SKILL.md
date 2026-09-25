@@ -20,7 +20,8 @@ A single skill that takes you from a vague idea to a reviewed technical analysis
 
 **Output:** `docs/plans/YYYY-MM-DD-<topic>.md` — a single document containing both the design rationale and the full technical analysis.
 
-**Output language:** English (document, dialogue, and all skill artifacts).
+**Output language:** English (document, dialogue, and all skill artifacts). The document follows
+[Technical English](../using-superpowers/references/technical-english.md).
 
 ## Preserve the Intended Outcome
 
@@ -154,7 +155,7 @@ Before writing anything, thoroughly explore the project:
 
 ### Phase 3: Write the Analysis Document
 
-Write in English. Follow this document structure:
+Write in English with the [Technical English](../using-superpowers/references/technical-english.md) sentence rules. Follow this document structure:
 
 ```markdown
 # <Topic> — <Short description>

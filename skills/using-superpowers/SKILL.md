@@ -78,6 +78,15 @@ project's docs, where it can be found and maintained. Past roughly one comment l
 lines of code you are writing prose. The surrounding file is not the standard: write the
 new comment short even where the one above it runs six lines.
 
+## Technical English
+
+Comments, docstrings, commit messages, PR descriptions, analyses, plans and technical
+docs follow the writing rules of Simplified Technical English (ASD-STE100). Each sentence
+carries one statement in at most 25 words, in active voice with a named actor. Use the
+imperative for instructions, one term for one thing, and full verb forms. These rules
+change how a sentence reads, not how many there are. Scope and examples:
+[technical-english.md](references/technical-english.md).
+
 ## User Instructions
 
 User instructions (CLAUDE.md, AGENTS.md, direct requests) take precedence over skills, subject to the host's system and developer instructions. If CLAUDE.md says "don't use TDD" and a skill says "always use TDD," follow the user. Only skip a skill's workflow when your human partner has explicitly told you to.

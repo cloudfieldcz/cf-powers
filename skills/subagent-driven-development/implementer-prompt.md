@@ -85,6 +85,22 @@ Dispatch brief (translate through the active runtime):
     are writing prose. The surrounding file is not the standard: write the new
     comment short even where the one above it runs six lines.
 
+    ## Technical English
+
+    Comments, docstrings, commit messages and technical docs follow the writing rules of
+    Simplified Technical English (ASD-STE100). Each sentence has this shape:
+
+    - One statement. At most 20 words for an instruction, 25 for a description.
+    - Active voice with a named actor: "The expiry job calls `release()`", not "`release()` is called".
+    - Imperative for instructions and commit subjects: "Lock the row before the check."
+    - One term for one thing. Repeat the noun you chose; do not switch to a synonym.
+    - Articles and "that" stay in. "It" and "this" appear only when one noun can match.
+    - Simple verbs in full form: "start", not "kick off"; "does not", not "doesn't".
+
+    These rules change how a sentence reads, not how many there are. A comment stays one
+    or two short sentences, and the comment budget above still holds. Code identifiers
+    and domain terms stay as they are. Chat replies and user-facing guides are out of scope.
+
     ## When You're in Over Your Head
 
     It is always OK to stop and say "this is too hard for me." Bad work is worse than
@@ -116,6 +132,7 @@ Dispatch brief (translate through the active runtime):
     - Are names clear and accurate (match what things do, not how they work)?
     - Is the code clean and maintainable?
     - Does every comment I wrote say something the code cannot?
+    - Do my comments and commit message follow the Technical English sentence shape?
 
     **Discipline:**
     - Did I avoid overbuilding (YAGNI)?

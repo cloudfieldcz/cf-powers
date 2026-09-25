@@ -54,6 +54,9 @@ For each change identified, walk **all five layers**:
 
 ### Step 3: Decide per Change
 
+Technical layers (`docs/` architecture, ADRs, references, and inline docs) follow
+[Technical English](../using-superpowers/references/technical-english.md). README, user guides and user-facing CHANGELOG entries keep their own voice.
+
 Each change resolves to exactly one of:
 
 1. **UPDATE** — touches user-visible surface or modifies existing documented behavior → write the update

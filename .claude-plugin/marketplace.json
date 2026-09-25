@@ -9,7 +9,7 @@
     {
       "name": "cf-powers",
       "description": "CF Powers \u2014 structured development workflows for Claude Code and Codex",
-      "version": "2.5.3",
+      "version": "2.6.0",
       "source": "./",
       "author": {
         "name": "Cloudfield",

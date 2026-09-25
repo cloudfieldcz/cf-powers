@@ -20,6 +20,8 @@ Assume a skilled developer who knows almost nothing about our toolset or problem
 
 **Announce at start:** "I'm using the writing-plans skill to create the implementation plan."
 
+**Language:** plans follow [Technical English](../using-superpowers/references/technical-english.md). The implementer is often a subagent; a sentence with two readings becomes a wrong implementation.
+
 **Context:** The user manages their own branches. Verify a feature branch before starting, or use a host-provided detached
 worktree via the runtime reference. On main/master, obtain the user's branch
 choice before writing unless they already explicitly authorized work there.

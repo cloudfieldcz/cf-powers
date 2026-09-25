@@ -122,6 +122,8 @@ EOF
 )"
 ```
 
+The PR title and body follow [Technical English](../using-superpowers/references/technical-english.md).
+
 #### Option 3: Keep As-Is
 
 Report: "Keeping branch <name>."

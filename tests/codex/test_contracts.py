@@ -32,7 +32,7 @@ class PluginContracts(unittest.TestCase):
         self.assertEqual((plugin / codex['skills']).resolve(), ROOT / 'skills')
         for role in ['code', 'business-analyst', 'developer', 'security', 'performance']:
             self.assertTrue((plugin / f'agents/{role}-reviewer.md').is_file())
-        for ref in ['runtime', 'claude-code-tools', 'codex-tools']:
+        for ref in ['runtime', 'claude-code-tools', 'codex-tools', 'technical-english']:
             self.assertTrue((plugin / f'skills/using-superpowers/references/{ref}.md').is_file())
 
 class IntegrityBehavior(unittest.TestCase):

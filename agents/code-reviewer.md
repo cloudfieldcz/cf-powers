@@ -34,6 +34,7 @@ When reviewing completed work, you will:
    - Verify the documentation the project actually requires is present and accurate (README, docs/, CHANGELOG, public API signatures)
    - Check that the inline comments and docstrings that exist still match the code they sit on
    - Flag comments that restate the code, narrate the flow, or carry background belonging in docs/ — over-commenting is a defect to report, not a safe default. Never ask for a comment to be added unless a reader would otherwise miss a non-obvious fact
+   - Flag new comments, docstrings and commit messages that break the Technical English shape at a glance: a sentence over 25 words, passive voice that hides the actor, or "it"/"this" that can match two nouns. Report these as Suggestions, never as Critical
    - Ensure adherence to project-specific coding standards and conventions
 
 5. **Issue Identification and Recommendations**:

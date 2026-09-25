@@ -7,6 +7,28 @@ Project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [2.6.0] — 2026-09-25
+
+### Added
+- Technical text now follows the writing rules of Simplified Technical English
+  (ASD-STE100): one statement per sentence, at most 25 words, active voice with a
+  named actor, imperative for instructions, one term for one thing. The STE
+  dictionary is not used. The rules cover comments, docstrings, commit messages,
+  PR descriptions, analyses, plans, review reports and technical `docs/`. README,
+  user guides and user-facing CHANGELOG entries are out of scope.
+- New shared reference `skills/using-superpowers/references/technical-english.md`
+  with the scope table and before/after examples. It lives under `skills/`, so
+  standalone Codex installations reach it too.
+
+### Changed
+- `using-superpowers` carries a short Technical English section for the main
+  session. The implementer and unit-executor prompt templates carry the full rule
+  block for subagents, and their self-review checks it.
+- `analysis`, `writing-plans`, `documenting-changes` and
+  `finishing-a-development-branch` link the reference where they produce text.
+- `code-reviewer` reports clear Technical English breaks in new comments and commit
+  messages as Suggestions only.
+
 ## [2.5.3] — 2026-09-19
 
 ### Changed
