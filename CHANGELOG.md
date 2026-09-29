@@ -7,6 +7,22 @@ Project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [2.6.1] — 2026-09-29
+
+### Changed
+- Claude routing names the models: Haiku for mechanical work, Sonnet 5.5 for
+  implementation, Opus 5.5 for judgment and reviews. The `haiku` alias picks up a
+  newer Haiku when it ships.
+- Claude Fable 5.1 runs only on an explicit user request. The automatic Fable
+  escalation for difficult tasks or repeated Opus failure is removed; repeated
+  Opus failure now leads to a narrower task or a question to the user.
+- Codex routing uses `gpt-6-sol` by default, including all reviews, and
+  `gpt-6-luna` for mechanical work. `gpt-6-astra` is reserved for cross-system
+  architecture, transaction/concurrency/permission decisions, difficult
+  race/security test design, complex diagnosis, and repeated `gpt-6-sol`
+  failure after task narrowing. Routine debugging starts on `gpt-6-sol`;
+  an unknown root cause alone does not select Astra. `gpt-5.6-terra` is no longer used.
+
 ## [2.6.0] — 2026-09-25
 
 ### Added

@@ -136,9 +136,12 @@ path. No global custom-role setup is required.
 
 `choosing-subagent-models` owns the routing policy. Common prose uses three tiers:
 mechanical, implementation, judgment. Claude maps these to Haiku/Sonnet/Opus.
-Codex maps them once per run to the available presets: lightest suitable model
-for mechanical work, capable middle tier for decided implementation, highest
-available judgment tier for review/architecture. Record actual model and effort
+Codex uses `gpt-6-sol` by default, including reviews, and `gpt-6-luna` for
+mechanical work. `gpt-6-astra` is reserved for architecture, difficult
+concurrency/security decisions and complex diagnosis. Routine debugging starts
+on `gpt-6-sol`, even when the root cause is initially unknown. Escalate when
+evidence shows complex interactions or Sol repeatedly fails after task narrowing.
+Record actual model and effort
 with each dispatch. Follow explicit user model choices; if the host exposes no
 safe tier mapping, inherit the parent and report that cost tiering is unavailable.
 Never send Anthropic aliases to Codex or silently assume the parent is top-tier.
