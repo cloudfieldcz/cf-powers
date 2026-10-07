@@ -29,6 +29,6 @@ literal model ID or an extra tool argument. Each workflow that dispatches agents
 requests that delegation explicitly; child implementers/reviewers do not fan out.
 
 If subagents are unavailable, do authorized implementation inline using
-executing-plans and retain its progress/checkpoints. Report independent review
+executing-plans and keep its workspace ledger. Report independent review
 as unavailable, not passed; keep artifacts for that review and do not claim
 review-gated completion. Do not invent tools or enable features globally.

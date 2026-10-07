@@ -75,7 +75,7 @@ digraph when_to_use {
 |---|---|
 | **orchestrator** | Many units of any kind. Delegates each whole, tracks a work list. |
 | **subagent-driven-development** | One plan file. Fresh implementer per task, review per task. |
-| **executing-plans** | One plan, executed by hand with human checkpoints. |
+| **executing-plans** | One plan, implemented inline in this session. No pauses, one final review. |
 | **dispatching-parallel-agents** | The parallel-dispatch mechanics this skill borrows. |
 
 ## Model Selection
@@ -101,7 +101,7 @@ only coordinates.
    changes ahead: STOP and ask your human partner for a feature branch. Never
    create worktrees on your own initiative. Read-only jobs (audits, surveys)
    need no branch.
-2. **Workspace.** Run this skill's `scripts/orchestrator-workspace NAME` — pass
+2. **Workspace.** Run this skill's `bash scripts/orchestrator-workspace NAME` — pass
    the file the run is driven from (a plan index, a work-list file) or a bare
    slug for a job with no file behind it (`orchestrator-workspace
    invoice-api-upgrade`). It prints this run's git-ignored directory. Every
@@ -190,8 +190,11 @@ job's definition is wrong. Never make the same model retry unchanged.
 ### 4. Review the unit
 
 Every unit gets a review before it is closed. For code, build the package with
-cf-powers:subagent-driven-development's `scripts/review-package SCOPE_FILE BASE HEAD`
-and hand the reviewer the printed path. Never review from your own reading of
+cf-powers:subagent-driven-development's
+`bash ../subagent-driven-development/scripts/review-package SCOPE_FILE BASE HEAD`
+and hand the reviewer the printed path. Exit 3 means the range is empty or BASE is
+not an ancestor of HEAD. Usually the executor made no commit or HEAD is on the
+wrong branch. Check before you re-dispatch. Never review from your own reading of
 the diff — the diff must not enter your context.
 
 Dispatch `cf-powers:code-reviewer` on the **judgment tier** (inherit only if the
@@ -258,7 +261,7 @@ continue?" between units — they asked for the job, not for the first unit.
 ## Finish
 
 When the last unit is complete, review the whole job once. For code:
-`scripts/review-package SCOPE_FILE MERGE_BASE HEAD` (MERGE_BASE =
+`bash ../subagent-driven-development/scripts/review-package SCOPE_FILE MERGE_BASE HEAD` (MERGE_BASE =
 `git merge-base main HEAD`) dispatched to `cf-powers:code-reviewer` on the judgment tier,
 pointed at the ledger's deferred-minor and parked lines so it can triage what
 must be fixed before merge. For a non-code job, the equivalent is one reviewer
@@ -294,7 +297,7 @@ now), and cf-powers:finishing-a-development-branch to integrate.
 You: I'm using the orchestrator skill to drive this work.
 
 [git branch --show-current → feature/big-thing ✅]
-[scripts/orchestrator-workspace docs/plans/2026-08-22-big-thing-plan-index.md
+[bash scripts/orchestrator-workspace docs/plans/2026-08-22-big-thing-plan-index.md
   → .cf-powers/orchestrator/2026-08-22-big-thing-plan-index/ , no run.md → fresh]
 [Read the index only: 6 phases, 1-4 independent, 5 depends on 1-4, 6 is release]
 [Todos: one per phase. Pre-flight over the index: clean.]
@@ -303,7 +306,7 @@ Unit 1 (phase 1 — models). Plan text is concrete → delegate whole.
 [BASE=a1b2c3d; dispatch unit executor, tier: implementation, scope path + report path]
 Executor: DONE — 4 commits, 12/12 tests pass, report at …/unit-1-report.md
 
-[review-package plan-1-models.md a1b2c3d HEAD]
+[bash ../subagent-driven-development/scripts/review-package plan-1-models.md a1b2c3d HEAD]
 [Dispatch cf-powers:code-reviewer on the judgment tier with the package path]
 Reviewer: Spec ✅. One Important: missing NOT NULL on invoice_id.
 [Fix round 1/3: resume executor with the finding verbatim → scoped re-review → ADDRESSED]
@@ -326,7 +329,7 @@ User: our 23 API handlers still use the old auth helper — migrate them all.
 
 You: I'm using the orchestrator skill to drive this work.
 
-[scripts/orchestrator-workspace auth-helper-migration]
+[bash scripts/orchestrator-workspace auth-helper-migration]
 [Scout: grep -rl "legacyAuth(" src/handlers → 23 files, 4 obvious clusters]
 [Write .cf-powers/orchestrator/auth-helper-migration/units.md — 4 units by
  cluster, each with its file list, dependencies (none), acceptance (suite green,
@@ -336,7 +339,7 @@ You: I'm using the orchestrator skill to drive this work.
 Unit 1 — read/GET handlers (7 files). Purely mechanical, pattern fixed.
 [BASE recorded; dispatch executor, tier: mechanical, units.md line + file list]
 Executor: DONE — 1 commit, 41/41 tests pass
-[review-package + cf-powers:code-reviewer on the judgment tier]
+[bash ../subagent-driven-development/scripts/review-package + cf-powers:code-reviewer on the judgment tier]
 Reviewer: Important — two handlers lost their tenant scope in the rewrite.
 [Fix round 1/3 → ADDRESSED]
 [Ledger: Unit 1: complete. units.md: unit 1 → ✅]

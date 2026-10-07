@@ -7,6 +7,49 @@ Project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [2.7.0] — 2026-10-07
+
+Selective upstream sync, obra/superpowers v6.4.1 and v6.4.2. Details are in
+[docs/upstream-sync.md](docs/upstream-sync.md).
+
+### Added
+- `executing-plans` is now a real inline execution mode. The session implements
+  every task itself, with the same `.cf-powers/sdd/` workspace and ledger as
+  `subagent-driven-development`, so the executor can change in the middle of a plan.
+  The task's `Verify:` line is the gate for each task. One judgment-tier review of
+  the whole branch runs at the end, followed by one fix pass. The old version
+  stopped on every failed test and had no ledger or final review.
+- New helper scripts `executing-plans/scripts/task-start` and `task-done`.
+  `task-done` records a task as complete only when its verification command passes.
+  New offline suite `tests/executing-plans-scripts`.
+- Plans have a **Review Focus** section: at most five inputs or failure modes that
+  the analysis implies but no test covers. Each one gets a test in the task that
+  owns the code.
+- `writing-plans` has a short self-review: analysis coverage, consistent Interfaces
+  names, and the plan budget.
+- Reviewers judge behavior the spec does not mention by what a reasonable user
+  expects. A crash on an unnamed input is no longer Minor. Reviewers list the
+  items they declined to judge, and the controller decides each one.
+- Opt-in on Claude Code: one Sonnet subagent runs the whole SDD controller to save
+  the session model's cost.
+
+### Changed
+- The `writing-plans` handoff offers subagent-driven and inline execution with
+  their costs and recommends one for the plan. An execution method the user
+  already chose is kept.
+- TDD and the implementer prompt: the project's full test suite defines green.
+  Report every failure by name, including failures you did not cause.
+- Skills run bundled scripts through their interpreter (`bash …`, `node …`).
+  Packagers such as the Codex marketplace can remove the executable bit.
+
+### Fixed
+- Two plans with the same file name in different directories no longer share one
+  SDD workspace. Before, `task-brief` silently overwrote the other plan's brief.
+- `review-package` rejects an empty range and a BASE that is not an ancestor of HEAD
+  (exit 3).
+- `requesting-code-review` uses `git merge-base origin/main HEAD` as the multi-commit
+  base. Plain `origin/main` showed phantom deletions after main moved on.
+
 ## [2.6.1] — 2026-09-29
 
 ### Changed

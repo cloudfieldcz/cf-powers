@@ -23,6 +23,41 @@ We take genuine bug fixes and content improvements selectively under this policy
 
 ## Sync history
 
+### 2026-10-07 — dev `5940bd8` → v6.4.2 (released as cf-powers v2.7.0)
+
+Upstream released v6.4.1 (2026-09-18) and v6.4.2 (2026-09-25) as squashed
+release commits. Compared `5940bd8..upstream/main` tree contents.
+
+**Adopted, with fork adaptations:**
+
+- SDD scripts: the same-basename workspace fix (plan-path marker, owner
+  check, parent/counter slug) and the `review-package` range guards. Ported
+  with `.cf-powers/`. New cases in `tests/sdd-scripts`.
+- Interpreter invocation of bundled scripts. Extended to our orchestrator,
+  `render-graphs.js` and `find-polluter.sh`, because we ship to Codex.
+- Native `executing-plans`, written into our body: shared SDD workspace and
+  ledger, the four SDD stops, `task-start`/`task-done`, one final review.
+  The per-task gate is our `Verify:` line, because our plans have no
+  step-level `Expected:` lines. We kept the Step 0 branch check and the
+  orchestrator pointer.
+- `writing-plans`: execution handoff with two methods, Review Focus, a
+  three-item self-review, and the "reasonable choice" clause for the reader.
+- Reviewer "reasonable user" rule and "Declined to judge" list; merge-base
+  `BASE_SHA`; TDD "project suite defines green".
+- Nested SDD controller as an opt-in in our `claude-code-tools.md`.
+
+**Deliberately skipped:**
+
+- The user plan-review gate before execution and the brainstorming tie-in.
+  Same reason as on 2026-09-14.
+- v6.4.2 "a plan records decisions": v2.4.0 already has it, with a stricter
+  budget. We keep `plan-document-reviewer-prompt.md`, which upstream deleted,
+  because our conditional plan review uses it.
+- `diagnosing-superpowers`: unchanged since the last audit, so the reasons
+  above still hold.
+- Muse, OpenCode 2.0 and Qwen support; the held-back
+  `proving-it-works-with-a-movie` skill.
+
 ### 2026-09-14 — Codex integration from v6.3.0
 
 After completing the Claude-only backports at `3ae09eb`, added Codex integration
@@ -235,8 +270,8 @@ are ours.
 
 ## Reference points
 
-- Last fully-tracked upstream release: **v6.3.0** (synced in cf-powers v2.3.0;
-  rechecked 2026-09-14). Selected later dev changes are listed above.
+- Last fully-tracked upstream release: **v6.4.2** (synced in cf-powers v2.7.0,
+  2026-10-07).
 - Last fully-tracked upstream version before this log started: **v5.0.7**
   (synced in cf-powers v1.4.1, commit `c107d3b`).
 - Earlier syncs are recorded only in commit messages (`git log --grep upstream`).

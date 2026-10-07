@@ -1,5 +1,5 @@
 ---
-description: Execute plan in batches with review checkpoints
+description: Execute a plan inline in this session, with one final review
 disable-model-invocation: true
 ---
 

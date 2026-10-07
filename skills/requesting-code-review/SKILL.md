@@ -32,9 +32,11 @@ change the current session model.
 
 **1. Get git SHAs:**
 ```bash
-BASE_SHA=$(git rev-parse HEAD~1)  # or origin/main
+BASE_SHA=$(git rev-parse HEAD~1)  # or: git merge-base origin/main HEAD
 HEAD_SHA=$(git rev-parse HEAD)
 ```
+
+Use the merge-base form against main. A plain `origin/main` shows phantom deletions once main moves.
 
 **2. If the diff touches a rendered surface, capture it:** open the affected
 screen in the running app (the built-in `run` skill, or Playwright

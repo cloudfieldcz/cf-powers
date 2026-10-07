@@ -16,7 +16,7 @@ change the current session model.
 
 A plan records **decisions the implementer cannot cheaply re-derive**: the order that keeps the tree green, the files two units both touch, the exact contract between units (names, signatures, payload shapes), values copied verbatim from the spec, and the specific trap in this codebase that will bite them. Everything the implementer would arrive at on their own by reading the surrounding code is **transcription**. Cut it.
 
-Assume a skilled developer who knows almost nothing about our toolset or problem domain and who runs cf-powers:test-driven-development on their own. The plan tells them what to build and what must not be got wrong; it does not do the work for them in Markdown.
+Assume a skilled developer who knows almost nothing about our toolset or problem domain, who runs cf-powers:test-driven-development on their own, and who makes a reasonable choice wherever the plan leaves one open. The plan tells them what to build and what must not be got wrong; it does not do the work for them in Markdown.
 
 **Announce at start:** "I'm using the writing-plans skill to create the implementation plan."
 
@@ -108,7 +108,7 @@ A task states five things: what it delivers, which files, the contract it produc
 ```markdown
 # [Feature Name] — Phase N: [Phase Name]
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use cf-powers:subagent-driven-development (recommended) or cf-powers:executing-plans to implement this plan task-by-task. Tasks use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use cf-powers:subagent-driven-development or cf-powers:executing-plans (inline), as the handoff chose, to implement this plan task-by-task. Tasks use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** [One sentence describing what this phase builds]
 
@@ -126,6 +126,14 @@ A task states five things: what it delivers, which files, the contract it produc
 naming and copy rules, platform requirements — one line each, with exact
 values copied verbatim from the spec. Every task's requirements implicitly
 include this section.]
+
+## Review Focus
+
+[At most 5 lines. Each line names an input or a failure mode that the spec
+implies but no task's tests exercise, and the behavior a reasonable person
+expects. Put the most likely first. Spec silence on an input does not permit
+the program to break on it. For each line, add the test that pins it to the
+task that owns the code. Write "None found" if you checked and found none.]
 
 ---
 ```
@@ -175,6 +183,14 @@ Every task must contain what an engineer needs to act. These are **plan failures
 
 The replacement for a code block is the exact file, the exact signature, and the decision. `validate_branding_asset(kind, data) -> None, raises BrandingRefusal(code)` is a contract. Forty lines of its body is transcription.
 
+## Self-Review
+
+After you write the plan, run three checks yourself. This is not a review stage and not a user gate. Fix what you find inline and continue.
+
+1. **Spec coverage:** every requirement in the analysis maps to a task. Add a task for a gap.
+2. **Interfaces:** every name, signature and type that a task consumes matches what an earlier task produces. `clearLayers()` in Task 3 and `clearFullLayers()` in Task 7 is a bug.
+3. **Budget:** count the plan's lines against the Plan Budget. Cut when the plan is over it.
+
 ## Plan Review
 
 Review happens on code, once. A plan gets a review only when it draws a shape that is expensive to reverse after implementation starts: **if no task's Decisions block introduces a DB schema or migration, a public API or payload shape, or a cross-unit contract, skip the plan review entirely** and go to Execution Handoff.
@@ -200,32 +216,31 @@ Everything else — whether a test will pass, whether markup renders, naming, wo
 
 ## Execution Handoff
 
-After saving all plan files and completing any applicable plan review, link
+After you save all plan files and complete any applicable plan review, link
 the saved plan (or index) and summarize the decisions the user needs to see.
 Preserve any execution method and phase order the user already supplied.
-If execution is already authorized, continue using those choices; do not ask
+If execution is already authorized, continue with those choices; do not ask
 for the same authorization again. If the user requested only a plan, deliver
-it for review and wait for an execution request. Ask only for a missing choice
-that matters to the handoff.
+it and wait for an execution request. Ask only for a missing choice that
+matters to the handoff.
 
 **For multi-phase plans when the starting phase has not been chosen:**
 
 **"Plans complete. Please review the [index](docs/plans/<filename>-plan-index.md). Which phase should we start with?"**
 
+A multi-phase index runs through cf-powers:orchestrator, whichever executor each phase uses.
+
 **When no execution method has already been supplied:**
 
 **"Plan saved: [plan](docs/plans/<filename>.md). Two execution options:**
 
-**1. Subagent-Driven (recommended)** - I dispatch a fresh subagent per task, review between tasks, fast iteration
+- **Subagent-driven** - a fresh subagent implements each task and a fresh reviewer checks it before the next task starts, then one whole-branch review. Most thorough. Costs a fresh context per task and per review.
+- **Inline (Native)** - I implement every task myself in this session, then one fresh judgment-tier reviewer checks the whole branch. Cheapest and fastest. No independent review until the end. A mid-tier session model is enough, because the plan carries the decisions.
 
-**2. Inline Execution** - Execute tasks in this session using executing-plans, batch execution with checkpoints
+**For this plan I recommend <one of the two>, because <one sentence from the plan: how much the tasks depend on each other's interfaces, how many tasks there are, what a shipped mistake costs>. Which approach?"**
 
-**Which approach?"**
-
-**If Subagent-Driven chosen:**
+**If Subagent-driven chosen:**
 - **REQUIRED SUB-SKILL:** Use cf-powers:subagent-driven-development
-- Fresh subagent per task + per-task review (spec + quality) + broad whole-branch review at the end
 
-**If Inline Execution chosen:**
+**If Inline chosen, or the host has no subagent tool:**
 - **REQUIRED SUB-SKILL:** Use cf-powers:executing-plans
-- Batch execution with checkpoints for review

@@ -166,6 +166,9 @@ Dispatch brief (translate through the active runtime):
     block), that IS a finding — report it as Important, labeled
     plan-mandated. The plan's authorship does not grade its own work; the
     human decides.
+    For behavior the brief does not mention, judge by what a reasonable user
+    would expect. A crash or data loss on an unnamed input is not Minor.
+    List anything you chose not to rule on under "Declined to judge".
     Acknowledge what was done well before listing issues — accurate praise
     helps the implementer trust the rest of the feedback.
 
@@ -191,6 +194,10 @@ Dispatch brief (translate through the active runtime):
     For each issue: file:line, what's wrong, why it matters, how to fix
     (if not obvious).
 
+    ### Declined to judge
+    [Items you chose not to rule on, one line each, with the reason. The
+    controller decides. Write "none" if empty.]
+
     ### Assessment
 
     **Task quality:** [Approved | Needs fixes]
@@ -201,7 +208,7 @@ Dispatch brief (translate through the active runtime):
 **Placeholders:**
 - `tier` — judgment, resolved per cf-powers:choosing-subagent-models; inherit
   only from a known judgment-tier parent
-- `[BRIEF_FILE]` — REQUIRED: the task brief file (`scripts/task-brief PLAN N`
+- `[BRIEF_FILE]` — REQUIRED: the task brief file (`bash scripts/task-brief PLAN N`
   prints the path; same file the implementer worked from)
 - `[GLOBAL_CONSTRAINTS]` — the binding requirements copied verbatim from
   the plan's Global Constraints section or the spec: exact values, formats,
@@ -212,7 +219,7 @@ Dispatch brief (translate through the active runtime):
 - `[BASE_SHA]` — commit before this task
 - `[HEAD_SHA]` — current commit
 - `[DIFF_FILE]` — REQUIRED: the path the controller wrote the review
-  package to (`scripts/review-package PLAN_FILE BASE HEAD` prints the unique
+  package to (`bash scripts/review-package PLAN_FILE BASE HEAD` prints the unique
   path it wrote; the package never enters the controller's context)
 
 **Reviewer returns:** Spec Compliance verdict (✅/❌/⚠️), Strengths, Issues

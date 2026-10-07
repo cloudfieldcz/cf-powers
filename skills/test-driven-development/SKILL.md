@@ -294,9 +294,12 @@ Before marking work complete:
 - [ ] Each test failed for expected reason (feature missing, not typo)
 - [ ] Wrote minimal code to pass each test
 - [ ] All tests pass
+- [ ] Ran the project's test command, even when the task names one file
 - [ ] Output pristine (no errors, warnings)
 - [ ] Tests use real code (mocks only if unavoidable)
 - [ ] Edge cases and errors covered
+
+Before you call the change done, run the project's test command, even when the task names one file. Report every failure by name, including failures you did not cause.
 
 Can't check all boxes? You skipped TDD. Start over.
 

@@ -80,6 +80,11 @@ so in your report.
 - Documentation complete?
 - No obvious bugs?
 
+## Behavior the Spec Does Not Mention
+
+Judge it by what a reasonable user would expect. A spec's silence is not permission.
+A crash or data loss on an input the spec does not name is not Minor.
+
 ## Output Format
 
 ### Strengths
@@ -101,6 +106,9 @@ so in your report.
 - What's wrong
 - Why it matters
 - How to fix (if not obvious)
+
+### Declined to Judge
+[Behaviors you chose not to rule on, one line each, with the reason. The controller decides. Write "none" if empty.]
 
 ### Recommendations
 [Improvements for code quality, architecture, or process]

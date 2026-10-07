@@ -47,7 +47,9 @@ Dispatch brief (translate through the active runtime):
     It's always OK to pause and clarify. Don't guess or make assumptions.
 
     While iterating, run the focused test for what you're changing; run the
-    full suite once before committing, not after every edit.
+    full suite once before committing, not after every edit. The project's
+    full suite defines green, not this task's test file. Report every failure
+    by name, including failures you did not cause.
 
     ## You Do Not Dispatch Subagents
 

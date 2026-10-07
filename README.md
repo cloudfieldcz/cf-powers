@@ -123,7 +123,7 @@ When the analysis contains one logical phase, `/write-plan` produces a single pl
 docs/plans/YYYY-MM-DD-feature-plan.md
 ```
 
-You execute it in one go — either with **subagent-driven development** (in the current session) or by opening a new session with **executing-plans** (batch execution with checkpoints).
+You execute it in one go — either with **subagent-driven development** (in the current session) or inline in this session with **executing-plans** (no pauses, one final review).
 
 ### Multi-Phase Feature
 
@@ -152,7 +152,7 @@ You can still execute phases one at a time by hand if you prefer; the index file
 | **review-as-ba** | Cross-check analysis from business analyst perspective |
 | **review-as-dev** | Cross-check analysis from developer perspective |
 | **writing-plans** | When you need a step-by-step implementation plan |
-| **executing-plans** | Batch execution with human checkpoints |
+| **executing-plans** | One plan implemented inline, no pauses, one final review |
 | **subagent-driven-development** | Fast parallel execution with two-stage review |
 | **orchestrator** | Any job too big for one session — plan index, migration, bug batch, audit; delegates each unit to subagents |
 | **choosing-subagent-models** | Before workflow model selection or dispatch — central Codex model/effort defaults and runtime tiers |

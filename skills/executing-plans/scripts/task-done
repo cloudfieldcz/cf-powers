@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+# Close one task of an inline plan execution in one call. Run the task's test
+# command, keep the full output in the workspace and print its tail. Append the
+# completion line to the ledger only if the command succeeds: a failed run
+# records nothing, so the task stays incomplete. The command reads no stdin,
+# so a watch-mode runner exits instead of hanging.
+#
+# Usage: bash task-done PLAN_FILE TASK_NUMBER BASE -- TEST_COMMAND [ARGS...]
+#   BASE is the SHA that task-start printed. The ledger line records BASE..HEAD.
+# Exit: the exit status of the test command. Exit 3 means BASE..HEAD is empty
+# or BASE is not an ancestor of HEAD (no commit yet, or the wrong branch).
+set -euo pipefail
+
+if [ $# -lt 5 ] || [ "$4" != "--" ]; then
+  echo "usage: task-done PLAN_FILE TASK_NUMBER BASE -- TEST_COMMAND [ARGS...]" >&2
+  exit 2
+fi
+
+plan=$1
+n=$2
+base=$3
+shift 4
+sdd="$(cd "$(dirname "$0")/../../subagent-driven-development/scripts" && pwd)"
+
+git rev-parse --verify --quiet "$base^{commit}" >/dev/null || { echo "bad BASE: $base" >&2; exit 2; }
+
+if [ "$(git rev-parse "$base^{commit}")" = "$(git rev-parse HEAD)" ] \
+  || ! git merge-base --is-ancestor "$base" HEAD; then
+  echo "task-done: BASE $base..HEAD is empty or BASE is not an ancestor of HEAD; commit first or check the branch. Task $n NOT recorded" >&2
+  exit 3
+fi
+
+dir=$(bash "$sdd/sdd-workspace" "$plan")
+log="$dir/task-${n}-tests.log"
+ledger="$dir/progress.md"
+
+# The ledger shows the command as a person types it: quote arguments that
+# contain shell-special characters.
+cmd=""
+for a in "$@"; do
+  case "$a" in
+    *[[:space:]\"\;\|\&]*) cmd="$cmd '$a'" ;;
+    *) cmd="$cmd $a" ;;
+  esac
+done
+cmd=${cmd# }
+
+rc=0
+"$@" > "$log" 2>&1 </dev/null || rc=$?
+
+tail -n 5 "$log"
+if [ "$rc" -ne 0 ]; then
+  echo "task-done: test command exited $rc; Task $n NOT recorded (full output: $log)" >&2
+  exit "$rc"
+fi
+
+last=$(grep -v '^[[:space:]]*$' "$log" | tail -n 1 || true)
+[ -f "$ledger" ] || printf '# SDD ledger — plan: %s\n' "$(cat "$dir/plan-path")" > "$ledger"
+line="Task $n: complete (commits $(git rev-parse --short=7 "$base")..$(git rev-parse --short=7 HEAD), tests: $cmd → ${last:-no output})"
+printf '%s\n' "$line" >> "$ledger"
+echo "ledger: $line"
