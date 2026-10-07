@@ -1,0 +1,1 @@
+Change timeout from 10 to 20 in sample.ini. This is a known local configuration correction. Verify the contents. Keep the fixture branch; do not commit or publish.

@@ -1,0 +1,1 @@
+We need a design for a new authorization boundary between tenant administrators and external automation clients. Compare revocation and least-privilege options before implementation. This is an analysis-only request; do not implement application code.

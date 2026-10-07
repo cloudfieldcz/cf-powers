@@ -1,5 +1,5 @@
 ---
-description: "MANDATORY before implementation. From idea to technical analysis — explores ideas through dialogue, then produces comprehensive analysis with cross-check reviews."
+description: "Resolve design choices before implementation, with dialogue and technical analysis scaled to scope; preserve architecture cross-check reviews."
 disable-model-invocation: true
 ---
 

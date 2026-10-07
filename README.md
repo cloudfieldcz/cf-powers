@@ -99,19 +99,34 @@ edit global model settings or install custom roles into your profile.
 
 ## Workflow
 
-Every feature starts the same way:
+Workflows activate automatically when design uncertainty, dependencies, or risk require them.
+Known mechanical tasks without production-code changes use the direct path with relevant quality checks.
+Development and code refactoring still load TDD before implementation. Debugging,
+review and delegation load their work-method skills before the corresponding work. An explicit
+skill request always remains available. A specified migration can still need coordination.
+
+For work that needs design and planning:
 
 ```
 /analyse  →  /write-plan  →  execute
     ↓
  idea → dialogue → analysis
     ↓
- BA + Dev cross-check
+ BA + Dev + Security + Performance cross-check
 ```
 
-1. **`/analyse`** — From idea to technical analysis in one step. Explores the idea through dialogue, then produces a full technical analysis (Czech output): architecture, DB changes, affected files, phases, risks, testing. Automatically dispatches BA and Developer reviewers for cross-check.
+1. **`/analyse`** — From idea to technical analysis in one step. Explores the idea through dialogue, then produces a technical analysis scaled to scope (English artifacts and in-skill dialogue): architecture, DB changes, affected files, phases, risks, testing. On the architectural path, dispatches BA, Developer, Security and Performance reviewers for cross-check.
 2. **`/write-plan`** — Break the analysis into vertical-slice units and decision-level tasks; the implementer runs the TDD loop.
 3. **Execute** — Run the plan via subagent-driven development, or `/orchestrate` for a multi-phase index.
+
+An approved design and execution choice do not need approval again. New material
+product decisions and external actions retain their approval boundaries. Required
+documentation updates are part of the change: update the existing `docs/` guide
+(or the repository's established documentation system), and link any new guide.
+
+Runtime references load for host-specific operations. Model policy still applies
+to every dispatch or supported selection, including the existing reviewer tiers;
+inline work without model selection does not load it just to restate the current model.
 
 What happens at step 3 depends on the size of the feature:
 

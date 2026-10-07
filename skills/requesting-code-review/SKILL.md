@@ -5,16 +5,19 @@ description: Use when completing tasks, implementing major features, or before m
 
 # Requesting Code Review
 
-**Runtime:** Before using host tools or dispatching, read [runtime operations](../using-superpowers/references/runtime.md) and its active-host reference (once per context). Keep this skill's workflow decisions unchanged.
+**Runtime:** Follow project instructions. Use native skill loading and ordinary
+project reads directly. Before dispatch, resume, model selection, or shared plugin
+resource resolution, read [runtime operations](../using-superpowers/references/runtime.md)
+and the active-host reference once per context. Keep workflow decisions and child runtime constraints unchanged.
 
 Dispatch cf-powers:code-reviewer subagent to catch issues before they cascade. The reviewer gets precisely crafted context for evaluation — never your session's history.
 
 **Core principle:** Review early, review often.
 
-**Codex model selection:** Before this workflow, read
-[choosing-subagent-models](../choosing-subagent-models/SKILL.md) and apply its
-Codex defaults for the actual task. This does not itself require delegation or
-change the current session model.
+**Codex model selection:** Before dispatch or another supported model-selection
+operation, read [choosing-subagent-models](../choosing-subagent-models/SKILL.md).
+Keep its defaults and reviewer tiers. Inline work with no model-selection operation
+continues on the current model; this reference does not require delegation.
 
 ## When to Request Review
 

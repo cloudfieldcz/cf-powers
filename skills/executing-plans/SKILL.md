@@ -5,12 +5,15 @@ description: Use when executing an implementation plan in the current session as
 
 # Executing Plans
 
-**Runtime:** Before using host tools or dispatching, read [runtime operations](../using-superpowers/references/runtime.md) and its active-host reference (once per context). Keep this skill's workflow decisions unchanged.
+**Runtime:** Follow project instructions. Use native skill loading and ordinary
+project reads directly. Before dispatch, resume, model selection, or shared plugin
+resource resolution, read [runtime operations](../using-superpowers/references/runtime.md)
+and the active-host reference once per context. Keep workflow decisions and child runtime constraints unchanged.
 
-**Codex model selection:** Before this workflow, read
-[choosing-subagent-models](../choosing-subagent-models/SKILL.md) and apply its
-Codex defaults for the actual task. This does not itself require delegation or
-change the current session model.
+**Codex model selection:** Before dispatch or another supported model-selection
+operation, read [choosing-subagent-models](../choosing-subagent-models/SKILL.md).
+Keep its defaults and reviewer tiers. Inline work with no model-selection operation
+continues on the current model; this reference does not require delegation.
 
 You implement every task of the plan yourself, in this session. There is no
 implementer subagent and no reviewer per task. One fresh reviewer checks the

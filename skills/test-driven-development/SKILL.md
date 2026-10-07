@@ -5,10 +5,10 @@ description: Use when implementing any feature or bugfix, before writing impleme
 
 # Test-Driven Development (TDD)
 
-**Codex model selection:** Before this workflow, read
-[choosing-subagent-models](../choosing-subagent-models/SKILL.md) and apply its
-Codex defaults for the actual task. This does not itself require delegation or
-change the current session model.
+**Codex model selection:** Before dispatch or another supported model-selection
+operation, read [choosing-subagent-models](../choosing-subagent-models/SKILL.md).
+Keep its defaults and reviewer tiers. Inline work with no model-selection operation
+continues on the current model; this reference does not require delegation.
 
 ## Overview
 
@@ -29,7 +29,7 @@ Write the test first. Watch it fail. Write minimal code to pass.
 **Exceptions (ask your human partner):**
 - Throwaway prototypes
 - Generated code
-- Configuration files
+- Configuration files that carry logic (a literal value edit needs neither TDD nor a question)
 
 Thinking "skip TDD just this once"? Stop. That's rationalization.
 

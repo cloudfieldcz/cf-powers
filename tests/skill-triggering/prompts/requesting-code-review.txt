@@ -1,3 +1,1 @@
-I just finished implementing the user authentication feature. All the code is committed. Can you review the changes before I merge to main?
-
-The commits are between abc123 and def456.
+Review the latest commit against HEAD~1 and requirements.md before integration. The repository contains the real committed implementation. Keep source files unchanged.

@@ -26,8 +26,8 @@ exposed planning tool for todos, or the existing run ledger when none is exposed
   `fork_turns: "none"` where supported. Supply absolute brief, report, role and
   runtime-reference paths, the task directory and binding constraints.
 - **Required:** read [choosing-subagent-models](../../choosing-subagent-models/SKILL.md)
-  before model selection, including inline analysis, planning, implementation,
-  testing, coordination and debugging. Its Codex table is the single source of
+  before dispatch or another supported model-selection operation. Inline work
+  without such an operation continues on the current model. Its Codex table is the single source of
   defaults and overrides generic tier examples in workflows. Validate against
   the current host's model and effort allowlists. Never pass `haiku`, `sonnet`
   or `opus` to Codex. Loading this policy does not require delegation or permit

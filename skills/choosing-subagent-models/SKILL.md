@@ -1,11 +1,14 @@
 ---
 name: choosing-subagent-models
-description: Use when selecting a model or reasoning effort for a workflow, or before dispatching any subagent
+description: Use before dispatching a subagent or performing a supported model or reasoning-effort selection. Inline work without a selection operation does not require this skill.
 ---
 
 # Choosing Subagent Models
 
-**Runtime:** Before using host tools or dispatching, read [runtime operations](../using-superpowers/references/runtime.md) and its active-host reference (once per context). Keep this skill's workflow decisions unchanged.
+**Runtime:** Follow project instructions. Use native skill loading and ordinary
+project reads directly. Before dispatch, resume, model selection, or shared plugin
+resource resolution, read [runtime operations](../using-superpowers/references/runtime.md)
+and the active-host reference once per context. Keep workflow decisions and child runtime constraints unchanged.
 
 Every dispatch carries a deliberate model selection. Pick the tier from how much the task
 has to *decide*, not from how important it feels.

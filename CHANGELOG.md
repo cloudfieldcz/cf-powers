@@ -7,6 +7,41 @@ Project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [2.8.0] — 2026-10-07
+
+### Changed
+- Clarify skill activation precedence: keep automatic workflows for complex or
+  risky work and the direct path for known mechanical changes, with quality checks.
+- Reuse approval for the same design, scope, and execution choice. Keep new material
+  decisions and external actions behind their existing authorization boundaries.
+- Apply documentation updates within the authorized change. Keep the five-layer
+  inventory, include uncommitted files, and update the existing persistent guide.
+- Load runtime references for host-specific operations and model guidance for
+  dispatch or supported selection. Preserve model defaults and all reviewer tiers.
+- Correct README descriptions of analysis routes, language, and cross-check roles.
+
+### Fixed
+- Follow-up to live Claude review: small production-code changes and refactors
+  still load TDD before implementation. Size-based routing applies to design and
+  planning, not work-method safeguards. Red Flags no longer suggest exploring
+  before a work-method skill loads.
+- Analysis handoff requires approval of the actual design, including material
+  cross-check changes. Analysis artifacts and in-skill dialogue stay English;
+  a global conversation-language preference does not change them.
+- The basic trigger and explicit-request runners no longer pass on quoted tool text, process failure, timeout, or
+  missing terminal results. Negative trigger expectations are supported.
+  A missing trigger after an exhausted turn budget is a behavioral failure, not
+  an infrastructure error. Isolated runners keep the active login on macOS and
+  load no user settings, CLAUDE.md or MCP servers. Claude reference assertions
+  are case-insensitive.
+
+### Added
+- Offline trace evaluator regressions and disposable config/documentation outcome fixtures.
+- Concrete trigger repositories and isolated basic Claude runners. Summaries
+  distinguish behavioral failures, infrastructure errors, and observed triggers
+  whose turn budget ended before completion.
+
+
 ## [2.7.0] — 2026-10-07
 
 Selective upstream sync, obra/superpowers v6.4.1 and v6.4.2. Details are in

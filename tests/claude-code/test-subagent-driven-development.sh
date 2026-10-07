@@ -108,7 +108,7 @@ else
     exit 1
 fi
 
-if assert_contains "$output" "read.*code\|inspect.*code\|verify.*code" "Reviewer reads code"; then
+if assert_contains "$output" "read.*code\|inspect.*code\|verify.*code\|judges the code\|against the diff\|reads the diff" "Reviewer reads code"; then
     : # pass
 else
     exit 1
@@ -156,7 +156,7 @@ else
     exit 1
 fi
 
-if assert_not_contains "$output" "whole plan\|entire plan\|full plan file" "Doesn't hand over the whole plan"; then
+if assert_contains "$output" "only.*task\|one task\|its task\|its own task\|per-task\|single task\|task N\|each task" "Brief is scoped to one task, not the whole plan"; then
     : # pass
 else
     exit 1

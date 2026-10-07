@@ -3,8 +3,11 @@
 CF Powers' workflow decisions are shared. Translate only the operation used to
 carry them out. Host instructions and explicit user choices take precedence.
 
-Read only the reference for the active host, as identified by its exposed tools
-and session context (both manifests can be present on disk):
+Before dispatch, resume, model selection, or shared plugin resource resolution,
+read only the active-host reference once per context. Native skill loading itself
+and ordinary project reads need no adapter lookup. Identify the host from its exposed tools and session
+context (both manifests can be present on disk). Reload relevant constraints
+after context loss when needed:
 
 - Claude Code: [claude-code-tools.md](claude-code-tools.md)
 - Codex: [codex-tools.md](codex-tools.md)

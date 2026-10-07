@@ -15,34 +15,31 @@ run_claude() {
     local allowed_tools="${3:-}"
     local output_file=$(mktemp)
 
-    # Build command. --plugin-dir points at the working tree: without it these
-    # assertions describe the installed plugin, not the code under test.
-    local cmd="claude -p \"$prompt\" --plugin-dir \"$PLUGIN_UNDER_TEST\""
+    local test_project
+    test_project=$(mktemp -d "${TMPDIR:-/tmp}/cf-powers-claude-reference.XXXXXX")
+    local args=(-p "$prompt" --plugin-dir "$PLUGIN_UNDER_TEST"
+        --append-system-prompt "Use English for these reference checks. Read the installed cf-powers skill before answering. Work only in this fixture and the plugin under test.")
     if [ -n "$allowed_tools" ]; then
-        cmd="$cmd --allowed-tools=$allowed_tools"
-    fi
-
-    # Run Claude in headless mode with timeout
-    if timeout "$timeout" bash -c "$cmd" > "$output_file" 2>&1; then
-        cat "$output_file"
-        rm -f "$output_file"
-        return 0
+        args+=(--allowed-tools "$allowed_tools")
     else
-        local exit_code=$?
-        cat "$output_file" >&2
-        rm -f "$output_file"
-        return $exit_code
+        args+=(--allowed-tools Read Glob Grep Skill)
     fi
+    local status=0
+    (cd "$test_project" && bash "$HELPERS_DIR/isolated-run.sh" "$timeout" "${args[@]}") > "$output_file" 2>&1 || status=$?
+    cat "$output_file"
+    rm -f "$output_file"
+    rm -rf "$test_project"
+    return "$status"
 }
 
-# Check if output contains a pattern
+# Check if output contains a pattern (case-insensitive)
 # Usage: assert_contains "output" "pattern" "test name"
 assert_contains() {
     local output="$1"
     local pattern="$2"
     local test_name="${3:-test}"
 
-    if echo "$output" | grep -q "$pattern"; then
+    if echo "$output" | grep -qi "$pattern"; then
         echo "  [PASS] $test_name"
         return 0
     else
@@ -61,7 +58,7 @@ assert_not_contains() {
     local pattern="$2"
     local test_name="${3:-test}"
 
-    if echo "$output" | grep -q "$pattern"; then
+    if echo "$output" | grep -qi "$pattern"; then
         echo "  [FAIL] $test_name"
         echo "  Did not expect to find: $pattern"
         echo "  In output:"
@@ -81,7 +78,7 @@ assert_count() {
     local expected="$3"
     local test_name="${4:-test}"
 
-    local actual=$(echo "$output" | grep -c "$pattern" || echo "0")
+    local actual=$(echo "$output" | grep -ci "$pattern" || echo "0")
 
     if [ "$actual" -eq "$expected" ]; then
         echo "  [PASS] $test_name (found $actual instances)"
@@ -105,8 +102,8 @@ assert_order() {
     local test_name="${4:-test}"
 
     # Get line numbers where patterns appear
-    local line_a=$(echo "$output" | grep -n "$pattern_a" | head -1 | cut -d: -f1)
-    local line_b=$(echo "$output" | grep -n "$pattern_b" | head -1 | cut -d: -f1)
+    local line_a=$(echo "$output" | grep -ni "$pattern_a" | head -1 | cut -d: -f1)
+    local line_b=$(echo "$output" | grep -ni "$pattern_b" | head -1 | cut -d: -f1)
 
     if [ -z "$line_a" ]; then
         echo "  [FAIL] $test_name: pattern A not found: $pattern_a"

@@ -5,7 +5,10 @@ description: Use when implementation is complete, all tests pass, and you need t
 
 # Finishing a Development Branch
 
-**Runtime:** Before using host tools or dispatching, read [runtime operations](../using-superpowers/references/runtime.md) and its active-host reference (once per context). Keep this skill's workflow decisions unchanged.
+**Runtime:** Follow project instructions. Use native skill loading and ordinary
+project reads directly. Before dispatch, resume, model selection, or shared plugin
+resource resolution, read [runtime operations](../using-superpowers/references/runtime.md)
+and the active-host reference once per context. Keep workflow decisions and child runtime constraints unchanged.
 
 ## Overview
 
@@ -41,16 +44,14 @@ Stop. Don't proceed to Step 2.
 
 ### Step 1.5: Verify Docs in Sync
 
-**Soft gate** — keep documentation aligned with the implementation before merging.
+Invoke `documenting-changes` and keep its five-layer inventory and UPDATE/CREATE/SKIP decisions.
+Apply required updates within existing authorization. Update the persistent guide
+in `docs/` or the project's established system, and link any new document.
+Report changed paths, verification, and justified skips. Preserve an explicit
+user deferral as an open documentation gap; do not ask again for routine updates.
 
-Invoke the `documenting-changes` skill. It walks all five doc layers (`docs/`, `README.md`, `CHANGELOG.md`, inline docstrings/JSDoc, plugin/skill metadata), maps each change to UPDATE / CREATE / SKIP, and presents the result to the user.
-
-The user chooses **now / defer / skip**:
-- **Now** → apply doc updates, then re-run tests (Step 1) before continuing.
-- **Defer** → record the gap (issue, `TODO(docs)`, or note in PR body) and continue.
-- **Skip** → only valid when every affected change has a one-line justification confirming no public surface or behavior changed.
-
-Continue to Step 2 once the user has decided.
+Continue once required updates are verified or an explicit deferral is recorded.
+If an update is blocked, report the gap instead of claiming documentation is complete.
 
 ### Step 2: Determine Base Branch
 
@@ -65,7 +66,8 @@ The base branch is whatever this work forked from — usually named in the plan,
 
 ### Step 3: Present Options
 
-Present exactly these 3 options:
+If an integration choice and target are already authorized, execute that choice
+after verification and the project's branch-policy checks. Otherwise present these three options:
 
 ```
 Implementation complete. What would you like to do?
@@ -77,7 +79,9 @@ Implementation complete. What would you like to do?
 Which option?
 ```
 
-Present the menu exactly as written — concise, with every option coming from the list above. Discarding the work happens only in response to your human partner explicitly asking for it (see "If your human partner asks to discard the work" below). Wait for their answer; the integration decision is theirs.
+When no choice is already authorized, present this menu concisely and wait for
+the answer. The integration decision is the user's. Discard work only on an explicit
+request, following the separate confirmation step below.
 
 ### Step 4: Execute Choice
 
@@ -162,10 +166,10 @@ git branch -D <feature-branch>
 | Excuse | Reality |
 |--------|---------|
 | "Tests passed earlier this session" | Run the suite on the tree you are about to integrate. A green run only proves the tree it ran on. |
-| "They obviously want it merged" | Integration is your human partner's decision. Present the menu and wait. |
+| "They obviously want it merged" | Integration is your human partner's decision. Without an authorized choice, present the menu and wait. |
 | "They seem done with this feature — I'll offer to discard it" | The menu is complete as written. Discard happens only when your human partner asks for it in so many words. |
 | "'Yeah, get rid of it' counts as confirmation" | Only the typed word `discard` authorizes deletion. |
-| "Docs can follow in a separate pass" | Step 1.5 is the gate. A deferred doc gap needs a recorded owner — an issue, a `TODO(docs)`, or a line in the PR body — not a good intention. |
+| "Docs can follow in a separate pass" | Step 1.5 is the gate. A deferred doc gap needs a recorded owner and a local record or handoff note. Create an external issue only when authorized. |
 | "The merged-result failure is probably flaky" | A failing merged result stops everything. The branch stays put while you investigate. |
 | "The base branch is obviously main" | Confirm the fork point or ask. Merging into the wrong base is expensive to undo. |
 | "The push was rejected — force-push will fix it" | A rejected push means the remote moved. Investigate; force-push only on your human partner's explicit request. |

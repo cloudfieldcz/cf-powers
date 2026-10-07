@@ -1,1 +1,1 @@
-I have a plan document at docs/plans/2024-01-15-auth-system.md that needs to be executed. Please implement it.
+Execute docs/plans/validation-plan.md inline in this session. Its design is approved and local task commits on the existing branch are authorized. Do not publish.

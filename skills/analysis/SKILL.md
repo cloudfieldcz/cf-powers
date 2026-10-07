@@ -1,16 +1,19 @@
 ---
 name: analysis
-description: Use for non-trivial implementations involving design choices, multiple components, or unclear requirements. Classifies the request as spike, bounded, or architectural, then scales the ceremony to match - a short design in chat, or full dialogue plus a technical analysis with architecture, phases, risks, and cross-check reviews. Every path stops for approval before implementation. SKIP for mechanical/single-file changes (Dockerfile, CI YAML, config tweak, one-liner) or when the user has already specified exactly what to build.
+description: Use for unresolved design choices, changed cross-component contracts, material risks, or explicit analysis requests. Known mechanical changes need no analysis; specified multi-step work may still need planning.
 ---
 
 # From Idea to Technical Analysis
 
-**Runtime:** Before using host tools or dispatching, read [runtime operations](../using-superpowers/references/runtime.md) and its active-host reference (once per context). Keep this skill's workflow decisions unchanged.
+**Runtime:** Follow project instructions. Use native skill loading and ordinary
+project reads directly. Before dispatch, resume, model selection, or shared plugin
+resource resolution, read [runtime operations](../using-superpowers/references/runtime.md)
+and the active-host reference once per context. Keep workflow decisions and child runtime constraints unchanged.
 
-**Codex model selection:** Before this workflow, read
-[choosing-subagent-models](../choosing-subagent-models/SKILL.md) and apply its
-Codex defaults for the actual task. This does not itself require delegation or
-change the current session model.
+**Codex model selection:** Before dispatch or another supported model-selection
+operation, read [choosing-subagent-models](../choosing-subagent-models/SKILL.md).
+Keep its defaults and reviewer tiers. Inline work with no model-selection operation
+continues on the current model; this reference does not require delegation.
 
 ## Overview
 
@@ -20,7 +23,8 @@ A single skill that takes you from a vague idea to a reviewed technical analysis
 
 **Output:** `docs/plans/YYYY-MM-DD-<topic>.md` — a single document containing both the design rationale and the full technical analysis.
 
-**Output language:** English (document, dialogue, and all skill artifacts). The document follows
+**Output language:** English (document, dialogue, and all skill artifacts). A global
+language preference for conversation does not change this. The document follows
 [Technical English](../using-superpowers/references/technical-english.md).
 
 ## Preserve the Intended Outcome
@@ -37,10 +41,12 @@ it so familiarity with an app genre does not substitute for the user's goal.
 Use the existing design dialogue for this; it is not another approval stage.
 
 <HARD-GATE>
-Do NOT invoke an implementation skill, write code, scaffold a project, or take
-any implementation action until you have told your human partner what you
-intend and they have approved it. This holds on every path below. The ceremony
-scales with the task; the approval gate never does.
+Before implementation, present the concrete design and obtain approval unless
+that same design, scope, and execution choice are already approved in this conversation.
+Do not request the same approval again. A general implementation request does not
+resolve newly discovered product decisions or compatibility tradeoffs.
+An analysis-only request authorizes analysis, not implementation. Keep external
+and destructive action authorization separate. These boundaries apply on every path.
 </HARD-GATE>
 
 ## Classify First
@@ -52,7 +58,7 @@ than write an analysis document" — so your human partner can override it.
 
 - **Spike** — a feasibility question ("can we…", "is it possible…", "quick and
   dirty is fine") whose output is an answer, not code you keep. Present the
-  question and what you'll try in 2-3 sentences, get a nod, then find out as
+  question and what you'll try in 2-3 sentences, use existing approval or get a nod, then find out as
   cheaply as correctness allows. No analysis document, no plan. Report findings
   as a recommendation; anything you built stays labelled throwaway.
 
@@ -62,8 +68,8 @@ than write an analysis document" — so your human partner can override it.
   If there is no existing flow to change, the task is not bounded. Ask the
   clarifying questions that matter, present a short design IN CHAT (a few
   sentences to a few short paragraphs: approach, files touched, testing), and
-  STOP. Implementation starts only after an explicit yes — a bounded task's
-  approval is as hard a gate as an architectural one. No analysis document, no
+  obtain approval if this design and scope are not already approved. A bounded
+  task retains the same design-approval boundary as an architectural one. No analysis document, no
   plan document; proceed through the normal development workflow (TDD applies).
 
 - **Architectural** — new projects, new subsystems, changes that restructure how
@@ -83,20 +89,20 @@ one-liner the user already specified needs no skill.
 
 | Thought | Reality |
 |---------|---------|
-| "This is too simple to need a design" | Simple means a short design, not no design. Two sentences in chat, then approval. |
+| "This is too simple to need a design" | Once analysis applies, provide a proportionate design and use or obtain approval for it. |
 | "I'll call it bounded and skip the analysis" | Reaching for a label to skip work IS the doubt — take the heavier path. |
-| "It's bounded and the design is obvious — I'll start while they read it" | The gate is the approval, not the design's length. Present, then stop until you hear yes. |
+| "It's bounded and the design is obvious — I'll start while they read it" | The gate is approval of this design. Present it and wait only when that approval is missing. |
 | "I understand this kind of app, so it's bounded" | Bounded measures the repo, not your familiarity. A new project has no existing flow — it is architectural. |
-| "The spike works, so I'll keep the code" | A spike's output is an answer. Keeping the code is a new request — classify it. |
+| "The spike works, so I'll keep the code" | Approval to investigate does not authorize retaining production code. |
 | "It grew, but I'm almost done — no need to re-classify" | Hidden complexity upgrades the path mid-task. Stop and say so. |
-| "They approved the spike, so the follow-up change is approved too" | Each task gets its own classification and its own approval. |
+| "They approved the spike, so the follow-up change is approved too" | Reuse approval only when the actual design, scope, and execution match. |
 
 ## The Process
 
 Phases 1-8 below are the **architectural** path. A spike stops at "present the
-probe, get a nod, report". A bounded task uses Phase 1's dialogue and Phase 2's
-codebase exploration, presents its short design in chat, and stops there —
-Phase 3 onward is architectural-path depth.
+probe, use or obtain approval, report". A bounded task uses Phase 1's dialogue and Phase 2's
+codebase exploration and presents its short design in chat. It does not enter
+Phase 3; continue implementation only within the approval boundary above.
 
 ### Phase 1: Understanding the Idea
 
@@ -365,6 +371,14 @@ After all reviewers return:
 
 ### Phase 8: Handoff
 
+Continue without the menu only when the user already approved this concrete design,
+its scope, and the requested next step. A general "build X" request is not approval
+of a design the agent later produced. Present the design and obtain approval before
+implementation if that specific approval is missing. Material design changes from
+cross-check findings need approval too; editorial corrections do not.
+For an analysis-only request, deliver the analysis without implementing it.
+Use the menu below when the next step needs the user's choice.
+
 **"Analysis is complete and has passed cross-check review. How would you like to proceed?"**
 
 Options:
@@ -373,13 +387,13 @@ Options:
 
 ## Key Principles
 
-- **Classify before you question** — Announce spike / bounded / architectural first, so your human partner can override the amount of process you're about to spend. What scales with simplicity is the artifact, never the approval.
+- **Classify before you question** — Announce spike / bounded / architectural first, so your human partner can override the amount of process you're about to spend. Scale the artifact to the task; preserve design approval and reuse it when already supplied.
 - **Skip what's not needed** — If the user arrives with a clear spec, skip Phase 1 dialogue and go straight to codebase exploration + analysis.
 - **One question at a time** — During Phase 1, never overwhelm with multiple questions.
 - **Phases, not micro-tasks** — Analysis groups work into logical phases. Micro-task breakdown belongs in writing-plans.
 - **NO implementation code** — Analysis describes WHAT and WHY, not HOW in code. Do not write implementation code, function bodies, or full code blocks. Use only: method signatures, interface definitions, pseudo-code, and short illustrative snippets. Detailed code belongs in the plan phase (writing-plans skill).
 - **File:line references** — Every affected file must have specific line references. Vague references are not acceptable.
-- **English output** — All artifacts and dialogue produced by this skill are in English.
+- **English output** — Use English for artifacts and in-skill dialogue.
 - **Cross-check is mandatory on the architectural path** — Once you are writing an analysis document, never skip the BA + Dev + Security + Performance review dispatch. Downgrading to "bounded" to escape the cross-check is the rationalization the Red Flags table names.
 - **Verify before writing** — Read the actual code before claiming anything about it. Do not guess file paths or line numbers.
 - **YAGNI ruthlessly** — Remove unnecessary features from all designs.

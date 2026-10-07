@@ -5,7 +5,10 @@ description: Use when a job is too big for one session to do itself - a plan ind
 
 # Orchestrator
 
-**Runtime:** Before using host tools or dispatching, read [runtime operations](../using-superpowers/references/runtime.md) and its active-host reference (once per context). Keep this skill's workflow decisions unchanged.
+**Runtime:** Follow project instructions. Use native skill loading and ordinary
+project reads directly. Before dispatch, resume, model selection, or shared plugin
+resource resolution, read [runtime operations](../using-superpowers/references/runtime.md)
+and the active-host reference once per context. Keep workflow decisions and child runtime constraints unchanged.
 
 Drive a large body of work from one session without spending that session's
 context on the work itself. You own the work list, the order, the dispatches,

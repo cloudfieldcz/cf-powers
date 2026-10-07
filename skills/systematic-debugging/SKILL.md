@@ -5,10 +5,10 @@ description: Use when encountering any bug, test failure, or unexpected behavior
 
 # Systematic Debugging
 
-**Codex model selection:** Before this workflow, read
-[choosing-subagent-models](../choosing-subagent-models/SKILL.md) and apply its
-Codex defaults for the actual task. This does not itself require delegation or
-change the current session model.
+**Codex model selection:** Before dispatch or another supported model-selection
+operation, read [choosing-subagent-models](../choosing-subagent-models/SKILL.md).
+Keep its defaults and reviewer tiers. Inline work with no model-selection operation
+continues on the current model; this reference does not require delegation.
 
 ## Overview
 

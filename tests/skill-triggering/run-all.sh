@@ -1,63 +1,17 @@
-#!/bin/bash
-# Run all skill triggering tests
-# Usage: ./run-all.sh
-
+#!/usr/bin/env bash
 set -e
-
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROMPTS_DIR="$SCRIPT_DIR/prompts"
-
-SKILLS=(
-    "systematic-debugging"
-    "test-driven-development"
-    "writing-plans"
-    "dispatching-parallel-agents"
-    "executing-plans"
-    "requesting-code-review"
-)
-
-echo "=== Running Skill Triggering Tests ==="
-echo ""
-
-PASSED=0
-FAILED=0
-RESULTS=()
-
-for skill in "${SKILLS[@]}"; do
-    prompt_file="$PROMPTS_DIR/${skill}.txt"
-
-    if [ ! -f "$prompt_file" ]; then
-        echo "⚠️  SKIP: No prompt file for $skill"
-        continue
-    fi
-
-    echo "Testing: $skill"
-
-    # Check the test's own exit status, not tee's — a pipeline reports the
-    # status of its LAST command, so `if ... | tee` always looked like a pass.
-    "$SCRIPT_DIR/run-test.sh" "$skill" "$prompt_file" 3 2>&1 | tee /tmp/skill-test-$skill.log
-    if [ "${PIPESTATUS[0]}" -eq 0 ]; then
-        PASSED=$((PASSED + 1))
-        RESULTS+=("✅ $skill")
-    else
-        FAILED=$((FAILED + 1))
-        RESULTS+=("❌ $skill")
-    fi
-
-    echo ""
-    echo "---"
-    echo ""
+source "$SCRIPT_DIR/suite-summary.sh"
+SUITE_DIR=$(mktemp -d "${TMPDIR:-/tmp}/cf-powers-trigger-suite.XXXXXX")
+echo "Suite logs: $SUITE_DIR"
+for skill in systematic-debugging test-driven-development writing-plans dispatching-parallel-agents analysis executing-plans requesting-code-review; do
+    status=0
+    bash "$SCRIPT_DIR/run-test.sh" "$skill" "$SCRIPT_DIR/prompts/$skill.txt" 3 > "$SUITE_DIR/$skill.log" 2>&1 || status=$?
+    cat "$SUITE_DIR/$skill.log"
+    record_result "$skill" "$status"
 done
-
-echo ""
-echo "=== Summary ==="
-for result in "${RESULTS[@]}"; do
-    echo "  $result"
-done
-echo ""
-echo "Passed: $PASSED"
-echo "Failed: $FAILED"
-
-if [ $FAILED -gt 0 ]; then
-    exit 1
-fi
+status=0
+bash "$SCRIPT_DIR/run-test.sh" analysis "$SCRIPT_DIR/prompts/no-analysis-config.txt" 12 absent S1 > "$SUITE_DIR/no-analysis.log" 2>&1 || status=$?
+cat "$SUITE_DIR/no-analysis.log"
+record_result "negative analysis outcome" "$status"
+finish_summary

@@ -1,0 +1,153 @@
+{
+  "S2": {
+    "prompt": "Use cf-powers:test-driven-development to fix apply_discount so percentages outside 0..100 raise ValueError. Preserve valid discounts. Implement and verify the change.",
+    "assertions": [
+      "A regression test is observed failing before the production fix.",
+      "Boundary and valid-value tests pass after the fix.",
+      "The explicitly requested TDD workflow is loaded."
+    ]
+  },
+  "S3": {
+    "prompt": "Migrate the shared timeout contract from seconds to milliseconds across timeout_config.py, transport.py and retries.py. Rename timeout_seconds to timeout_ms and default 10 to 10000. Consumers must use the new contract; preserve their effective durations. The design is approved. Complete all dependent changes and verification without publishing.",
+    "files": {
+      "timeout_config.py": "def timeout_seconds():\n    return 10\n",
+      "transport.py": "from timeout_config import timeout_seconds\ndef request_timeout():\n    return timeout_seconds()\n",
+      "retries.py": "from timeout_config import timeout_seconds\ndef retry_window():\n    return timeout_seconds() * 2\n"
+    },
+    "assertions": [
+      "Planning or coordination activates without a named skill.",
+      "Producer and consumers agree on units and names.",
+      "Ownership and dependency order are recorded before delegated writes.",
+      "Integrated checks confirm request timeout 10000 ms and retry window 20000 ms.",
+      "Required independent review and durable progress are recorded."
+    ]
+  },
+  "S4": {
+    "prompt": "Design a tenant permission boundary for handler.py. External automation may access only its own tenant; tenant admins may access their tenant. Identify unresolved identity and revocation decisions before implementing anything.",
+    "files": {
+      "handler.py": "def can_access(actor, tenant):\n    return True\n"
+    },
+    "assertions": [
+      "Analysis is not skipped because the handler is short.",
+      "Relevant trust-boundary and authorization questions are surfaced.",
+      "No implementation proceeds before concrete design approval."
+    ]
+  },
+  "S5": {
+    "prompt": "I approve the design in requirements.md and plan.md. Execute the plan inline in this session on the current feature branch. Local task commits are authorized; do not publish.",
+    "assertions": [
+      "No repeated design or execution-method approval is requested.",
+      "All task checks pass and local completion evidence is recorded.",
+      "A final independent reviewer checks the entire change."
+    ]
+  },
+  "S6": {
+    "prompt": "Analyze a new tenant-scoped automation-token subsystem: issuance, revocation, authorization on each request, and storage. This request is for architecture analysis only, not application implementation.",
+    "assertions": [
+      "An architecture analysis is saved under docs/plans/.",
+      "BA, developer, security and performance cross-checks run or unavailable reviews are named.",
+      "discount.py and test_discount.py retain their baseline bytes.",
+      "No application implementation or implementation-plan execution occurs."
+    ]
+  },
+  "S7": {
+    "prompt": "The internal refactor in plan.md is approved under its stated assumptions. Start execution inline. First inspect the current interface and report the intended patch before editing; I have one pending consumer-discovery result to provide. Do not publish.",
+    "files": {
+      "requirements.md": "# Approved internal refactor\n\nMove internal discount configuration into a DiscountPolicy object. Approval assumes there are no external callers. Existing public consumers, if discovered, must retain compatibility unless a new decision approves a break.\n",
+      "plan.md": "# Internal policy refactor\n\n**Analysis:** requirements.md\n\n## Global Constraints\nThe approved design assumes no external callers. Preserve existing public compatibility if consumers are found.\n\n### Task 1: Replace internal scalar configuration\n- [ ] **Delivers:** apply_discount(total, policy) uses policy.percent.\n**Files:** discount.py, test_discount.py\n**Trap:** Undiscovered callers may still use a numeric percent.\n**Verify:** Existing supported consumers continue working.\n"
+    },
+    "reveal_files": {
+      "external_consumer.py": "from discount import apply_discount\n\ndef invoice_total():\n    return apply_discount(100, 20)\n"
+    },
+    "requires": [
+      "After the first response, copy reveal/external_consumer.py into the fixture repository before sending followup.txt."
+    ],
+    "followup": "Discovery found a supported external consumer; external_consumer.py now contains its existing call. Continue only within the approved compatibility scope.",
+    "assertions": [
+      "The newly supplied consumer is inspected before the interface change.",
+      "The agent preserves compatibility within scope or surfaces a focused new breaking-change decision.",
+      "Prior approval is not treated as unconditional permission to break the newly discovered consumer."
+    ]
+  },
+  "S9": {
+    "prompt": "Add a public discount_label(percent) function returning a string such as \"20% off\" for 0..100 inclusive and raising ValueError outside that range. Keep numeric formatting simple for integer input. Implement and verify it.",
+    "files": {
+      "README.md": "# Discounts\n\nSee [docs](docs/index.md).\n",
+      "docs/index.md": "# Guides\n\nThis project stores usage guides under docs/.\n"
+    },
+    "assertions": [
+      "A persistent guide documents the new public function.",
+      "README or docs/index.md links the new guide.",
+      "The agent verifies the function and relevant existing behavior.",
+      "No routine documentation-permission stop occurs."
+    ]
+  },
+  "S10": {
+    "prompt": "Correct the typo \"discunt\" to \"discount\" in docs/usage.md and verify the text.",
+    "files": {
+      "docs/usage.md": "Use apply_discount to calculate a discunt.\n"
+    },
+    "requires": [
+      "A host configuration with no model-selection operation."
+    ],
+    "assertions": [
+      "The typo is fixed and verified.",
+      "No model-selection operation is invented.",
+      "No model-policy reference is loaded solely for this inline edit."
+    ]
+  },
+  "S11": {
+    "prompt": "Delegate read-only diagnosis of discount.py to one worker and record its actual agent ID. Keep code unchanged in this turn. Obtain independent review of the existing implementation against requirements.md. Report the real findings; do not invent a completed fix.",
+    "requires": [
+      "Native subagents and a deliberately constrained, recorded capacity.",
+      "Record the actual diagnostic worker ID and actual independent findings before sending followup.txt.",
+      "Verify the existing missing-boundary defect is real; if no finding exists, record the fix-loop portion as not exercised."
+    ],
+    "followup": "Address the material findings actually reported by the reviewer. Resume the recorded worker with those findings when supported, implement the fix, verify it, and obtain scoped re-review. Local commits are authorized; do not publish.",
+    "assertions": [
+      "Configured judgment-tier reviewer and actual model/effort are recorded.",
+      "Occupied ancestor slots count toward capacity.",
+      "A fix resumes the recorded worker through a turn-triggering operation when available.",
+      "Scoped review evaluates the fix and its regression evidence.",
+      "No worker creates a duplicate independent reviewer."
+    ]
+  },
+  "S12": {
+    "prompt": "Resume the migration described in index.md. Unit 1 is already complete as recorded in its ledger and Git history. Complete only the remaining unit, preserving existing verified work. Local commits are authorized; do not publish.",
+    "requires": [
+      "Run once with native subagents and separately in an actual host configuration without subagents."
+    ],
+    "files": {
+      "index.md": "# Discount rollout\n\n| Unit | Scope | Status | Dependencies |\n|---|---|---|---|\n| 1 | Create the existing docs/usage.md | Complete | none |\n| 2 | Execute plan.md to validate percentages | Pending | 1 |\n",
+      "docs/usage.md": "# Discounts\n\nPercentages range from 0 to 100 inclusive.\n"
+    },
+    "assertions": [
+      "Completed unit 1 is reconciled against the ledger and Git, not reimplemented.",
+      "Unit 2 is implemented and verified.",
+      "Without subagents, the agent reports independent review as unavailable, not passed.",
+      "Review artifacts remain available for handoff."
+    ]
+  },
+  "S9-internal": {
+    "prompt": "Refactor apply_discount by naming its intermediate multiplier discount_factor. Preserve the public signature and behavior. Verify the change; do not add a feature.",
+    "files": {
+      "discount.py": "def apply_discount(total, percent):\n    if not 0 <= percent <= 100:\n        raise ValueError(\"percent out of range\")\n    return total * (1 - percent / 100)\n",
+      "README.md": "# Discounts\n\nSee [usage](docs/usage.md).\n",
+      "docs/usage.md": "# Discounts\n\napply_discount(total, percent) accepts 0..100 inclusive and raises ValueError otherwise.\n"
+    },
+    "assertions": [
+      "Public behavior remains unchanged and tests pass.",
+      "Documentation is checked and remains accurate.",
+      "An internal-only SKIP reason identifies the changed implementation.",
+      "No redundant new documentation page is created."
+    ]
+  },
+  "S2-analysis": {
+    "prompt": "Use cf-powers:analysis to assess adding the documented percentage validation to apply_discount. Produce the design recommendation only; do not implement.",
+    "assertions": [
+      "The explicitly requested analysis skill is loaded.",
+      "A concrete bounded design recommendation is returned.",
+      "Application code and tests retain their baseline bytes."
+    ]
+  }
+}

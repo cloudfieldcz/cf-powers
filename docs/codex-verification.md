@@ -82,3 +82,79 @@ This verifies the shared discovery backend, not a VS Code UI session or its
 subagent availability. The installer defaults to the documented user discovery
 directory; the automated test uses the equivalent project-scoped directory to
 avoid modifying the user's profile. No normal-profile installation was made.
+
+
+## Conservative harness candidate — 2026-10-07
+
+Source baseline: `81b494e` (2.7.0). Changes remain uncommitted on
+`feat/conservative-harness-improvements`. No release or version bump was made.
+
+### Before the external Claude audit
+
+The first candidate passed offline checks and independent static review. Those
+checks did not detect the later observed implicit-TDD regression on Claude.
+The user subsequently authorized live Codex tests with the current skill contents.
+The earlier automatic approval rejection no longer blocks these Codex runs.
+
+Codex CLI 0.160.1 used separate temporary profiles, project-scoped skill snapshots,
+and requested model `gpt-6-sol`. Results below describe that pre-follow-up snapshot:
+
+| Case | Observed evidence | Limit |
+|---|---|---|
+| S1 config | Candidate 3/3 and baseline 3/3; correct edit, no plan, no commits | Small sample; no efficiency claim |
+| S8 existing guide | Candidate 3/3 and baseline 3/3; code and guide updated | Does not test implicit TDD for new logic |
+| S2 explicit TDD | Skill read, failing regression, implementation, passing tests | One run; explicit request only |
+| S2-analysis / S4 | Design advice without application edits | One run each |
+| S3 small migration | Correct integrated behavior; no durable plan or independent review | Same omission on baseline; coordination gate not satisfied |
+| S5 approved inline | Continued without repeat approval; actual independent reviewer on gpt-6-sol/high; review finding fixed | One run; baseline also completed |
+| S6 architecture | Design and four actual review agents; no application edits | First run timed out at 300 s; retry completed in 493 s |
+| S7 discovered consumer | Preserved legacy calls after new consumer evidence | Local commit remained blocked after resume |
+| S9 public / internal | Linked docs guide for new capability; existing docs retained for internal refactor | One run each |
+| S11 resume | Same diagnostic worker resumed; gpt-6-sol/high metadata; scoped feedback | Capacity/complete workflow coverage is not established by one run |
+| S12 resume | Kept completed unit and finished pending code | One candidate and baseline run omitted independent review |
+| S12 without agents | With agents.enabled=false, reported unavailable review and self-review | Still called unit complete; full review-gate contract is not established |
+
+An initial attempt to disable agents with the old `multi_agent` feature flag
+still exposed agents. That attempt does not count as a no-agent test. The corrected
+run used `agents.enabled=false` with strict configuration validation. S10 with that
+configuration fixed the typo without loading model-selection guidance.
+
+Raw trace locations and snapshot paths are retained in the local implementation
+ledger. These observations do not constitute a complete S1–S12 acceptance pass.
+
+### External Claude audit and follow-up
+
+The maintainer supplied a Claude Code 2.1.292 audit using the same new runners on
+baseline and candidate. Its single-run trigger totals were 6/8 and 1/8 respectively.
+Those totals combine fixture failures and timeouts, so they are not a task-quality
+score. The email-validator trace nevertheless proves a concrete regression:
+baseline loaded TDD before implementation; candidate wrote production code before
+tests and never loaded TDD. This invalidates the earlier static-review confidence.
+
+The follow-up separates work-method selection from size-based design/planning.
+Production-code development and refactoring retain TDD. The analysis handoff now
+requires approval of the concrete design; the prior English default is restored.
+Test fixes add real repositories, isolated basic Claude profiles, separate INFRA
+and INCOMPLETE results, and checks that survive Python optimization.
+
+Three fresh Codex trials of the implicit email-validator request loaded TDD before
+production edits, observed a failing test, then implemented and passed the tests.
+Their snapshot precedes only the final clarification that code refactors also
+select TDD. This is targeted Codex evidence, not a repeated Claude comparison.
+Raw traces: `cf-auto-tdd-8slv02hy/{1,2,3}/trace.jsonl` in the local temporary root.
+A subsequent current-snapshot S1 run passed 3/3 artifact checks without loading
+analysis or TDD; traces are under `cf-live-routing-followup-eq3xgsa5`.
+
+### Current local checks and remaining gate
+
+- Trace evaluator/wrapper regressions: 12 tests.
+- Outcome checker regressions: 6 tests, including optimized Python and historical default prose.
+- Fixture preparation/isolation/summary checks: 3 tests.
+- Integrity and Codex offline/native install/update/standalone checks passed after the skill edits.
+- Hooks, manifests, model tables, core TDD and execution/review loops remain preserved.
+
+The latest changes still need an isolated Claude before/after comparison with at
+least three repetitions, plus remaining full-matrix assertions on both hosts.
+The older specialized multi-turn and SDD integration scripts remain legacy tests,
+not proof of the new runner isolation contract. The second session performs audit
+only; this session owns edits. Do not mark the complete behavioral gate passed.

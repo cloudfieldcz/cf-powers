@@ -11,7 +11,9 @@ Code without matching documentation rots into "what does this do?" within weeks.
 
 **Core principle:** When code changes, the docs that describe it must change too — or you must say why not.
 
-**This is a soft gate.** It surfaces affected docs and prompts the user. It does not block completion. The user decides: update now, defer, or skip.
+**Documentation is part of the authorized change.** Perform required updates
+without a separate permission stop. Keep explicit user deferrals or exclusions
+visible; do not silently mark missing documentation as complete.
 
 **Announce at start:** "I'm using the documenting-changes skill to keep docs in sync."
 
@@ -32,8 +34,15 @@ Code without matching documentation rots into "what does this do?" within weeks.
 
 ```bash
 git diff <base>...HEAD --stat
-git diff <base>...HEAD -- '*.md'   # what's already covered
+git diff <base>...HEAD -- '*.md'   # committed documentation
+git diff --stat                 # unstaged changes
+git diff --cached --stat        # staged changes
+git ls-files --others --exclude-standard  # untracked files
 ```
+
+Read the relevant staged/unstaged diffs and untracked files, not only their names.
+Use the task's actual delivery scope. Preserve unrelated user changes; do not
+attribute them to this task or stage them as part of documentation updates.
 
 Answer:
 - **Public surface changed?** — API, CLI flags, config keys, env vars, schemas, slash commands, hooks, plugin manifest
@@ -57,6 +66,11 @@ For each change identified, walk **all five layers**:
 Technical layers (`docs/` architecture, ADRs, references, and inline docs) follow
 [Technical English](../using-superpowers/references/technical-english.md). README, user guides and user-facing CHANGELOG entries keep their own voice.
 
+Prefer the existing source of truth in `docs/`. If the repository uses another
+documentation system, follow that convention. Create a new document only when no
+existing guide fits, and link it from the relevant index or README. A changelog
+entry or final chat reply does not replace a required persistent guide.
+
 Each change resolves to exactly one of:
 
 1. **UPDATE** — touches user-visible surface or modifies existing documented behavior → write the update
@@ -65,17 +79,17 @@ Each change resolves to exactly one of:
 
 "Internal" alone is not a justification. "Refactored cache eviction in `src/internal/cache.ts`; no exported API, config, or behavior changed" is.
 
-### Step 4: Present to User (Soft Gate)
+### Step 4: Apply and Report
 
 ```
 Documentation review for this work:
 
-UPDATES NEEDED:
+UPDATED:
 - docs/architecture.md — describe new event flow
 - README.md — add "MyFeature" to feature list
 - CHANGELOG.md — entry for v1.6.0
 
-NEW DOCS:
+CREATED:
 - docs/guides/myfeature.md — usage guide for new MyFeature
 
 INLINE:
@@ -84,14 +98,19 @@ INLINE:
 SKIPPED (internal-only):
 - src/internal/cache.ts refactor — no public surface or behavior change
 
-Update docs now (recommended), defer, or skip?
+Validation: [commands/results, or a named documentation gap]
 ```
 
-Wait for the user's choice.
+Apply UPDATE and CREATE decisions within the authorized scope before reporting.
+Verify affected examples and links, plus the relevant repository checks.
+Ask only when a material documentation/product decision is unresolved or work
+would exceed existing authorization.
 
-- **Now** → apply updates, then re-run verification (lint/build/test) since docs changes can include code samples.
-- **Defer** → record the gap explicitly: file an issue, add a `TODO(docs)` comment at the change site, or note "docs pending" in the CHANGELOG/PR body. Don't let it disappear.
-- **Skip** → fine for internal-only work; the justification you produced in Step 3 stays in your reply for the record.
+- **Explicit user deferral** → record the gap locally or in the handoff. Creating
+  an external issue still requires authorization. Do not claim the docs are complete.
+- **SKIP** → retain the specific reason; confirm existing docs remain accurate.
+- **Blocked update** → name the missing document or information and report that
+  part as incomplete. A summary in chat is not a substitute.
 
 ## Quick Reference
 
