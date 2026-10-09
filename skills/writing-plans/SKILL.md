@@ -10,11 +10,6 @@ project reads directly. Before dispatch, resume, model selection, or shared plug
 resource resolution, read [runtime operations](../using-superpowers/references/runtime.md)
 and the active-host reference once per context. Keep workflow decisions and child runtime constraints unchanged.
 
-**Codex model selection:** Before dispatch or another supported model-selection
-operation, read [choosing-subagent-models](../choosing-subagent-models/SKILL.md).
-Keep its defaults and reviewer tiers. Inline work with no model-selection operation
-continues on the current model; this reference does not require delegation.
-
 ## Overview
 
 A plan records **decisions the implementer cannot cheaply re-derive**: the order that keeps the tree green, the files two units both touch, the exact contract between units (names, signatures, payload shapes), values copied verbatim from the spec, and the specific trap in this codebase that will bite them. Everything the implementer would arrive at on their own by reading the surrounding code is **transcription**. Cut it.

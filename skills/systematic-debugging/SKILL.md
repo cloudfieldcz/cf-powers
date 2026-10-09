@@ -5,11 +5,6 @@ description: Use when encountering any bug, test failure, or unexpected behavior
 
 # Systematic Debugging
 
-**Codex model selection:** Before dispatch or another supported model-selection
-operation, read [choosing-subagent-models](../choosing-subagent-models/SKILL.md).
-Keep its defaults and reviewer tiers. Inline work with no model-selection operation
-continues on the current model; this reference does not require delegation.
-
 ## Overview
 
 **Core principle:** ALWAYS find root cause before attempting fixes. Symptom fixes are failure.

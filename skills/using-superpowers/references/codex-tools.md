@@ -26,16 +26,11 @@ exposed planning tool for todos, or the existing run ledger when none is exposed
   `fork_turns: "none"` where supported. Supply absolute brief, report, role and
   runtime-reference paths, the task directory and binding constraints.
 - **Required:** read [choosing-subagent-models](../../choosing-subagent-models/SKILL.md)
-  before dispatch or another supported model-selection operation. Inline work
-  without such an operation continues on the current model. Its Codex table is the single source of
-  defaults and overrides generic tier examples in workflows. Validate against
-  the current host's model and effort allowlists. Never pass `haiku`, `sonnet`
-  or `opus` to Codex. Loading this policy does not require delegation or permit
-  unsupported changes to the current session model.
-- Name both model and reasoning effort when the tool supports overrides; validate
-  both against its allowlist. Preserve explicit user choices. Record actual
-  selections in the brief/ledger. Full-history forks may prohibit overrides;
-  use isolated forks instead of relying on upstream's full-history example.
+  before dispatch or another supported model-selection operation. Pass the
+  Codex model and reasoning effort from its tier table; the host allowlist
+  rejects unsupported values. Never pass `haiku`, `sonnet` or `opus` to Codex.
+  Preserve explicit user choices and record actual selections in the brief/ledger.
+  Full-history forks may prohibit overrides; use isolated forks instead.
 - If no safe mapping or override is available, inherit the parent and report
   that tier routing is unavailable. Do not invent model IDs or claim inheritance
   means top-tier review. No silent downgrade to satisfy a failing spawn.

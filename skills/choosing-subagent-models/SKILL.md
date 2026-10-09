@@ -10,111 +10,48 @@ project reads directly. Before dispatch, resume, model selection, or shared plug
 resource resolution, read [runtime operations](../using-superpowers/references/runtime.md)
 and the active-host reference once per context. Keep workflow decisions and child runtime constraints unchanged.
 
-Every dispatch carries a deliberate model selection. Pick the tier from how much the task
-has to *decide*, not from how important it feels.
-
-**Core principle:** a large model on a mechanical task is wasted latency; a
-small model on a review is a missed defect. Match the tier to the judgement
-required.
+Pick the tier from how much the task has to *decide*, not from how important it feels.
+Judgment is the default. Drop a tier when the task only executes decisions that are
+already made. That drop is the purpose of this skill: a judgment-tier model on a
+mechanical task wastes latency and quota.
 
 ## The Tiers
 
-| Tier | Use for |
-|---|---|
-| **Mechanical** | Completely mechanical, no thinking required |
-| **Implementation** | Simple work with the shape already decided |
-| **Judgment** (default) | Review of any kind, and work with an open question in it |
-
-Claude resolves these tiers to Haiku / Sonnet / Opus through its runtime
-reference. Claude Fable runs only on an explicit user request. For Codex, the
-task-specific defaults below take precedence over generic tier examples here and
-in other workflows. A tier label is not a model ID.
-
-## Claude models
-
-| Tier | Model |
-|---|---|
-| Mechanical | Haiku (the `haiku` alias; a newer Haiku replaces 4.5 when it ships) |
-| Implementation | Sonnet 5.5 |
-| Judgment | Opus 5.5 |
-| On explicit user request only | Fable 5.1 |
-
-Select Fable only when the user names it for the task or the session. Task
-difficulty, repeated Opus failure, repository size and review scope do not
-select Fable. When Opus repeatedly fails the same acceptance criteria, narrow
-the task, change the approach or surface the unresolved decision to the user.
-This replaces a workflow's "one tier up" step when the stuck worker already ran
-on Opus. You may tell the user that Fable is an option; do not dispatch it until they ask.
-A Fable parent session does not select Fable for its children. Select Opus
-explicitly unless the user asked for Fable subagents.
-
-For a requested Fable dispatch, verify the exact model, account/provider
-availability and supported effort in the Claude runtime reference. Record the
-actual model and effort. If Fable is unavailable, report the limitation and
-continue on Opus. Never claim that Fable ran when the host substituted another
-model.
-
-## Codex defaults — single source of truth
-
-These are workflow recommendations, not benchmark results or guaranteed savings
-against a weekly usage limit. Do not add volatile pricing multipliers.
-
-| Work | Tier | Model | Reasoning effort |
+| Tier | Use for | Claude | Codex |
 |---|---|---|---|
-| Analysis of a bounded feature | Judgment | `gpt-6-sol` | `high` |
-| Architecture across systems, analysis with unresolved architecture | Complex judgment | `gpt-6-astra` | `high` |
-| Main implementation plan | Judgment | `gpt-6-sol` | `medium`; `high` with major decisions still open |
-| Breakdown of an already-decided phase | Implementation | `gpt-6-sol` | `medium` |
-| Routine programming from a plan | Implementation | `gpt-6-sol` | `medium` |
-| Complex implementation with interfaces and invariants already decided | Implementation | `gpt-6-sol` | `high` |
-| New decisions about transactions, concurrency or permissions | Complex judgment | `gpt-6-astra` | `high` |
-| Routine test writing | Implementation | `gpt-6-sol` | `medium` |
-| Design of difficult race/crash/security tests | Complex judgment | `gpt-6-astra` | `high` |
-| Running specified tests, collecting results, codegen | Mechanical | `gpt-6-luna` | `low` |
-| Mechanical edits, renames, precisely specified documentation | Mechanical | `gpt-6-luna` | `low`–`medium` |
-| All reviews, including security reviews and rechecks | Judgment | `gpt-6-sol` | `high` |
-| Coordination of decided tasks | Implementation | `gpt-6-sol` | `medium` |
-| Coordination involving design decisions | Judgment | `gpt-6-sol` | `high` |
-| Routine debugging, including an initially unknown root cause | Judgment | `gpt-6-sol` | `high` |
-| Diagnosis requiring complex reasoning across systems, concurrency or security boundaries | Complex judgment | `gpt-6-astra` | `high` |
+| **Mechanical** | Completely mechanical, no thinking required | `haiku` | `gpt-6-luna`, `low`–`medium` |
+| **Implementation** | Work with the shape already decided | `sonnet` | `gpt-6-sol`, `medium` |
+| **Judgment** (default) | Review of any kind, and work with an open question in it | `opus` | `gpt-6-sol`, `high` |
+| **Complex judgment** (Codex only) | Architecture across systems; new transaction, concurrency or permission decisions; difficult race/crash/security tests; diagnosis across systems or security boundaries | `opus` | `gpt-6-astra`, `high` |
 
-`gpt-6-sol` is the Codex default. Use `gpt-6-astra` only for the complex-judgment
-rows, or when `gpt-6-sol` repeatedly failed the same acceptance criteria after
-the task was narrowed.
+Claude aliases resolve to the newest model of each family. Pass the alias, not a
+versioned name. The host enforces its own model and effort allowlist. Never pass a
+Claude alias to Codex.
 
-Start routine diagnosis on `gpt-6-sol`. An unknown root cause alone does not
-justify `gpt-6-astra`. Select Astra when evidence shows complex interactions
-across systems, concurrency or security boundaries, or when the repeated-failure
-rule above applies.
+On Claude, a dispatch without `model` inherits the parent model. Inherit for judgment
+work only when the parent runs Opus. Set `model` explicitly for every lower tier.
 
-Explicit user model/effort choices take precedence. Before selecting, verify the
-models and supported effort values exposed by the current host; this table does
-not establish availability. Within a range, use the lower effort for fully
-specified work and the higher effort for remaining complexity or major decisions.
-Use `xhigh` for a specific difficult problem; `max`/`ultra` are exceptional,
-never automatic defaults. If a model or effort is unavailable, follow the
-runtime fallback, record the limitation and preserve the required tier.
+Select Fable only when the user names it for the task or the session. A Fable parent
+does not select Fable for its children; select `opus` for them.
 
-This table neither requires delegation nor authorizes unsupported changes to
-the current session model. Apply it when the host supports selection; otherwise
-continue authorized work on the current model and disclose the limitation.
+On Codex, start routine debugging on `gpt-6-sol`/`high`, also when the root cause is
+unknown. Select `gpt-6-astra` when evidence shows complex interactions, or when Sol
+repeatedly failed the narrowed task. Use the lower effort of a range for fully
+specified work. Use `xhigh` for one specific difficult problem; `max` is never automatic.
 
-Give each child a narrow task, necessary instructions, relevant file paths and
-an output contract. Use a clean context rather than automatically passing the
-whole history. Scope rechecks to the findings, changes and relevant regression
-evidence. After repeated failure, escalate the model or narrow the task; never
-repeat the same unsuccessful approach unchanged. If already at the highest
-available tier, narrow the task rather than automatically raising effort.
+Explicit user model and effort choices take precedence. If the host exposes no model
+selection, continue on the current model and report that tier routing is unavailable.
+This skill does not require delegation.
 
-**Reviews never get downgraded.** Every reviewer — code, developer, business
-analyst, security, performance, plan review and analysis cross-check — uses the
-judgment tier, irrespective of diff size: Opus on Claude, `gpt-6-sol`/`high` on
-Codex. Inherit only when the parent is known
-to provide that tier; otherwise select it explicitly. Explicit user model choices
-still take precedence. If tier selection is unavailable, report that limitation
-instead of silently claiming an inherited model is the top tier.
+## Reviews Never Get Downgraded
 
-## Generic tier examples (Claude; Codex uses the table above)
+Every reviewer — code, developer, business analyst, security, performance, plan review
+and analysis cross-check — uses the judgment tier, irrespective of diff size. The
+registered cf-powers reviewer agents pin `opus` in their frontmatter. A general-purpose
+reviewer gets `opus` explicitly unless the parent runs Opus. On Codex, select
+`gpt-6-sol`/`high`.
+
+## Examples
 
 **Mechanical**
 - apply a named rename across a listed set of files
@@ -135,33 +72,34 @@ instead of silently claiming an inherited model is the top tier.
   still an open question
 - multi-file coordination, debugging an unknown root cause, architecture
 - the final whole-branch review
-- fix-loop escalation after a lower tier got stuck (always at least one tier up)
 
 ## The Deciding Question
 
 > Does this task require *deciding* anything, or only *executing* decisions
 > already made?
 
-Executing only → drop a tier. Still deciding → keep the tier.
+Executing only → drop a tier. Still deciding → keep the tier. For Claude, the
+implementation tier is the floor for work from prose rather than spelled-out code.
 
-For tasks not covered by the Codex table, choose by unresolved decisions and
-validate the selection against observed results. Do not infer cost or quota
-savings from a tier label. For Claude, the implementation tier remains the
-floor for work from prose rather than spelled-out code.
+## Escalation
+
+After repeated failure, move one tier up or narrow the task. Never repeat the same
+unsuccessful approach unchanged. At the top tier, narrow the task, change the approach
+or surface the unresolved decision to the user. You may tell the user that Fable is an
+option; do not dispatch it until they ask.
 
 ## Make the Selection Explicit
 
-Choose the tier deliberately on every dispatch. Record the actual model and
-supported reasoning effort (Codex), or deliberate inheritance, in the brief or
-ledger. The mechanical and implementation tiers save work only when they select
-an appropriate cheaper model; review remains at the judgment tier. Use the
-runtime reference for available parameters and the no-routing fallback.
+Give each child a narrow task, necessary instructions, relevant file paths and an
+output contract, in a clean context. Record the selected model (and effort on Codex),
+or deliberate inheritance, in the brief or ledger.
 
 ## Red Flags
 
 | Thought | Reality |
 |---|---|
-| "The judgment tier is safer, I'll just use it everywhere" | Then the tiering does nothing — 'not deciding' means paying the judgment tier every time. Safety belongs in the review tier, not the implementer tier. |
+| "The parent is Opus, I'll just inherit" | Inheritance is a judgment-tier dispatch. For executing-only work, set the lower tier. |
+| "The judgment tier is safer, I'll just use it everywhere" | Then the tiering does nothing. Safety belongs in the review tier, not the implementer tier. |
 | "This is important, so it needs the big model" | Importance is not difficulty. A critical rename is still a rename. |
 | "Cheapest tier for everything, it's a bulk edit" | If it works from prose or needs a judgement call, the mechanical tier will burn more turns than it saves. |
 | "It's only a small diff, the implementation tier can review it" | Reviews stay on the judgment tier. Diff size does not change who is qualified to judge it. |

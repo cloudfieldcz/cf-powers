@@ -170,7 +170,7 @@ You can still execute phases one at a time by hand if you prefer; the index file
 | **executing-plans** | One plan implemented inline, no pauses, one final review |
 | **subagent-driven-development** | Fast parallel execution with two-stage review |
 | **orchestrator** | Any job too big for one session — plan index, migration, bug batch, audit; delegates each unit to subagents |
-| **choosing-subagent-models** | Before workflow model selection or dispatch — central Codex model/effort defaults and runtime tiers |
+| **choosing-subagent-models** | Before model selection or dispatch — maps mechanical / implementation / judgment tiers to Claude and Codex models |
 | **test-driven-development** | During implementation (RED-GREEN-REFACTOR) |
 | **systematic-debugging** | When encountering bugs or test failures |
 | **verification-before-completion** | Before claiming work is done |

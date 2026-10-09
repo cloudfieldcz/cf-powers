@@ -25,21 +25,9 @@ Check nested-agent support and free ancestor slots first. If there is no room fo
 ## Model tiers
 
 Read [choosing-subagent-models](../../choosing-subagent-models/SKILL.md) before
-selection. Mapping: mechanical → `haiku`, implementation → `sonnet` (Sonnet 5.5),
-judgment/review → `opus` (Opus 5.5). For judgment work explicitly select `opus`;
-inherit only when the actual parent model is the selected target. Under a Fable
-parent, select `opus` explicitly unless the user asked for Fable subagents.
-
-For a requested Fable dispatch, verify availability in the current host/account
-and use the provider's exact ID (`claude-fable-5-1` on the Anthropic API). Use
-`fable` only after you verify that the alias resolves to the intended version.
-Claude Code requires v2.1.257 or later for this model. Use only parameters
-exposed by the active Task/Agent schema; do not assume it accepts every CLI option.
-Supported subagent definitions can set `model` and `effort: high`; if the active
-dispatch cannot set effort, use verified inheritance or report the limitation.
-Check the actual selected model/effort, including host substitutions (for
-example in `/tasks`), and record it in the brief/ledger. Explicit user choices
-and organization restrictions take precedence. Do not change global model
+selection. Pass the tier's alias (`haiku`, `sonnet`, `opus`) in the Agent tool's
+`model` parameter; the host resolves it and enforces availability. Registered
+reviewer agents pin `opus` in their frontmatter. Do not change global model
 settings to implement a per-task exception.
 
 References: [model configuration](https://code.claude.com/docs/en/model-config),

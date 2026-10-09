@@ -5,11 +5,6 @@ description: Use when implementing any feature or bugfix, before writing impleme
 
 # Test-Driven Development (TDD)
 
-**Codex model selection:** Before dispatch or another supported model-selection
-operation, read [choosing-subagent-models](../choosing-subagent-models/SKILL.md).
-Keep its defaults and reviewer tiers. Inline work with no model-selection operation
-continues on the current model; this reference does not require delegation.
-
 ## Overview
 
 Write the test first. Watch it fail. Write minimal code to pass.

@@ -10,11 +10,6 @@ project reads directly. Before dispatch, resume, model selection, or shared plug
 resource resolution, read [runtime operations](../using-superpowers/references/runtime.md)
 and the active-host reference once per context. Keep workflow decisions and child runtime constraints unchanged.
 
-**Codex model selection:** Before dispatch or another supported model-selection
-operation, read [choosing-subagent-models](../choosing-subagent-models/SKILL.md).
-Keep its defaults and reviewer tiers. Inline work with no model-selection operation
-continues on the current model; this reference does not require delegation.
-
 ## Overview
 
 A single skill that takes you from a vague idea to a reviewed technical analysis document, ready for implementation planning. Combines collaborative dialogue (understanding what to build) with rigorous technical analysis (how to build it).

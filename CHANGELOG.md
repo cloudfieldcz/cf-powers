@@ -7,6 +7,24 @@ Project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [2.9.0] — 2026-10-09
+
+### Changed
+- `choosing-subagent-models` maps each tier to a Claude alias and a Codex model and
+  effort in one table. The 16-row Codex task table becomes four tier rows.
+- Claude routing uses the `haiku`, `sonnet` and `opus` aliases without version
+  numbers. The host resolves each alias and enforces availability.
+- Registered reviewer agents pin `model: opus` in their frontmatter instead of
+  `inherit`. The host enforces judgment-tier reviews.
+- The skill states that a lower tier is the purpose of routing. A red flag now
+  catches plain inheritance from an Opus parent for executing-only work.
+- Escalation is the same on both hosts: one tier up, or a narrower task at the top tier.
+
+### Removed
+- The repeated "Codex model selection" header in six skills and the "Codex table
+  takes precedence" paragraph in three dispatching skills.
+- Fable availability and Claude Code version checks in the Claude runtime reference.
+
 ## [2.8.0] — 2026-10-07
 
 ### Changed
