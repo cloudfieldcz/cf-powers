@@ -144,5 +144,7 @@ Structure your review exactly like this:
 - **Think like an attacker** — For each component, ask "how would I abuse this?"
 - **Specific attack scenarios** — Don't say "could be vulnerable"; describe the exact attack path
 - **Prioritize by exploitability** — Real risks over theoretical concerns
+- **Proportionate controls** — Prefer existing controls that satisfy the threat model. Justify custom infrastructure with a concrete unmet requirement.
+- **Safe simplification** — Reduce speculative scope, not required authorization, data integrity, secret protection, audit, or recovery controls.
 - **Defense in depth** — One control failing shouldn't compromise the system
 - **Project invariants are sacred** — If applicable project instructions (CLAUDE.md on Claude Code, AGENTS.md on Codex) define security invariants, any violation is CRITICAL

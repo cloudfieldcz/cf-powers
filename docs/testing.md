@@ -129,6 +129,12 @@ Blocked or unavailable live checks are pending, never converted to passing resul
 
 ## Evidence
 
+Use the [collaboration and scope probes](../tests/skill-triggering/collaboration-scenarios.md)
+for maintainer dialogue and scope defaults. Record actual responses before and after
+changes; the rubric alone is not a passing result.
+The [2026-10-15 probe record](../tests/skill-triggering/collaboration-evidence.md)
+includes actual responses and the limits of this check.
+
 Skill behavior is verified through actual decisions, dispatched agents, executed
 commands, test results and artifacts. Grepping skill prose is an inventory aid,
 not proof that an agent follows it. Preserve the fork's behavior as the reference:

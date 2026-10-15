@@ -49,6 +49,14 @@ Skip any step = lying, not verifying
 | UI change works | The affected screen opened in the running app and looked at (screenshot) | Component tests pass, testids assert |
 | Feature is done | Every screen it touches seen running | Green suite, green build |
 
+## Verify the Outcome on Representative Data
+
+For changed user workflows or data transformations, run a representative
+end-to-end scenario against a known expected result. Use realistic data structure
+and relevant volume. Synthetic unit fixtures alone do not prove domain correctness.
+Use authorized test data or anonymized equivalents. When the environment or data
+is not available, report that verification gap explicitly.
+
 ## Seeing Is a Verification Command
 
 Every row above except the last two is something a terminal prints. None of them can see a screen. For any change that alters a rendered surface, the verification step is: **open the app on that screen and look at it**, or capture a screenshot — via the built-in `run` skill, or Playwright (`browser_take_screenshot`) when it is available.

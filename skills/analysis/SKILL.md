@@ -24,6 +24,8 @@ language preference for conversation does not change this. The document follows
 
 ## Preserve the Intended Outcome
 
+Apply the Collaboration Defaults from `using-superpowers` in the design dialogue.
+
 Before proposing an approach, identify the intended outcome, who it serves,
 and what success looks like from the request and available context. Ask a
 focused question only for missing information that would change the design;
@@ -34,6 +36,13 @@ from your assumptions and make them easy to correct. Carry that understanding
 into the analysis document when one is needed. Check proposed features against
 it so familiarity with an app genre does not substitute for the user's goal.
 Use the existing design dialogue for this; it is not another approval stage.
+
+Define the smallest outcome that meets the acceptance criteria. For added complexity,
+name its beneficiary, cost, and maintenance owner. Check existing platform capabilities first.
+Compare custom work against the actual fit and operating cost of the existing option.
+Save effort on speculative generality and polish. Preserve data integrity, secrets,
+authorization, necessary recovery, and basic usability. For each deliberate omission,
+record why it is safe and what concrete condition would justify revisiting it.
 
 <HARD-GATE>
 Before implementation, present the concrete design and obtain approval unless
@@ -116,20 +125,20 @@ Phase 3; continue implementation only within the approval boundary above.
 
 **Exploring approaches:**
 
-- Propose **2-3 different approaches** with trade-offs
-- Lead with your recommended option and explain why
-- Let the user pick before moving on
+- When material tradeoffs remain, compare the viable approaches and recommend one.
+- When evidence settles the choice, present that path and its reason.
+- Honor explicit requests for alternatives. Preserve the existing design approval boundary.
 
 **Validating the design direction:**
 
-- Once you believe you understand what to build, summarize it in **200-300 words**
+- Summarize the outcome, scope, key decision, and unresolved assumptions. Scale detail to the decision; there is no word quota.
 - Ask: "Does this capture what you have in mind?"
 - Iterate until the user confirms
 
 **Key principles for Phase 1:**
 - **One question at a time** — don't overwhelm
 - **YAGNI ruthlessly** — remove unnecessary features
-- **Explore alternatives** — always propose 2-3 approaches before settling
+- **Explain the choice** — compare real tradeoffs; recommend the established path when the evidence settles the choice
 
 **Design for isolation and clarity:**
 
@@ -187,6 +196,12 @@ How things work today. Include:
 ### Architecture
 
 Overall approach. Diagrams where they help.
+
+### Scope decisions
+
+For each deliberate omission, state the omitted capability, why the remaining
+outcome is safe and sufficient, and the concrete condition for revisiting it.
+Write "None" when there are no deliberate omissions.
 
 ### Database changes (if any)
 
@@ -271,6 +286,7 @@ Before saving, verify the analysis covers all of the following:
 - [ ] Problem description with rationale (Overview + Why)
 - [ ] Current state analysis with file:line references (Current state)
 - [ ] Proposed solution with architecture (Proposed solution)
+- [ ] Deliberate omissions, safety rationale, and revisit conditions (Scope decisions)
 - [ ] Database changes with full DDL (if applicable)
 - [ ] All affected files listed with line references (Affected files)
 - [ ] Implementation phases as logical chunks (Implementation phases)

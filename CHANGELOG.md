@@ -7,6 +7,18 @@ Project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [2.10.0] — 2026-10-15
+
+### Changed
+- `using-superpowers` adds Collaboration Defaults: provisional hypotheses, purposeful
+  questions, clear recommendations, and criticism tied to behavior and impact.
+- `analysis` replaces the mandatory 2-3 alternatives and the 200-300 word summary
+  with real tradeoffs and decision-sized summaries. Language rules stay the same.
+- Analysis records safe scope omissions and revisit conditions. Plans carry them
+  forward only when the design omits something.
+- Keep review requests tied to requirements, operating capability, and concrete risks.
+- `verification-before-completion` adds an end-to-end check on representative data.
+
 ## [2.9.0] — 2026-10-09
 
 ### Changed

@@ -125,6 +125,13 @@ naming and copy rules, platform requirements — one line each, with exact
 values copied verbatim from the spec. Every task's requirements implicitly
 include this section.]
 
+## Scope Decisions
+
+[Include this section only when the approved design omits a capability on purpose.
+Copy each omission, why the remaining outcome is safe, and the condition for
+revisiting it. Never omit authorization, data integrity, secrets, necessary
+recovery, or basic usability.]
+
 ## Review Focus
 
 [At most 5 lines. Each line names an input or a failure mode that the spec

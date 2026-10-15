@@ -35,6 +35,9 @@ Review a technical analysis or specification document from a senior developer pe
 - Is the proposed architecture realistic?
 - Are the technology choices appropriate?
 - Are there simpler alternatives that were not considered?
+- Does each added abstraction serve a current requirement, and who will maintain it?
+- Can the intended operating team run the solution with its actual tools and skills?
+- Does an existing platform capability meet the need at lower implementation and operating cost?
 - Do the estimated phases seem realistic?
 
 ### 3. Architecture Concerns
@@ -114,5 +117,6 @@ Structure your review exactly like this:
 - **Verify against code** -- Always read the actual files referenced in the analysis
 - **Specific references** -- Use file:line when pointing out issues
 - **Pragmatic** -- Focus on real risks, not theoretical perfection
+- **Scope discipline** -- Tie requested changes to a requirement or concrete failure and its impact. Keep optional polish separate from blockers.
 - **Alternative proposals** -- When flagging an issue, suggest a better approach
 - **Security mindset** -- Think about what could go wrong in production

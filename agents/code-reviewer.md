@@ -29,6 +29,9 @@ When reviewing completed work, you will:
    - Check for proper separation of concerns and loose coupling
    - Verify that the code integrates well with existing systems
    - Assess scalability and extensibility considerations
+   - Tie each requested change to a current requirement or concrete failure and its impact. Separate optional polish from blockers.
+   - Check who will operate and maintain added complexity. Prefer an existing capability when it meets the requirement at lower total cost.
+   - Preserve authorization, data integrity, secrets, necessary recovery, and basic usability when recommending a smaller scope.
 
 4. **Documentation and Standards**:
    - Verify the documentation the project actually requires is present and accurate (README, docs/, CHANGELOG, public API signatures)
